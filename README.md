@@ -1,4 +1,14 @@
-# Getting Started with Create React App
+# matcha-react
+
+## Objectives of the project
+Develop a dating app with React and Firebase.
+
+
+## techologies
+This project uses React with tailwindCSS and Firebase for user management and Firebase Firestore as the database.
+
+
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
