@@ -42,7 +42,7 @@ export default class Login extends Component {
           <h1>
             Login to
             <Link to="/">
-              Chatty
+              Matcha-react
             </Link>
           </h1>
           <p>

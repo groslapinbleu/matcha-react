@@ -9,33 +9,33 @@ export default class Profile extends Component {
     return (
       <div className="profile">
         <Header></Header>
-        <section>
-          <div className="jumbotron jumbotron-fluid py-5">
-            <div className="container text-center py-5">
-              <h1 className="display-4">Profile</h1>
-                {auth().currentUser
-                  ? <div>
-                  <table class="table">
+        <section className="pt-20">
+          <div className="p-6 max-w-sm mx-auto bg-blue-50 rounded-xl shadow-md flex items-center space-x-4 border-l-8 border-blue-500">
+            <div className="flex-shrink-0">
+              {auth().currentUser
+                ? <div>
+                  <table className="table-auto">
+                    <thead>
+                      <tr><th colSpan="2" className="bg-red text-center">Profile</th></tr>
+                    </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">Name</th>
-                        {auth().currentUser.displayName}
-                      </tr>
+                        <th>Name</th><td>{auth().currentUser.displayName}</td></tr>
                       <tr>
-                        <th scope="row">Email</th>
-                        {auth().currentUser.email}
-                      </tr>
+                        <th>Email</th><td>{auth().currentUser.email}</td></tr>
                       <tr>
-                        <th scope="row">Photo</th>
-                        <img style={{maxWidth: '300px', maxHeight: '300px'}} src={auth().currentUser.photoURL} alt={auth().currentUser.displayName}/> 
+                        <th>Photo</th><td>
+                          {/* le className ci-dessous vien t de tailwind */}
+                          <img className="rounded-full shadow h-25 w-25" src={auth().currentUser.photoURL} alt={auth().currentUser.displayName} />
+                        </td>
                       </tr>
                     </tbody>
                   </table>
-                  </div>
-                  : <div class="alert alert-light" role="alert">
-                      Weird! You don't seem to be properly authenticated
+                </div>
+                : <div class="alert alert-light" role="alert">
+                  Weird! You don't seem to be properly authenticated
                     </div>}
-              
+
             </div>
           </div>
         </section>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
+import { auth } from '../services/firebase';
 
 export default class HomePage extends Component {
   render() {
@@ -11,12 +12,15 @@ export default class HomePage extends Component {
         <section>
           <div className="jumbotron jumbotron-fluid py-5">
             <div className="container text-center py-5">
-              <h1 className="display-4">Welcome to Chatty</h1>
+              <h1 className="display-4">Welcome to Matcha-react</h1>
               <p className="lead">A great place to share your thoughts with friends</p>
-              <div className="mt-4">
-                <Link className="btn btn-primary px-5 mr-3" to="/signup">Create New Account</Link>
-                <Link className="btn px-5" to="/login">Login to Your Account</Link>
-              </div>
+              {auth().currentUser ?
+                <p>Currently connected as {auth().currentUser.email}</p> :
+                <div className="mt-4">
+                  <Link className="btn btn-primary px-5 mr-3" to="/signup">Create New Account</Link>
+                  <Link className="btn px-5" to="/login">Login to Your Account</Link>
+                </div>
+              }
             </div>
           </div>
         </section>
