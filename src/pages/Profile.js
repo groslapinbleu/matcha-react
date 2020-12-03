@@ -16,7 +16,7 @@ export default class Profile extends Component {
                 ? <div>
                   <table className="table-auto">
                     <thead>
-                      <tr><th colSpan="2" className="bg-red text-center">Profile</th></tr>
+                      <tr><th colSpan="2" className="text-center text-2xl">Profile</th></tr>
                     </thead>
                     <tbody>
                       <tr>
@@ -26,7 +26,7 @@ export default class Profile extends Component {
                       <tr>
                         <th>Photo</th><td>
                           {/* le className ci-dessous vien t de tailwind */}
-                          <img className="rounded-full shadow h-25 w-25" src={auth().currentUser.photoURL} alt={auth().currentUser.displayName} />
+                          <img className="rounded-full shadow h-28 w-28 mx-auto" src={auth().currentUser.photoURL} alt={auth().currentUser.displayName} />
                         </td>
                       </tr>
                     </tbody>

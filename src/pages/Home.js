@@ -10,15 +10,15 @@ export default class HomePage extends Component {
       <div className="home">
         <Header></Header>
         <section>
-          <div className="jumbotron jumbotron-fluid py-5">
-            <div className="container text-center py-5">
-              <h1 className="display-4">Welcome to Matcha-react</h1>
-              <p className="lead">A great place to share your thoughts with friends</p>
+          <div className="pt-20">
+            <div className="container mx-auto text-center py-5 bg-indigo-50">
+              <h1 className="text-4xl">Welcome to Matcha-React</h1>
+              <p className="text-2xl">A great place to share your thoughts with friends</p>
               {auth().currentUser ?
                 <p>Currently connected as {auth().currentUser.email}</p> :
                 <div className="mt-4">
-                  <Link className="btn btn-primary px-5 mr-3" to="/signup">Create New Account</Link>
-                  <Link className="btn px-5" to="/login">Login to Your Account</Link>
+                  <Link className="btn btn-primary px-5 mr-3 hover:underline" to="/signup">Create New Account</Link>
+                  <Link className="btn px-5 hover:underline" to="/login">Login to Your Account</Link>
                 </div>
               }
             </div>

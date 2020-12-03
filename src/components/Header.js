@@ -10,7 +10,7 @@ function Header() {
     <header>
       <nav className="flex shadow px-8 py-6 items-center justify-between flex-wrap">
         <div className="flex items-center flex-grow flex-shrink lg:pb-0">
-          <Link className="navbar-brand" to="/">Matcha-React</Link>
+          <Link className="text-xl hover:underline" to="/">Matcha-React</Link>
         </div>
 
         {/* <div className="block lg:hidden">
@@ -26,15 +26,15 @@ function Header() {
                 ?
                 <React.Fragment>
                   <span className="" >Logged in as {auth().currentUser.email}</span>
-                  <Link className="nav-item" to="/profile">Profile</Link>
-                  <Link className="nav-item" to="/chat">Chat</Link>
-                  <button className="nav-item p-2 rounded-md bg-indigo-100 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white" onClick={() => auth().signOut()}>Logout</button>
+                  <Link className="hover:underline" to="/profile">Profile</Link>
+                  <Link className="hover:underline" to="/chat">Chat</Link>
+                  <button className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white" onClick={() => auth().signOut()}>Logout</button>
 
                   {/* <button className="nav-item -mr-1 flex p-2 rounded-md bg-indigo-100 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2" onClick={() => auth().signOut()}>Logout</button> */}
                 </React.Fragment>
                 : <React.Fragment>
-                  <Link className="nav-item" to="/login">Sign In</Link>
-                  <Link className="nav-item " to="/signup">Sign Up</Link>
+                  <Link className="hover:underline" to="/login">Sign In</Link>
+                  <Link className="hover:underline" to="/signup">Sign Up</Link>
                 </React.Fragment>}
               {/*               <div className="nav-item">
                 <a href="#features" className="no-underline text-blue hover:underline">Features</a>
