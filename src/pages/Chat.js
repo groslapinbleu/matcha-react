@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import Spinner from 'react-loader-spinner'
 import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
 
@@ -11,8 +12,7 @@ export default class Chat extends Component {
       user: auth().currentUser,
       chats: [],
       content: '',
-      readError: null,
-      writeError: null,
+      error: null,
       loadingChats: false
     };
     this.handleChange = this.handleChange.bind(this);
@@ -21,7 +21,7 @@ export default class Chat extends Component {
   }
 
   async componentDidMount() {
-    this.setState({ readError: null, loadingChats: true });
+    this.setState({ error: null, loadingChats: true });
     const chatArea = this.myRef.current;
     try {
       db.ref("chats").on("value", snapshot => {
@@ -35,7 +35,7 @@ export default class Chat extends Component {
         this.setState({ loadingChats: false });
       });
     } catch (error) {
-      this.setState({ readError: error.message, loadingChats: false });
+      this.setState({ error: error.message, loadingChats: false });
     }
   }
 
@@ -47,50 +47,50 @@ export default class Chat extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    this.setState({ writeError: null });
+    this.setState({ error: null });
     const chatArea = this.myRef.current;
     try {
       await db.ref("chats").push({
         content: this.state.content,
         timestamp: Date.now(),
-        uid: this.state.user.uid
+        uid: this.state.user.uid,
+        displayName: this.state.user.displayName
       });
       this.setState({ content: '' });
       chatArea.scrollBy(0, chatArea.scrollHeight);
     } catch (error) {
-      this.setState({ writeError: error.message });
+      this.setState({ error: error.message });
     }
   }
 
   formatTime(timestamp) {
     const d = new Date(timestamp);
-    const time = `${d.getDate()}/${(d.getMonth()+1)}/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
+    const time = `${d.getDate()}/${(d.getMonth() + 1)}/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
     return time;
   }
 
   render() {
     return (
-      <div>
+      <div className="">
         <Header />
-
-        <div className="chat-area" ref={this.myRef}>
-          {/* loading indicator */}
-          {this.state.loadingChats ? <div className="spinner-border text-success" role="status">
-            <span className="sr-only">Loading...</span>
-          </div> : ""}
+        <div className="mt-16 p-6 h-2/3 overflow-y-scroll bg-indigo-50" ref={this.myRef}>
+          {this.state.loadingChats
+            ? <div className="flex items-center justify-center"><Spinner type='Puff' color='#038E9F' height={50} width={50} /></div>
+            : ""}
           {/* chat area */}
           {this.state.chats.map(chat => {
-            return <p key={chat.timestamp} className={"chat-bubble " + (this.state.user.uid === chat.uid ? "current-user" : "")}>
+            return <div key={chat.timestamp} className={"p-1 m-2 max-w-2xl rounded-lg break-words " + (this.state.user.uid === chat.uid
+              ? "bg-green-300 text-white ml-auto"
+              : "bg-gray-200")}>
               {chat.content}
-              <br />
-              <span className="chat-time float-right">{(this.state.user.uid === chat.uid ? "myself" : chat.uid)} - {this.formatTime(chat.timestamp)}</span>
-            </p>
+              <span className="text-xs float-right">{(this.state.user.uid === chat.uid ? "myself" : chat.displayName)} - {this.formatTime(chat.timestamp)}</span>
+            </div>
           })}
         </div>
-        <form onSubmit={this.handleSubmit} className="mx-3">
-          <textarea className="form-control" name="content" onChange={this.handleChange} value={this.state.content}></textarea>
-          {this.state.error ? <p className="text-danger">{this.state.error}</p> : null}
-          <button type="submit" className="btn btn-submit px-5 mt-4">Send</button>
+        <form onSubmit={this.handleSubmit} className="mx-auto sticky bottom-0 max-w-2xl border-solid border-2">
+          <textarea className="border-solid border-2 w-full rounded-lg " name="content" onChange={this.handleChange} value={this.state.content}></textarea>
+          <button type="submit" className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white">Send</button>
+          {this.state.error ? <p className="text-red-500">{this.state.error}</p> : null}
         </form>
         <Footer></Footer>
       </div>

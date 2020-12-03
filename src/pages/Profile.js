@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 // import { Link } from 'react-router-dom';
 import { auth } from '../services/firebase';
+import UserLogo from '../logos/UserLogo';
 
 export default class Profile extends Component {
   render() {
@@ -25,8 +26,10 @@ export default class Profile extends Component {
                         <th>Email</th><td>{auth().currentUser.email}</td></tr>
                       <tr>
                         <th>Photo</th><td>
-                          {/* le className ci-dessous vien t de tailwind */}
-                          <img className="rounded-full shadow h-28 w-28 mx-auto" src={auth().currentUser.photoURL} alt={auth().currentUser.displayName} />
+                        {auth().currentUser.photoURL
+                          ? <img className="rounded-full shadow h-24 w-24 mx-auto" src={auth().currentUser.photoURL} alt={auth().currentUser.displayName} />
+                          : <UserLogo height={16} width={16}  ></UserLogo>
+                        }
                         </td>
                       </tr>
                     </tbody>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { signup, signInWithGoogle, signInWithGitHub } from "../helpers/auth";
+import { signup, updateUserProfile, signInWithGoogle, signInWithGitHub } from "../helpers/auth";
 
 
 export default class SignUp extends Component {
@@ -12,12 +12,12 @@ export default class SignUp extends Component {
       error: null,
       email: '',
       password: '',
+      displayName: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.googleSignIn = this.googleSignIn.bind(this);
     this.githubSignIn = this.githubSignIn.bind(this);
-
   }
 
   handleChange(event) {
@@ -26,13 +26,23 @@ export default class SignUp extends Component {
     });
   }
 
+  // check for non string, empty string, blank string...
+  isEmptyString(str) {
+    return str === ""
+  }
+
   async handleSubmit(event) {
     event.preventDefault();
-    this.setState({ error: '' });
-    try {
-      await signup(this.state.email, this.state.password);
-    } catch (error) {
-      this.setState({ error: error.message });
+    if (this.isEmptyString(this.state.displayName))
+      this.setState({ error: 'Display Name cannot be empty' })
+    else {
+      this.setState({ error: '' })
+      try {
+        await signup(this.state.email, this.state.password);
+        await updateUserProfile(this.state.displayName)
+      } catch (error) {
+        this.setState({ error: error.message });
+      }
     }
   }
 
@@ -66,13 +76,16 @@ export default class SignUp extends Component {
             <p>Fill in the form below to create an account.</p>
             <hr />
             <div>
+              <input placeholder="Display Name" name="displayName" onChange={this.handleChange} value={this.state.displayName} type="text"></input>
+            </div>
+            <div>
               <input placeholder="Email" name="email" type="email" onChange={this.handleChange} value={this.state.email}></input>
             </div>
             <div>
               <input placeholder="Password" name="password" onChange={this.handleChange} value={this.state.password} type="password"></input>
             </div>
             <div>
-              {this.state.error ? <p>{this.state.error}</p> : null}
+              {this.state.error ? <p className="text-red-500">{this.state.error}</p> : null}
               <button className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white" type="submit">Sign up</button>
               <p>Or</p>
               <p>

@@ -8,6 +8,15 @@ export function signin(email, password) {
   return auth().signInWithEmailAndPassword(email, password);
 }
 
+export function updateUserProfile(displayName) {
+  console.log("updateUserProfile avec " + displayName)
+  const user = auth().currentUser
+  return user.updateProfile({
+    displayName: displayName,
+    // photoURL: "https://example.com/jane-q-user/profile.jpg"
+  })
+}
+
 export function signInWithGoogle() {
   const provider = new auth.GoogleAuthProvider();
   return auth().signInWithPopup(provider);
