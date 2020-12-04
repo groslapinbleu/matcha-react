@@ -3,9 +3,58 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 // import { Link } from 'react-router-dom';
 import { auth } from '../services/firebase';
-import UserLogo from '../logos/UserLogo';
+import UserIcon from '../Icons/UserIcon';
+import PencilButton from '../components/PencilButton';
+import CheckButton from '../components/CheckButton';
+import isEmptyString from '../helpers/isEmptyString'
+import { updateUserProfile } from "../helpers/auth";
+
 
 export default class Profile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      displayName: auth().currentUser.displayName,
+      updateDisplayName: false,
+      description: ""
+    };
+    this.updateTheDisplayName = this.updateTheDisplayName.bind(this);
+    this.updateDescription = this.updateDescription.bind(this);
+    this.handleDisplayNameInput = this.handleDisplayNameInput.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+  updateTheDisplayName() {
+    // make displayName editable 
+    this.setState({ updateDisplayName: true })
+  }
+
+  async handleDisplayNameInput() {
+    // TO DO: save display name to database 
+    if (isEmptyString(this.state.displayName))
+      this.setState({ error: 'Display Name cannot be empty' })
+    else {
+      this.setState({ error: '' })
+      try {
+        await updateUserProfile(this.state.displayName)
+      } catch (error) {
+        this.setState({ error: error.message });
+      }
+    }
+    // reset display name to read only
+    this.setState({ updateDisplayName: false })
+  }
+
+  updateDescription() {
+
+  }
+
   render() {
     return (
       <div className="profile">
@@ -21,16 +70,26 @@ export default class Profile extends Component {
                     </thead>
                     <tbody>
                       <tr>
-                        <th>Name</th><td>{auth().currentUser.displayName}</td></tr>
+                        <th>Display Name</th>
+                        <td>
+                          {this.state.updateDisplayName
+                            ? <span><input name="displayName" placeholder="Display Name" value={this.state.displayName} type="text" onChange={this.handleChange} required></input><CheckButton onClick={this.handleDisplayNameInput}/></span>
+                            : <span>{this.state.displayName}<PencilButton onClick={this.updateTheDisplayName} /></span>
+                          }
+                        </td>
+                      </tr>
                       <tr>
                         <th>Email</th><td>{auth().currentUser.email}</td></tr>
                       <tr>
                         <th>Photo</th><td>
-                        {auth().currentUser.photoURL
-                          ? <img className="rounded-full shadow h-24 w-24 mx-auto" src={auth().currentUser.photoURL} alt={auth().currentUser.displayName} />
-                          : <UserLogo height={16} width={16}  ></UserLogo>
-                        }
+                          {auth().currentUser.photoURL
+                            ? <img className="rounded-full shadow h-24 w-24 mx-auto" src={auth().currentUser.photoURL} alt={auth().currentUser.displayName} />
+                            : <UserIcon height={16} width={16}  ></UserIcon>
+                          }
                         </td>
+                      </tr>
+                      <tr>
+                        <th>My description</th><td><textarea readOnly></textarea></td><td><PencilButton onClick={this.updateDescription} /></td>
                       </tr>
                     </tbody>
                   </table>

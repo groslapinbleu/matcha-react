@@ -1,6 +1,6 @@
 import React from 'react';
 // SVG is copied from https://heroicons.dev/ 
-const UserLogo = ({ height, width }) => {
+const UserIcon = ({ height, width }) => {
   // setting up default values to 6
   if (height === undefined)
     height = 6
@@ -11,6 +11,6 @@ const UserLogo = ({ height, width }) => {
   )
 }
 
-export default UserLogo;
+export default UserIcon;
 
 

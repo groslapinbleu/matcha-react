@@ -3,7 +3,8 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Spinner from 'react-loader-spinner'
 import { auth } from "../services/firebase";
-import { db } from "../services/firebase";
+// import { db } from "../services/firebase";
+import {getValues, setValue } from "../helpers/database"
 
 export default class Chat extends Component {
   constructor(props) {
@@ -24,12 +25,13 @@ export default class Chat extends Component {
     this.setState({ error: null, loadingChats: true });
     const chatArea = this.myRef.current;
     try {
-      db.ref("chats").on("value", snapshot => {
+      getValues("chats", snapshot => {
+      // db.ref("chats").on("value", snapshot => {
         let chats = [];
         snapshot.forEach((snap) => {
           chats.push(snap.val());
         });
-        chats.sort(function (a, b) { return a.timestamp - b.timestamp })
+        chats.sort(function (a, b) { return a.timestamp - b.timestamp; });
         this.setState({ chats });
         chatArea.scrollBy(0, chatArea.scrollHeight);
         this.setState({ loadingChats: false });
@@ -50,7 +52,8 @@ export default class Chat extends Component {
     this.setState({ error: null });
     const chatArea = this.myRef.current;
     try {
-      await db.ref("chats").push({
+      // await db.ref("chats").push({
+        await setValue("chats",{
         content: this.state.content,
         timestamp: Date.now(),
         uid: this.state.user.uid,
@@ -87,7 +90,7 @@ export default class Chat extends Component {
             </div>
           })}
         </div>
-        <form onSubmit={this.handleSubmit} className="mx-auto sticky bottom-0 max-w-2xl border-solid border-2">
+        <form onSubmit={this.handleSubmit} className="mx-auto sticky bottom-0 max-w-2xl">
           <textarea className="border-solid border-2 w-full rounded-lg " name="content" onChange={this.handleChange} value={this.state.content}></textarea>
           <button type="submit" className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white">Send</button>
           {this.state.error ? <p className="text-red-500">{this.state.error}</p> : null}

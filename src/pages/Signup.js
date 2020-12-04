@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import { signup, updateUserProfile, signInWithGoogle, signInWithGitHub } from "../helpers/auth";
-
+import userNameGenerator from '../helpers/userNameGenerator' 
+import isEmptyString from '../helpers/isEmptyString'
+import RefreshButton from '../components/RefreshButton';
 
 export default class SignUp extends Component {
 
@@ -12,12 +14,13 @@ export default class SignUp extends Component {
       error: null,
       email: '',
       password: '',
-      displayName: ''
+      displayName: userNameGenerator()
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.googleSignIn = this.googleSignIn.bind(this);
     this.githubSignIn = this.githubSignIn.bind(this);
+    this.setUserName = this.setUserName.bind(this);
   }
 
   handleChange(event) {
@@ -26,14 +29,17 @@ export default class SignUp extends Component {
     });
   }
 
-  // check for non string, empty string, blank string...
-  isEmptyString(str) {
-    return str === ""
+  setUserName() {
+    this.setState({
+      displayName: userNameGenerator()
+    });
   }
+
+
 
   async handleSubmit(event) {
     event.preventDefault();
-    if (this.isEmptyString(this.state.displayName))
+    if (isEmptyString(this.state.displayName))
       this.setState({ error: 'Display Name cannot be empty' })
     else {
       this.setState({ error: '' })
@@ -75,8 +81,8 @@ export default class SignUp extends Component {
             </h1>
             <p>Fill in the form below to create an account.</p>
             <hr />
-            <div>
-              <input placeholder="Display Name" name="displayName" onChange={this.handleChange} value={this.state.displayName} type="text"></input>
+            <div className="inline-flex">
+              <input placeholder="Display Name" name="displayName" onChange={this.handleChange} value={this.state.displayName} type="text" required></input><RefreshButton onClick={() => { this.setUserName() }}/>
             </div>
             <div>
               <input placeholder="Email" name="email" type="email" onChange={this.handleChange} value={this.state.email}></input>
