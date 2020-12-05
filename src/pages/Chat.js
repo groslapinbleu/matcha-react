@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Spinner from 'react-loader-spinner'
 import { auth } from "../services/firebase";
 // import { db } from "../services/firebase";
-import {getValues, setValue } from "../helpers/database"
+import {getValues, setArrayValue } from "../helpers/database"
 
 export default class Chat extends Component {
   constructor(props) {
@@ -53,7 +53,7 @@ export default class Chat extends Component {
     const chatArea = this.myRef.current;
     try {
       // await db.ref("chats").push({
-        await setValue("chats",{
+        await setArrayValue("chats",{
         content: this.state.content,
         timestamp: Date.now(),
         uid: this.state.user.uid,

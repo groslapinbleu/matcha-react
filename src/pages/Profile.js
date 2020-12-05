@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-// import { Link } from 'react-router-dom';
 import { auth } from '../services/firebase';
 import UserIcon from '../Icons/UserIcon';
 import PencilButton from '../components/PencilButton';
 import CheckButton from '../components/CheckButton';
 import isEmptyString from '../helpers/isEmptyString'
 import { updateUserProfile } from "../helpers/auth";
+import { getValues, setValue } from "../helpers/database"
 
 
 export default class Profile extends Component {
@@ -16,13 +16,34 @@ export default class Profile extends Component {
     this.state = {
       error: null,
       displayName: auth().currentUser.displayName,
-      updateDisplayName: false,
+      updatingDisplayName: false,
+      updatingDescription: false,
+      loadingUser: false,
       description: ""
     };
     this.updateTheDisplayName = this.updateTheDisplayName.bind(this);
-    this.updateDescription = this.updateDescription.bind(this);
+    this.updateTheDescription = this.updateTheDescription.bind(this);
     this.handleDisplayNameInput = this.handleDisplayNameInput.bind(this);
+    this.handleDescriptionInput = this.handleDescriptionInput.bind(this);
+
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  // retrieve user profile data from db
+  async componentDidMount() {
+    this.setState({ error: null, loadingUser: true })
+    try {
+      getValues("users/" + auth().currentUser.uid, snapshot => {
+        const user = snapshot.val();
+        if (user) {
+          console.log("user.description=" + user.description)
+          this.setState({ description: user.description });
+        }
+        this.setState({ loadingUser: false })
+      });
+    } catch (error) {
+      this.setState({ error: error.message, loadingUser: false })
+    }
   }
 
   handleChange(event) {
@@ -30,13 +51,13 @@ export default class Profile extends Component {
       [event.target.name]: event.target.value
     })
   }
+
   updateTheDisplayName() {
     // make displayName editable 
-    this.setState({ updateDisplayName: true })
+    this.setState({ updatingDisplayName: true })
   }
 
   async handleDisplayNameInput() {
-    // TO DO: save display name to database 
     if (isEmptyString(this.state.displayName))
       this.setState({ error: 'Display Name cannot be empty' })
     else {
@@ -48,11 +69,24 @@ export default class Profile extends Component {
       }
     }
     // reset display name to read only
-    this.setState({ updateDisplayName: false })
+    this.setState({ updatingDisplayName: false })
   }
 
-  updateDescription() {
+  async handleDescriptionInput() {
+    this.setState({ error: '' })
+    try {
+      await setValue("users/" + auth().currentUser.uid, {
+        description: this.state.description
+      })
+    } catch (error) {
+      this.setState({ error: error.message });
+    }
+    // reset description to read only
+    this.setState({ updatingDescription: false })
+  }
 
+  updateTheDescription() {
+    this.setState({ updatingDescription: true })
   }
 
   render() {
@@ -72,8 +106,8 @@ export default class Profile extends Component {
                       <tr>
                         <th>Display Name</th>
                         <td>
-                          {this.state.updateDisplayName
-                            ? <span><input name="displayName" placeholder="Display Name" value={this.state.displayName} type="text" onChange={this.handleChange} required></input><CheckButton onClick={this.handleDisplayNameInput}/></span>
+                          {this.state.updatingDisplayName
+                            ? <span><input name="displayName" placeholder="Display Name" value={this.state.displayName} type="text" onChange={this.handleChange} required></input><CheckButton onClick={this.handleDisplayNameInput} /></span>
                             : <span>{this.state.displayName}<PencilButton onClick={this.updateTheDisplayName} /></span>
                           }
                         </td>
@@ -89,7 +123,13 @@ export default class Profile extends Component {
                         </td>
                       </tr>
                       <tr>
-                        <th>My description</th><td><textarea readOnly></textarea></td><td><PencilButton onClick={this.updateDescription} /></td>
+                        <th>My description</th>
+                        <td>
+                          {this.state.updatingDescription
+                            ? <span><textarea name="description" placeholder="Description" rows="5" value={this.state.description} onChange={this.handleChange}></textarea><CheckButton onClick={this.handleDescriptionInput} /></span>
+                            : <span><textarea placeholder="Description" rows="5" defaultValue={this.state.description} readOnly></textarea><PencilButton onClick={this.updateTheDescription} /></span>
+                          }
+                        </td>
                       </tr>
                     </tbody>
                   </table>
