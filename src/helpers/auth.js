@@ -26,3 +26,8 @@ export function signInWithGitHub() {
   const provider = new auth.GithubAuthProvider();
   return auth().signInWithPopup(provider);
 }
+
+export function sendPasswordResetEmail(email) {
+  auth().useDeviceLanguage()
+  return auth().sendPasswordResetEmail(email);
+}

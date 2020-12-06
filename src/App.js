@@ -11,7 +11,9 @@ import Chat from './pages/Chat';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
 import { auth } from './services/firebase';
+import Spinner from 'react-loader-spinner'
 
 import './styles.css';
 
@@ -52,7 +54,7 @@ class App extends Component {
     };
   }
   componentDidMount() {
-      auth().onAuthStateChanged((user) => {
+    auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({
           authenticated: true,
@@ -67,11 +69,10 @@ class App extends Component {
     })
   }
 
-   render() {
+  render() {
+
     return this.state.loading === true ? (
-      <div className="spinner-border text-success" role="status">
-        <span className="sr-only">Loading...</span>
-      </div>
+      <div className="flex items-center justify-center"><Spinner type='Puff' color='#038E9F' height={50} width={50} /></div>
     ) : (
         <Router>
           <Switch>
@@ -95,6 +96,11 @@ class App extends Component {
               path="/login"
               authenticated={this.state.authenticated}
               component={Login}
+            />
+            <PublicRoute
+              path="/forgotpassword"
+              authenticated={this.state.authenticated}
+              component={ForgotPassword}
             />
           </Switch>
         </Router>

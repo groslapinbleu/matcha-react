@@ -77,6 +77,14 @@ export default class Login extends Component {
             </div>
             <hr />
             <p>
+              Forgot your password? <Link className="hover:underline" to={{
+                pathname: '/forgotpassword',
+                state: {
+                  email: this.state.email
+                }
+              }}>Reset Password</Link>
+            </p>
+            <p>
               Don't have an account? <Link className="hover:underline" to="/signup">Sign up</Link>
             </p>
           </form>

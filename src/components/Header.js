@@ -25,7 +25,7 @@ function Header() {
               {auth().currentUser
                 ?
                 <React.Fragment>
-                  <span className="" >Logged in as {auth().currentUser.displayName}</span>
+                  <span className="" >Logged in as </span><span className="italic">{auth().currentUser.displayName}</span>
                   <Link className="hover:underline" to="/profile">Profile</Link>
                   <Link className="hover:underline" to="/chat">Chat</Link>
                   <button className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white" onClick={() => auth().signOut()}>Logout</button>
