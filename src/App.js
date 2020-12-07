@@ -14,6 +14,7 @@ import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import { auth } from './services/firebase';
 import Spinner from 'react-loader-spinner'
+import SnackbarProvider from 'react-simple-snackbar'
 
 import './styles.css';
 
@@ -74,36 +75,38 @@ class App extends Component {
     return this.state.loading === true ? (
       <div className="flex items-center justify-center"><Spinner type='Puff' color='#038E9F' height={50} width={50} /></div>
     ) : (
-        <Router>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <PrivateRoute
-              path="/profile"
-              authenticated={this.state.authenticated}
-              component={Profile}
-            />
-            <PrivateRoute
-              path="/chat"
-              authenticated={this.state.authenticated}
-              component={Chat}
-            />
-            <PublicRoute
-              path="/signup"
-              authenticated={this.state.authenticated}
-              component={Signup}
-            />
-            <PublicRoute
-              path="/login"
-              authenticated={this.state.authenticated}
-              component={Login}
-            />
-            <PublicRoute
-              path="/forgotpassword"
-              authenticated={this.state.authenticated}
-              component={ForgotPassword}
-            />
-          </Switch>
-        </Router>
+        <SnackbarProvider>
+          <Router>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <PrivateRoute
+                path="/profile"
+                authenticated={this.state.authenticated}
+                component={Profile}
+              />
+              <PrivateRoute
+                path="/chat"
+                authenticated={this.state.authenticated}
+                component={Chat}
+              />
+              <PublicRoute
+                path="/signup"
+                authenticated={this.state.authenticated}
+                component={Signup}
+              />
+              <PublicRoute
+                path="/login"
+                authenticated={this.state.authenticated}
+                component={Login}
+              />
+              <PublicRoute
+                path="/forgotpassword"
+                authenticated={this.state.authenticated}
+                component={ForgotPassword}
+              />
+            </Switch>
+          </Router>
+        </SnackbarProvider>
       );
   }
 }

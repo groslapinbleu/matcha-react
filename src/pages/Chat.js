@@ -3,7 +3,6 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Spinner from 'react-loader-spinner'
 import { auth } from "../services/firebase";
-// import { db } from "../services/firebase";
 import {getValues, setArrayValue } from "../helpers/database"
 
 export default class Chat extends Component {
@@ -82,11 +81,12 @@ export default class Chat extends Component {
             : ""}
           {/* chat area */}
           {this.state.chats.map(chat => {
-            return <div key={chat.timestamp} className={"p-1 m-2 max-w-2xl rounded-lg break-words " + (this.state.user.uid === chat.uid
+            return <div key={chat.timestamp} className={"p-1 m-2 max-w-2xl rounded-lg break-words speech-bubble " + (this.state.user.uid === chat.uid
               ? "bg-green-300 text-white ml-auto"
               : "bg-gray-200")}>
               {chat.content}
               <span className="text-xs float-right">{(this.state.user.uid === chat.uid ? "myself" : chat.displayName)} - {this.formatTime(chat.timestamp)}</span>
+              <div className=""></div>
             </div>
           })}
         </div>

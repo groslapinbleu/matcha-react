@@ -7,7 +7,7 @@ import { auth } from '../services/firebase';
 export default class HomePage extends Component {
   render() {
     return (
-      <div className="home">
+      <React.Fragment>
         <Header></Header>
         <section>
           <div className="pt-20">
@@ -25,7 +25,7 @@ export default class HomePage extends Component {
           </div>
         </section>
         <Footer></Footer>
-      </div>
+      </React.Fragment>
     )
   }
 }

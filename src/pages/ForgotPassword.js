@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 // import Header from "../components/Header";
 import { sendPasswordResetEmail } from "../helpers/auth";
 import Footer from '../components/Footer';
+import { withSnackbar } from 'react-simple-snackbar'
 
-export default class ForgotPassword extends Component {
+class ForgotPassword extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,7 +18,7 @@ export default class ForgotPassword extends Component {
 
     componentDidMount() {
         // if an email parameter has been provided with the Link, use it
-         const { email } = this.props.location.state
+        const { email } = this.props.location.state
         if (email !== undefined) {
             console.log('this email has been provided to the ForgotPassword component:' + email)
             this.setState({ email })
@@ -35,11 +36,15 @@ export default class ForgotPassword extends Component {
         this.setState({ error: "" });
         try {
             await sendPasswordResetEmail(this.state.email, this.state.password);
+            // display message using a snackbar
+            // cf. https://www.npmjs.com/package/react-simple-snackbar
+            const { openSnackbar } = this.props
+            openSnackbar('We have sent you a mail with a link to reset your password!')
+            // then go back to login page
+            this.props.history.push("/login")
         } catch (error) {
             this.setState({ error: error.message });
         }
-        // TO DO: display message and automatically go back to login page
-        // use snackbar or popup for that purpose
     }
 
 
@@ -87,3 +92,4 @@ export default class ForgotPassword extends Component {
     }
 }
 
+export default withSnackbar(ForgotPassword)
