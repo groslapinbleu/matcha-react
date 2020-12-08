@@ -8,7 +8,29 @@ Develop a dating app with React and Firebase.
 This project uses React with tailwindCSS and Firebase for user management and Firebase Firestore as the database.
 
 
-
+## Firebase rules
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid || root.child('users/'+auth.uid).child('roles').hasChildren(['ADMIN'])",
+        ".write": "$uid === auth.uid || root.child('users/'+auth.uid).child('roles').hasChildren(['ADMIN'])"
+      },
+      ".read": "root.child('users/'+auth.uid).child('roles').hasChildren(['ADMIN'])",
+      ".write": "root.child('users/'+auth.uid).child('roles').hasChildren(['ADMIN'])"
+    },
+    "messages": {
+      ".indexOn": ["createdAt"],
+      "$uid": {
+        ".write": "data.exists() ? data.child('userId').val() === auth.uid : newData.child('userId').val() === auth.uid"
+      },
+      ".read": "auth != null",
+      ".write": "auth != null",
+    },
+  }
+}
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

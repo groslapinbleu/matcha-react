@@ -12,11 +12,13 @@ import Profile from './pages/Profile';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
+import NotFound from './pages/NotFound';
 import { auth } from './services/firebase';
 import Spinner from 'react-loader-spinner'
 import SnackbarProvider from 'react-simple-snackbar'
 
 import './styles.css';
+import AdminPage from './pages/AdminPage';
 
 // cette fonction est un HOC : Higher Order Component
 // elle renvoit le bon composant si on est authentifié, sinon elle revoit vers
@@ -89,6 +91,11 @@ class App extends Component {
                 authenticated={this.state.authenticated}
                 component={Chat}
               />
+              <PrivateRoute
+                path="/admin"
+                authenticated={this.state.authenticated}
+                component={AdminPage}
+              />
               <PublicRoute
                 path="/signup"
                 authenticated={this.state.authenticated}
@@ -104,6 +111,7 @@ class App extends Component {
                 authenticated={this.state.authenticated}
                 component={ForgotPassword}
               />
+              <Route component={NotFound} />
             </Switch>
           </Router>
         </SnackbarProvider>
