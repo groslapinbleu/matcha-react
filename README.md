@@ -5,7 +5,7 @@ Develop a dating app with React and Firebase.
 
 
 ## techologies
-This project uses React with tailwindCSS and Firebase for user management and Firebase Firestore as the database.
+This project uses React with tailwindCSS for styling, and Firebase for user management and Firebase Realtime Database as the database.
 
 
 ## Firebase rules
