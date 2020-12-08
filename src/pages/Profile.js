@@ -5,7 +5,7 @@ import { auth } from '../services/firebase';
 import UserIcon from '../Icons/UserIcon';
 import PencilButton from '../components/PencilButton';
 import CheckButton from '../components/CheckButton';
-import isEmptyString from '../helpers/isEmptyString'
+import { isEmptyString } from '../helpers/validation'
 import { updateUserProfile } from "../helpers/auth";
 import { getValues, setValue } from "../helpers/database"
 
@@ -15,7 +15,7 @@ export default class Profile extends Component {
     super(props);
     this.state = {
       error: null,
-      displayName: auth().currentUser.displayName,
+      displayName: "",
       updatingDisplayName: false,
       updatingDescription: false,
       loadingUser: false,
@@ -32,6 +32,9 @@ export default class Profile extends Component {
   // retrieve user profile data from db
   async componentDidMount() {
     this.setState({ error: null, loadingUser: true })
+    if (auth().currentUser.displayName !== null) {
+      this.setState({ displayName: auth().currentUser.displayName })
+    }
     try {
       getValues("users/" + auth().currentUser.uid, snapshot => {
         const user = snapshot.val();

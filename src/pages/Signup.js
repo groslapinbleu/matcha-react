@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { signup, updateUserProfile, signInWithGoogle, signInWithGitHub } from "../helpers/auth";
 import userNameGenerator from '../helpers/userNameGenerator' 
-import isEmptyString from '../helpers/isEmptyString'
+import {isEmptyString} from '../helpers/validation'
 import RefreshButton from '../components/RefreshButton';
 
 export default class SignUp extends Component {
