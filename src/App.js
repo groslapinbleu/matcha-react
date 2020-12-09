@@ -13,7 +13,9 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import NotFound from './pages/NotFound';
-import { auth } from './services/firebase';
+// import { auth } from './services/firebase';
+import { FirebaseContext } from './services/Firebase'
+
 import Spinner from 'react-loader-spinner'
 import SnackbarProvider from 'react-simple-snackbar'
 
@@ -57,7 +59,8 @@ class App extends Component {
     };
   }
   componentDidMount() {
-    auth().onAuthStateChanged((user) => {
+    const { auth } = this.context
+    auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({
           authenticated: true,
@@ -120,6 +123,7 @@ class App extends Component {
 }
 
 
-
+// tells App that it can use a context
+App.contextType = FirebaseContext
 
 export default App;

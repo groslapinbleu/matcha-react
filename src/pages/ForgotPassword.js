@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 // import Header from "../components/Header";
-import { sendPasswordResetEmail } from "../helpers/auth";
+// import { sendPasswordResetEmail } from "../helpers/auth";
 import Footer from '../components/Footer';
 import { withSnackbar } from 'react-simple-snackbar'
+import { FirebaseContext } from '../services/Firebase'
 
 class ForgotPassword extends Component {
     constructor(props) {
@@ -32,10 +33,11 @@ class ForgotPassword extends Component {
     }
 
     async handleSubmit(event) {
-        event.preventDefault();
-        this.setState({ error: "" });
+        event.preventDefault()
+        this.setState({ error: "" })
+        const { doPasswordReset } = this.context
         try {
-            await sendPasswordResetEmail(this.state.email, this.state.password);
+            await doPasswordReset(this.state.email, this.state.password);
             // display message using a snackbar
             // cf. https://www.npmjs.com/package/react-simple-snackbar
             const { openSnackbar } = this.props
@@ -91,5 +93,8 @@ class ForgotPassword extends Component {
         );
     }
 }
+
+// tells ForgotPassword that it can use a context
+ForgotPassword.contextType = FirebaseContext
 
 export default withSnackbar(ForgotPassword)

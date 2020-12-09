@@ -2,14 +2,15 @@ import React, { Component } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Spinner from 'react-loader-spinner'
-import { auth } from "../services/firebase";
-import {getValues, setArrayValue } from "../helpers/database"
+// import { auth } from "../services/firebase";
+// import {getValues, setArrayValue } from "../helpers/database"
+import { FirebaseContext } from '../services/Firebase'
 
 export default class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: auth().currentUser,
+      user: null,
       messages: [],
       text: '',
       error: null,
@@ -21,11 +22,14 @@ export default class Chat extends Component {
   }
 
   async componentDidMount() {
+    const { auth, messages } = this.context
+    this.setState({ user: auth.currentUser })
     this.setState({ error: null, loadingMessages: true });
     const chatArea = this.myRef.current;
     try {
-      getValues("messages", snapshot => {
-      // db.ref("messages").on("value", snapshot => {
+      //getValues("messages", snapshot => {
+      // this.context.db.ref("messages").on("value", snapshot => {
+        messages().on("value", snapshot => {
         let messages = [];
         snapshot.forEach((snap) => {
           messages.push(snap.val());
@@ -48,11 +52,13 @@ export default class Chat extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
+    const { messages } = this.context
     this.setState({ error: null });
     const chatArea = this.myRef.current;
     try {
-      // await db.ref("messages").push({
-        await setArrayValue("messages",{
+      await messages().push({
+        // await setArrayValue("messages",{
+        // db.ref(ref).push(data)
         text: this.state.text,
         createdAt: Date.now(),
         userId: this.state.user.uid,
@@ -100,3 +106,5 @@ export default class Chat extends Component {
     );
   }
 }
+// tells Chat that it can use a context
+Chat.contextType = FirebaseContext

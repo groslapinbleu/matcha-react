@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 // import Header from "../components/Header";
-import { signin } from "../helpers/auth";
+// import { signin } from "../helpers/auth";
 import Footer from '../components/Footer';
+import { FirebaseContext } from '../services/Firebase'
 
 export default class Login extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export default class Login extends Component {
     event.preventDefault();
     this.setState({ error: "" });
     try {
-      await signin(this.state.email, this.state.password);
+      await this.context.doSignInWithEmailAndPassword(this.state.email, this.state.password);
     } catch (error) {
       this.setState({ error: error.message });
     }
@@ -95,3 +96,5 @@ export default class Login extends Component {
   }
 }
 
+// tells Login that it can use a context
+Login.contextType = FirebaseContext

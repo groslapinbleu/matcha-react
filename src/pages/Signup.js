@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { signup, updateUserProfile, signInWithGoogle, signInWithGitHub } from "../helpers/auth";
-import userNameGenerator from '../helpers/userNameGenerator' 
-import {isEmptyString} from '../helpers/validation'
+// import { signup, updateUserProfile, signInWithGoogle, signInWithGitHub } from "../helpers/auth";
+import userNameGenerator from '../helpers/userNameGenerator'
+import { isEmptyString } from '../helpers/validation'
 import RefreshButton from '../components/RefreshButton';
+import { FirebaseContext } from '../services/Firebase'
 
 export default class SignUp extends Component {
 
@@ -39,30 +40,40 @@ export default class SignUp extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
+
+    const { doCreateUserWithEmailAndPassword, doUserProfileUpdate } = this.context
     if (isEmptyString(this.state.displayName))
       this.setState({ error: 'Display Name cannot be empty' })
     else {
       this.setState({ error: '' })
-      try {
-        await signup(this.state.email, this.state.password);
-        await updateUserProfile(this.state.displayName)
-      } catch (error) {
-        this.setState({ error: error.message });
-      }
+
+      doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then(user => {
+          if (user) {
+            doUserProfileUpdate(this.state.displayName)
+          }
+        })
+        .catch(error => {
+          this.setState({ error: error.message });
+        })
     }
   }
 
   async googleSignIn() {
+    const { doSignInWithGoogle } = this.context
+
     try {
-      await signInWithGoogle();
+      await doSignInWithGoogle();
     } catch (error) {
       this.setState({ error: error.message });
     }
   }
 
   async githubSignIn() {
+    const { doSignInWithGithub } = this.context
+
     try {
-      await signInWithGitHub();
+      await doSignInWithGithub();
     } catch (error) {
       this.setState({ error: error.message });
     }
@@ -82,7 +93,7 @@ export default class SignUp extends Component {
             <p>Fill in the form below to create an account.</p>
             <hr />
             <div className="inline-flex">
-              <input placeholder="Display Name" name="displayName" onChange={this.handleChange} value={this.state.displayName} type="text" required></input><RefreshButton onClick={() => { this.setUserName() }}/>
+              <input placeholder="Display Name" name="displayName" onChange={this.handleChange} value={this.state.displayName} type="text" required></input><RefreshButton onClick={() => { this.setUserName() }} />
             </div>
             <div>
               <input placeholder="Email" name="email" type="email" onChange={this.handleChange} value={this.state.email}></input>
@@ -113,3 +124,6 @@ export default class SignUp extends Component {
     )
   }
 }
+
+// tells SignUp that it can use a context
+SignUp.contextType = FirebaseContext

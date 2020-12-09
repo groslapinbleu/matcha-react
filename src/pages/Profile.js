@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { auth } from '../services/firebase';
+// import { auth } from '../services/firebase';
 import UserIcon from '../Icons/UserIcon';
 import PencilButton from '../components/PencilButton';
 import CheckButton from '../components/CheckButton';
 import { isEmptyString } from '../helpers/validation'
-import { updateUserProfile } from "../helpers/auth";
-import { getValues, setValue } from "../helpers/database"
+// import { updateUserProfile } from "../helpers/auth";
+// import { getValues, setValue } from "../helpers/database"
+import { FirebaseContext } from '../services/Firebase'
 
 
 export default class Profile extends Component {
@@ -31,22 +32,37 @@ export default class Profile extends Component {
 
   // retrieve user profile data from db
   async componentDidMount() {
+    const { auth, user } = this.context
+
     this.setState({ error: null, loadingUser: true })
-    if (auth().currentUser.displayName !== null) {
-      this.setState({ displayName: auth().currentUser.displayName })
+    if (auth.currentUser.displayName !== null) {
+      this.setState({ displayName: auth.currentUser.displayName })
     }
     try {
-      getValues("users/" + auth().currentUser.uid, snapshot => {
-        const user = snapshot.val();
-        if (user) {
-          console.log("user.description=" + user.description)
-          this.setState({ description: user.description });
-        }
-        this.setState({ loadingUser: false })
-      });
+      // db.ref(ref).on("value", callback)
+      // getValues("users/" + auth.currentUser.uid, snapshot => {
+      user(auth.currentUser.uid)
+        .on("value", snapshot => {
+          const userData = snapshot.val();
+          if (userData) {
+            console.log("user.description=" + userData.description)
+            this.setState({ description: userData.description });
+          }
+          this.setState({ loadingUser: false })
+        });
     } catch (error) {
       this.setState({ error: error.message, loadingUser: false })
     }
+  }
+
+  // this allows to validate the field when pressing the Enter key
+  handleKeyUp = (e) => {
+    if (e.keyCode === 13) { // alternativement on peut tester e.key === 'Enter'
+
+      console.log('Enter key has been pressed')
+      this.handleDisplayNameInput()
+    }
+
   }
 
   handleChange(event) {
@@ -61,14 +77,15 @@ export default class Profile extends Component {
   }
 
   async handleDisplayNameInput() {
+    const { doUserProfileUpdate } = this.context
     if (isEmptyString(this.state.displayName))
       this.setState({ error: 'Display Name cannot be empty' })
     else {
       this.setState({ error: '' })
       try {
-        await updateUserProfile(this.state.displayName)
+        await doUserProfileUpdate(this.state.displayName)
       } catch (error) {
-        this.setState({ error: error.message });
+        this.setState({ error: error.message })
       }
     }
     // reset display name to read only
@@ -76,11 +93,17 @@ export default class Profile extends Component {
   }
 
   async handleDescriptionInput() {
+    const { auth, user } = this.context
     this.setState({ error: '' })
     try {
-      await setValue("users/" + auth().currentUser.uid, {
-        description: this.state.description
-      })
+      // db.ref(ref).set(data)
+      await user(auth.currentUser.uid)
+        .set({
+          description: this.state.description
+        })
+      /*       await setValue("users/" + auth().currentUser.uid, {
+              description: this.state.description
+            }) */
     } catch (error) {
       this.setState({ error: error.message });
     }
@@ -93,13 +116,15 @@ export default class Profile extends Component {
   }
 
   render() {
+    const { auth } = this.context
+
     return (
       <div className="profile">
         <Header></Header>
         <section className="pt-20">
           <div className="p-6 max-w-sm mx-auto bg-blue-50 rounded-xl shadow-md flex items-center space-x-4 border-l-8 border-blue-500">
             <div className="flex-shrink-0">
-              {auth().currentUser
+              {auth.currentUser
                 ? <div>
                   <table className="table-auto">
                     <thead>
@@ -110,16 +135,16 @@ export default class Profile extends Component {
                         <th>Display Name</th>
                         <td>
                           {this.state.updatingDisplayName
-                            ? <span><input name="displayName" placeholder="Display Name" value={this.state.displayName} type="text" onChange={this.handleChange} required></input><CheckButton onClick={this.handleDisplayNameInput} /></span>
+                            ? <span><input name="displayName" placeholder="Display Name" value={this.state.displayName} type="text" onChange={this.handleChange} onKeyUp={this.handleKeyUp} required></input><CheckButton onClick={this.handleDisplayNameInput} /></span>
                             : <span>{this.state.displayName}<PencilButton onClick={this.updateTheDisplayName} /></span>
                           }
                         </td>
                       </tr>
                       <tr>
-                        <th>Email</th><td>{auth().currentUser.email}</td></tr>
+                        <th>Email</th><td>{auth.currentUser.email}</td></tr>
                       <tr>
                         <th>Photo</th><td>
-                          {auth().currentUser.photoURL
+                          {auth.currentUser.photoURL
                             ? <img className="rounded-full shadow h-24 w-24 mx-auto" src={auth().currentUser.photoURL} alt={auth().currentUser.displayName} />
                             : <UserIcon height={16} width={16}  ></UserIcon>
                           }
@@ -149,3 +174,6 @@ export default class Profile extends Component {
     )
   }
 }
+
+// tells Profile that it can use a context
+Profile.contextType = FirebaseContext
