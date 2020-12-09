@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 // import { signin } from "../helpers/auth";
 import Footer from '../components/Footer';
 import { FirebaseContext } from '../services/Firebase'
+import * as MISC from '../constants/miscConsts'
+
 
 export default class Login extends Component {
   constructor(props) {
@@ -47,7 +49,7 @@ export default class Login extends Component {
             <h1 className="text-center text-2xl">
               Login to
             <Link className="px-1 hover:underline" to="/">
-                Matcha-react
+                {MISC.APP_NAME}
             </Link>
             </h1>
             <p>Fill in the form below to login to your account.</p>

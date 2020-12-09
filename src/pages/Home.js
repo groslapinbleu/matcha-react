@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
 // import { auth } from '../services/firebase';
 import { FirebaseContext } from '../services/Firebase'
+import * as MISC from '../constants/miscConsts'
 
 const Home = () => (
   <React.Fragment>
@@ -11,7 +12,7 @@ const Home = () => (
     <section>
       <div className="pt-20">
         <div className="container mx-auto text-center py-5 bg-indigo-50">
-          <h1 className="text-4xl">Welcome to Matcha-React</h1>
+          <h1 className="text-4xl">Welcome to {MISC.APP_NAME}</h1>
           <p className="text-2xl">A great place to share your thoughts with friends</p>
           <FirebaseContext.Consumer>
             {

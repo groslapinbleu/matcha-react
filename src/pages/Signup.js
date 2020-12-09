@@ -6,6 +6,7 @@ import userNameGenerator from '../helpers/userNameGenerator'
 import { isEmptyString } from '../helpers/validation'
 import RefreshButton from '../components/RefreshButton';
 import { FirebaseContext } from '../services/Firebase'
+import * as MISC from '../constants/miscConsts'
 
 export default class SignUp extends Component {
 
@@ -88,7 +89,7 @@ export default class SignUp extends Component {
           <form onSubmit={this.handleSubmit}>
             <h1 className="text-center text-2xl">
               Sign Up to
-          <Link className="px-1 hover:underline" to="/">Chatty</Link>
+    <Link className="px-1 hover:underline" to="/">{MISC.APP_NAME}</Link>
             </h1>
             <p>Fill in the form below to create an account.</p>
             <hr />

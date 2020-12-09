@@ -2,13 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 //import { auth } from '../services/firebase';
 import { FirebaseContext } from '../services/Firebase'
+import * as MISC from '../constants/miscConsts'
 
 function Header() {
   return (
     <header>
       <nav className="flex shadow px-8 py-6 items-center justify-between flex-wrap">
         <div className="flex items-center flex-grow flex-shrink lg:pb-0">
-          <Link className="text-xl hover:underline" to="/">Matcha-React</Link>
+          <Link className="text-xl hover:underline" to="/">{MISC.APP_NAME}</Link>
         </div>
 
         <div className="flex-grow flex items-center w-auto">
