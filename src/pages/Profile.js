@@ -145,7 +145,7 @@ export default class Profile extends Component {
                       <tr>
                         <th>Photo</th><td>
                           {auth.currentUser.photoURL
-                            ? <img className="rounded-full shadow h-24 w-24 mx-auto" src={auth().currentUser.photoURL} alt={auth().currentUser.displayName} />
+                            ? <img className="rounded-full shadow h-24 w-24 mx-auto" src={auth.currentUser.photoURL} alt={auth.currentUser.displayName} />
                             : <UserIcon height={16} width={16}  ></UserIcon>
                           }
                         </td>
