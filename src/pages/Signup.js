@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Footer from '../components/Footer';
 
-// import { signup, updateUserProfile, signInWithGoogle, signInWithGitHub } from "../helpers/auth";
 import userNameGenerator from '../helpers/userNameGenerator'
 import { isEmptyString } from '../helpers/validation'
 import RefreshButton from '../components/RefreshButton';
 import { withFirebase } from '../services/Firebase'
-import * as MISC from '../constants/miscConsts'
+import IndigoBox from '../components/IndigoBox';
 
 class SignUp extends Component {
 
@@ -83,13 +83,9 @@ class SignUp extends Component {
   render() {
     return (
       <div className="login pt-20">
-        <div className="p-6 max-w-sm mx-auto bg-indigo-50 rounded-xl shadow-md flex items-center space-x-4 border-l-8 border-indigo-500">
+        <IndigoBox title="Sign Up">
 
           <form onSubmit={this.handleSubmit}>
-            <h1 className="text-center text-2xl">
-              Sign Up to
-    <Link className="px-1 hover:underline" to="/">{MISC.APP_NAME}</Link>
-            </h1>
             <p>Fill in the form below to create an account.</p>
             <hr />
             <div className="inline-flex">
@@ -119,7 +115,8 @@ class SignUp extends Component {
             <hr />
             <p>Already have an account? <Link className="hover:underline" to="/login">Login</Link> </p>
           </form>
-        </div>
+        </IndigoBox>
+        <Footer></Footer>
       </div>
     )
   }

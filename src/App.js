@@ -13,7 +13,8 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import NotFound from './pages/NotFound';
-// import { auth } from './services/firebase';
+import DeleteAccount from './pages/DeleteAccount';
+
 import { withFirebase } from './services/Firebase'
 
 import Spinner from 'react-loader-spinner'
@@ -99,6 +100,11 @@ class App extends Component {
                 path="/admin"
                 authenticated={this.state.authenticated}
                 component={AdminPage}
+              />
+              <PrivateRoute
+                path="/deleteaccount"
+                authenticated={this.state.authenticated}
+                component={DeleteAccount}
               />
               <PublicRoute
                 path="/signup"

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Footer from '../components/Footer';
 import { withSnackbar } from 'react-simple-snackbar'
 import { withFirebase } from '../services/Firebase'
+import IndigoBox from "../components/IndigoBox";
 
 class ForgotPassword extends Component {
     constructor(props) {
@@ -50,18 +51,11 @@ class ForgotPassword extends Component {
     render() {
         return (
             <div className="profile pt-20">
-                <div className="p-6 max-w-sm mx-auto bg-indigo-50 rounded-xl shadow-md flex items-center space-x-4 border-l-8 border-indigo-500">
-                    {/* <Header></Header> */}
+                <IndigoBox title="Reset your password">
                     <form className=""
                         autoComplete="off"
                         onSubmit={this.handleSubmit}
                     >
-                        <h1 className="text-center text-2xl">
-                            Reset your password to
-                            <Link className="px-1 hover:underline" to="/">
-                                Matcha-react
-                            </Link>
-                        </h1>
                         <p>Enter your email to reset your password.</p>
                         <hr />
                         <div>
@@ -83,7 +77,7 @@ class ForgotPassword extends Component {
                         <p>Already have an account? <Link className="hover:underline" to="/login">Login</Link> </p>
                         <p>Don't have an account? <Link className="hover:underline" to="/signup">Sign up</Link></p>
                     </form>
-                </div>
+                </IndigoBox>
                 <Footer></Footer>
             </div>
         );

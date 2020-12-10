@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-//import { auth } from '../services/firebase';
 import { withFirebase } from '../services/Firebase'
 import * as MISC from '../constants/miscConsts'
 

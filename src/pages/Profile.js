@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-// import { auth } from '../services/firebase';
+import { Link } from "react-router-dom";
 import UserIcon from '../Icons/UserIcon';
 import PencilButton from '../components/PencilButton';
 import CheckButton from '../components/CheckButton';
 import { isEmptyString } from '../helpers/validation'
-// import { updateUserProfile } from "../helpers/auth";
-// import { getValues, setValue } from "../helpers/database"
 import { withFirebase } from '../services/Firebase'
+import RedBox from '../components/RedBox';
+import IndigoBox from '../components/IndigoBox';
 
 
 class Profile extends Component {
@@ -26,7 +26,6 @@ class Profile extends Component {
     this.updateTheDescription = this.updateTheDescription.bind(this);
     this.handleDisplayNameInput = this.handleDisplayNameInput.bind(this);
     this.handleDescriptionInput = this.handleDescriptionInput.bind(this);
-
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -116,54 +115,57 @@ class Profile extends Component {
     return (
       <div className="profile">
         <Header></Header>
-        <section className="pt-20">
-          <div className="p-6 max-w-sm mx-auto bg-blue-50 rounded-xl shadow-md flex items-center space-x-4 border-l-8 border-blue-500">
-            <div className="flex-shrink-0">
-              {auth.currentUser
-                ? <div>
-                  <table className="table-auto">
-                    <thead>
-                      <tr><th colSpan="2" className="text-center text-2xl">Profile</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th>Display Name</th>
-                        <td>
-                          {this.state.updatingDisplayName
-                            ? <span><input name="displayName" placeholder="Display Name" value={this.state.displayName} type="text" onChange={this.handleChange} onKeyUp={this.handleKeyUp} required></input><CheckButton onClick={this.handleDisplayNameInput} /></span>
-                            : <span>{this.state.displayName}<PencilButton onClick={this.updateTheDisplayName} /></span>
-                          }
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>Email</th><td>{auth.currentUser.email}</td></tr>
-                      <tr>
-                        <th>Photo</th><td>
-                          {auth.currentUser.photoURL
-                            ? <img className="rounded-full shadow h-24 w-24 mx-auto" src={auth.currentUser.photoURL} alt={auth.currentUser.displayName} />
-                            : <UserIcon height={16} width={16}  ></UserIcon>
-                          }
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>My description</th>
-                        <td>
-                          {this.state.updatingDescription
-                            ? <span><textarea name="description" placeholder="Description" rows="5" value={this.state.description} onChange={this.handleChange}></textarea><CheckButton onClick={this.handleDescriptionInput} /></span>
-                            : <span><textarea placeholder="Description" rows="5" defaultValue={this.state.description} readOnly></textarea><PencilButton onClick={this.updateTheDescription} /></span>
-                          }
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                : <div class="alert alert-light" role="alert">
-                  Weird! You don't seem to be properly authenticated
-                    </div>}
-
-            </div>
-          </div>
+        <section className="p-5 shadow">
+          <IndigoBox title="Profile">
+            {auth.currentUser
+              ? <div>
+                <table className="table-auto">
+{/*                   <thead>
+                    <tr><th colSpan="2" className="text-center text-2xl">Profile</th></tr>
+                  </thead> */}
+                  <tbody>
+                    <tr>
+                      <th>Display Name</th>
+                      <td>
+                        {this.state.updatingDisplayName
+                          ? <span><input name="displayName" placeholder="Display Name" value={this.state.displayName} type="text" onChange={this.handleChange} onKeyUp={this.handleKeyUp} required></input><CheckButton onClick={this.handleDisplayNameInput} /></span>
+                          : <span>{this.state.displayName}<PencilButton onClick={this.updateTheDisplayName} /></span>
+                        }
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Email</th><td>{auth.currentUser.email}</td></tr>
+                    <tr>
+                      <th>Photo</th><td>
+                        {auth.currentUser.photoURL
+                          ? <img className="rounded-full shadow h-24 w-24 mx-auto" src={auth.currentUser.photoURL} alt={auth.currentUser.displayName} />
+                          : <UserIcon height={16} width={16}  ></UserIcon>
+                        }
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>My description</th>
+                      <td>
+                        {this.state.updatingDescription
+                          ? <span><textarea name="description" placeholder="Description" rows="5" value={this.state.description} onChange={this.handleChange}></textarea><CheckButton onClick={this.handleDescriptionInput} /></span>
+                          : <span><textarea placeholder="Description" rows="5" defaultValue={this.state.description} readOnly></textarea><PencilButton onClick={this.updateTheDescription} /></span>
+                        }
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              : <div class="alert alert-light" role="alert">
+                Weird! You don't seem to be properly authenticated
+                    </div>
+            }
+          </IndigoBox>
         </section>
+        <section className="p-5">
+          <RedBox title="Danger Zone">
+            <Link className="hover:underline" to="/deleteaccount">Delete your account </Link>
+          </RedBox>
+        </section >
         <Footer></Footer>
       </div>
     )

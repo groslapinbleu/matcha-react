@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 // import Header from "../components/Header";
 // import { signin } from "../helpers/auth";
-import Footer from '../components/Footer';
+import Footer from '../components/Footer'
+import IndigoBox from '../components/IndigoBox'
 import { withFirebase } from '../services/Firebase'
 import * as MISC from '../constants/miscConsts'
 
@@ -39,17 +40,12 @@ class Login extends Component {
   render() {
     return (
       <div className="profile pt-20">
-        <div className="p-6 max-w-sm mx-auto bg-indigo-50 rounded-xl shadow-md flex items-center space-x-4 border-l-8 border-indigo-500">
+        <IndigoBox title={`Login to ${MISC.APP_NAME}`}>
           <form className=""
             autoComplete="off"
             onSubmit={this.handleSubmit}
           >
-            <h1 className="text-center text-2xl">
-              Login to
-            <Link className="px-1 hover:underline" to="/">
-                {MISC.APP_NAME}
-            </Link>
-            </h1>
+              
             <p>Fill in the form below to login to your account.</p>
             <hr />
             <div>
@@ -89,7 +85,7 @@ class Login extends Component {
               Don't have an account? <Link className="hover:underline" to="/signup">Sign up</Link>
             </p>
           </form>
-        </div>
+        </IndigoBox>
         <Footer></Footer>
       </div>
     );

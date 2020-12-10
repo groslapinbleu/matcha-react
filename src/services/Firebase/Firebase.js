@@ -73,6 +73,10 @@ class Firebase {
     })
   }
 
+  doDelete = () =>
+  this.auth.currentUser.delete()
+
+
   // *** Merge Auth and DB User API *** //
 
   onAuthUserListener = (next, fallback) => {
