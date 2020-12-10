@@ -10,6 +10,8 @@ This project uses React with tailwindCSS for styling, and Firebase for user mana
 
 ## Firebase rules
 
+```
+
   {
     "rules": {
       ".read": false,
@@ -32,6 +34,8 @@ This project uses React with tailwindCSS for styling, and Firebase for user mana
       },
     }
   }
+
+````
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
