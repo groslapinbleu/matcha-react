@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Spinner from 'react-loader-spinner'
-// import { auth } from "../services/firebase";
-// import {getValues, setArrayValue } from "../helpers/database"
-import { FirebaseContext } from '../services/Firebase'
+import { withFirebase } from '../services/Firebase'
 
-export default class Chat extends Component {
+class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,13 +20,11 @@ export default class Chat extends Component {
   }
 
   async componentDidMount() {
-    const { auth, messages } = this.context
+    const { auth, messages } = this.props.firebase
     this.setState({ user: auth.currentUser })
     this.setState({ error: null, loadingMessages: true });
     const chatArea = this.myRef.current;
     try {
-      //getValues("messages", snapshot => {
-      // this.context.db.ref("messages").on("value", snapshot => {
         messages().on("value", snapshot => {
         let messages = [];
         snapshot.forEach((snap) => {
@@ -52,7 +48,7 @@ export default class Chat extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    const { messages } = this.context
+    const { messages } = this.props.firebase
     this.setState({ error: null });
     const chatArea = this.myRef.current;
     try {
@@ -106,5 +102,5 @@ export default class Chat extends Component {
     );
   }
 }
-// tells Chat that it can use a context
-Chat.contextType = FirebaseContext
+
+export default withFirebase(Chat)

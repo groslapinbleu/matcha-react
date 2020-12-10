@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 // import Header from "../components/Header";
 // import { signin } from "../helpers/auth";
 import Footer from '../components/Footer';
-import { FirebaseContext } from '../services/Firebase'
+import { withFirebase } from '../services/Firebase'
 import * as MISC from '../constants/miscConsts'
 
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,19 +29,17 @@ export default class Login extends Component {
     event.preventDefault();
     this.setState({ error: "" });
     try {
-      await this.context.doSignInWithEmailAndPassword(this.state.email, this.state.password);
+      // firebase instance is provided via a prop
+      await this.props.firebase.doSignInWithEmailAndPassword(this.state.email, this.state.password);
     } catch (error) {
       this.setState({ error: error.message });
     }
   }
 
-
-
   render() {
     return (
       <div className="profile pt-20">
         <div className="p-6 max-w-sm mx-auto bg-indigo-50 rounded-xl shadow-md flex items-center space-x-4 border-l-8 border-indigo-500">
-          {/* <Header></Header> */}
           <form className=""
             autoComplete="off"
             onSubmit={this.handleSubmit}
@@ -98,5 +96,6 @@ export default class Login extends Component {
   }
 }
 
-// tells Login that it can use a context
-Login.contextType = FirebaseContext
+// Login is wrapped within the Firebase context 
+// so that the Firebase instance is available as a prop
+export default withFirebase(Login)

@@ -8,10 +8,10 @@ import CheckButton from '../components/CheckButton';
 import { isEmptyString } from '../helpers/validation'
 // import { updateUserProfile } from "../helpers/auth";
 // import { getValues, setValue } from "../helpers/database"
-import { FirebaseContext } from '../services/Firebase'
+import { withFirebase } from '../services/Firebase'
 
 
-export default class Profile extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,15 +32,13 @@ export default class Profile extends Component {
 
   // retrieve user profile data from db
   async componentDidMount() {
-    const { auth, user } = this.context
+    const { auth, user } = this.props.firebase
 
     this.setState({ error: null, loadingUser: true })
     if (auth.currentUser.displayName !== null) {
       this.setState({ displayName: auth.currentUser.displayName })
     }
     try {
-      // db.ref(ref).on("value", callback)
-      // getValues("users/" + auth.currentUser.uid, snapshot => {
       user(auth.currentUser.uid)
         .on("value", snapshot => {
           const userData = snapshot.val();
@@ -77,7 +75,7 @@ export default class Profile extends Component {
   }
 
   async handleDisplayNameInput() {
-    const { doUserProfileUpdate } = this.context
+    const { doUserProfileUpdate } = this.props.firebase
     if (isEmptyString(this.state.displayName))
       this.setState({ error: 'Display Name cannot be empty' })
     else {
@@ -93,17 +91,14 @@ export default class Profile extends Component {
   }
 
   async handleDescriptionInput() {
-    const { auth, user } = this.context
+    const { auth, user } = this.props.firebase
     this.setState({ error: '' })
     try {
-      // db.ref(ref).set(data)
       await user(auth.currentUser.uid)
         .set({
           description: this.state.description
         })
-      /*       await setValue("users/" + auth().currentUser.uid, {
-              description: this.state.description
-            }) */
+
     } catch (error) {
       this.setState({ error: error.message });
     }
@@ -116,7 +111,7 @@ export default class Profile extends Component {
   }
 
   render() {
-    const { auth } = this.context
+    const { auth } = this.props.firebase
 
     return (
       <div className="profile">
@@ -175,5 +170,4 @@ export default class Profile extends Component {
   }
 }
 
-// tells Profile that it can use a context
-Profile.contextType = FirebaseContext
+export default withFirebase(Profile)

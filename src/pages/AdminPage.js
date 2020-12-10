@@ -1,4 +1,6 @@
 import React from 'react';
+import { withFirebase } from '../services/Firebase'
+
 
 function AdminPage(props) {
     return (
@@ -9,4 +11,4 @@ function AdminPage(props) {
     );
 }
 
-export default AdminPage;<p>Admin page, Work In Progress</p>
+export default withFirebase(AdminPage)

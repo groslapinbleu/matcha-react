@@ -14,7 +14,7 @@ import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import NotFound from './pages/NotFound';
 // import { auth } from './services/firebase';
-import { FirebaseContext } from './services/Firebase'
+import { withFirebase } from './services/Firebase'
 
 import Spinner from 'react-loader-spinner'
 import SnackbarProvider from 'react-simple-snackbar'
@@ -59,7 +59,8 @@ class App extends Component {
     };
   }
   componentDidMount() {
-    const { auth } = this.context
+    // firebase is expected to be provided as a prop
+    const { auth } = this.props.firebase
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({
@@ -123,7 +124,6 @@ class App extends Component {
 }
 
 
-// tells App that it can use a context
-App.contextType = FirebaseContext
-
-export default App;
+// App is wrapped within the Firebase context 
+// so that the Firebase instance is available as a prop
+export default withFirebase(App);

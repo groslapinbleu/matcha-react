@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 import userNameGenerator from '../helpers/userNameGenerator'
 import { isEmptyString } from '../helpers/validation'
 import RefreshButton from '../components/RefreshButton';
-import { FirebaseContext } from '../services/Firebase'
+import { withFirebase } from '../services/Firebase'
 import * as MISC from '../constants/miscConsts'
 
-export default class SignUp extends Component {
+class SignUp extends Component {
 
   constructor(props) {
     super(props);
@@ -38,11 +38,10 @@ export default class SignUp extends Component {
   }
 
 
-
   async handleSubmit(event) {
     event.preventDefault();
 
-    const { doCreateUserWithEmailAndPassword, doUserProfileUpdate } = this.context
+    const { doCreateUserWithEmailAndPassword, doUserProfileUpdate } = this.props.firebase
     if (isEmptyString(this.state.displayName))
       this.setState({ error: 'Display Name cannot be empty' })
     else {
@@ -61,7 +60,7 @@ export default class SignUp extends Component {
   }
 
   async googleSignIn() {
-    const { doSignInWithGoogle } = this.context
+    const { doSignInWithGoogle } = this.props.firebase
 
     try {
       await doSignInWithGoogle();
@@ -71,7 +70,7 @@ export default class SignUp extends Component {
   }
 
   async githubSignIn() {
-    const { doSignInWithGithub } = this.context
+    const { doSignInWithGithub } = this.props.firebase
 
     try {
       await doSignInWithGithub();
@@ -126,5 +125,4 @@ export default class SignUp extends Component {
   }
 }
 
-// tells SignUp that it can use a context
-SignUp.contextType = FirebaseContext
+export default withFirebase(SignUp)
