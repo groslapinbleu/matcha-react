@@ -9,28 +9,29 @@ This project uses React with tailwindCSS for styling, and Firebase for user mana
 
 
 ## Firebase rules
-{
-  "rules": {
-    ".read": false,
-    ".write": false,
-    "users": {
-      "$uid": {
-        ".read": "$uid === auth.uid || root.child('users/'+auth.uid).child('roles').hasChildren(['ADMIN'])",
-        ".write": "$uid === auth.uid || root.child('users/'+auth.uid).child('roles').hasChildren(['ADMIN'])"
+
+  {
+    "rules": {
+      ".read": false,
+      ".write": false,
+      "users": {
+        "$uid": {
+          ".read": "$uid === auth.uid || root.child('users/'+auth.uid).child('roles').hasChildren(['ADMIN'])",
+          ".write": "$uid === auth.uid || root.child('users/'+auth.uid).child('roles').hasChildren(['ADMIN'])"
+        },
+        ".read": "root.child('users/'+auth.uid).child('roles').hasChildren(['ADMIN'])",
+        ".write": "root.child('users/'+auth.uid).child('roles').hasChildren(['ADMIN'])"
       },
-      ".read": "root.child('users/'+auth.uid).child('roles').hasChildren(['ADMIN'])",
-      ".write": "root.child('users/'+auth.uid).child('roles').hasChildren(['ADMIN'])"
-    },
-    "messages": {
-      ".indexOn": ["createdAt"],
-      "$uid": {
-        ".write": "data.exists() ? data.child('userId').val() === auth.uid : newData.child('userId').val() === auth.uid"
+      "messages": {
+        ".indexOn": ["createdAt"],
+        "$uid": {
+          ".write": "data.exists() ? data.child('userId').val() === auth.uid : newData.child('userId').val() === auth.uid"
+        },
+        ".read": "auth != null",
+        ".write": "auth != null",
       },
-      ".read": "auth != null",
-      ".write": "auth != null",
-    },
+    }
   }
-}
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
