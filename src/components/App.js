@@ -39,14 +39,14 @@ function PrivateRoute({ component: Component, authenticated, ...rest }) {
 
 // cette fonction est un HOC : Higher Order Component
 // elle renvoit le bon composant si on est pas authentifié (soit signup et login), sinon elle revoit vers
-// la page de chat
+// la home page
 function PublicRoute({ component: Component, authenticated, ...rest }) {
   return (
     <Route
       {...rest}
       render={(props) => authenticated === false
         ? <Component {...props} />
-        : <Redirect to='/chat' />}
+        : <Redirect to='/' />}
     />
   )
 }

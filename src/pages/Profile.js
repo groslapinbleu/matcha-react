@@ -35,22 +35,25 @@ class Profile extends Component {
     const { auth, user } = this.props.firebase
 
     this.setState({ error: null, loadingUser: true })
-    if (auth.currentUser.displayName !== null) {
-      this.setState({ displayName: auth.currentUser.displayName })
-    }
     try {
       user(auth.currentUser.uid)
         .on("value", snapshot => {
           const userData = snapshot.val();
           if (userData) {
             console.log("user.description=" + userData.description)
-            this.setState({ description: userData.description });
+            this.setState({ displayName: userData.username, description: userData.description });
           }
           this.setState({ loadingUser: false })
         });
     } catch (error) {
       this.setState({ error: error.message, loadingUser: false })
     }
+  }
+
+  componentWillUnmount() {
+    const { auth, user } = this.props.firebase
+    if (auth.currentUser)
+      user(auth.currentUser.uid).off()
   }
 
   // this allows to validate the field when pressing the Enter key
@@ -75,13 +78,16 @@ class Profile extends Component {
   }
 
   async handleDisplayNameInput() {
-    const { doUserProfileUpdate } = this.props.firebase
+    const { auth, user } = this.props.firebase
     if (isEmptyString(this.state.displayName))
       this.setState({ error: 'Display Name cannot be empty' })
     else {
       this.setState({ error: '' })
       try {
-        await doUserProfileUpdate(this.state.displayName)
+        return user(auth.currentUser.uid)
+          .update({
+            username: this.state.displayName,
+          })
       } catch (error) {
         this.setState({ error: error.message })
       }
@@ -95,7 +101,7 @@ class Profile extends Component {
     this.setState({ error: '' })
     try {
       await user(auth.currentUser.uid)
-        .set({
+        .update({
           description: this.state.description
         })
 
@@ -121,7 +127,7 @@ class Profile extends Component {
             {auth.currentUser
               ? <div>
                 <table className="table-auto">
-{/*                   <thead>
+                  {/*                   <thead>
                     <tr><th colSpan="2" className="text-center text-2xl">Profile</th></tr>
                   </thead> */}
                   <tbody>
@@ -164,7 +170,7 @@ class Profile extends Component {
         </section>
         <section className="p-5 shadow">
           <IndigoBox title="Reset password">
-          <PasswordChangeForm />
+            <PasswordChangeForm />
           </IndigoBox>
         </section>
         <section className="p-5 shadow">

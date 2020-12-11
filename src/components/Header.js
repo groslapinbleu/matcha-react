@@ -17,7 +17,7 @@ function Header({firebase}) {
                 firebase.auth.currentUser
                   ?
                   <React.Fragment>
-                    <span className="" >Logged in as </span><span className="font-bold">{firebase.auth.currentUser.displayName}</span>
+                    <span className="" >Logged in as </span><span className="font-bold">{firebase.auth.currentUser.email}</span>
                     <Link className="hover:underline" to="/profile">Profile</Link>
                     <Link className="hover:underline" to="/chat">Chat</Link>
                     <Link className="hover:underline" to="/notification">Notification</Link>

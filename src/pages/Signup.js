@@ -18,7 +18,7 @@ class SignUp extends Component {
       error: null,
       email: '',
       password: '',
-      displayName: userNameGenerator()
+      username: userNameGenerator()
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,7 +35,7 @@ class SignUp extends Component {
 
   setUserName() {
     this.setState({
-      displayName: userNameGenerator()
+      username: userNameGenerator()
     });
   }
 
@@ -43,16 +43,20 @@ class SignUp extends Component {
   async handleSubmit(event) {
     event.preventDefault();
 
-    const { doCreateUserWithEmailAndPassword, doUserProfileUpdate } = this.props.firebase
-    if (isEmptyString(this.state.displayName))
+    const { doCreateUserWithEmailAndPassword, user } = this.props.firebase
+    if (isEmptyString(this.state.username))
       this.setState({ error: 'Display Name cannot be empty' })
     else {
       this.setState({ error: '' })
 
       doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then(user => {
-          if (user) {
-            doUserProfileUpdate(this.state.displayName)
+        .then(authUser => {
+          if (authUser) {
+            return user(authUser.user.uid)
+            .set({
+              username: this.state.username,
+              email: this.state.email,
+            })
           }
         })
         .catch(error => {
@@ -97,7 +101,7 @@ class SignUp extends Component {
             <p>Fill in the form below to create an account.</p>
             <hr />
             <div className="inline-flex">
-              <input placeholder="Display Name" name="displayName" onChange={this.handleChange} value={this.state.displayName} type="text" required></input><RefreshButton onClick={() => { this.setUserName() }} />
+              <input placeholder="Display Name" name="username" onChange={this.handleChange} value={this.state.username} type="text" required></input><RefreshButton onClick={() => { this.setUserName() }} />
             </div>
             <div>
               <input placeholder="Email" name="email" type="email" onChange={this.handleChange} value={this.state.email}></input>
