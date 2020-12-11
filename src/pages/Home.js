@@ -2,7 +2,6 @@ import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
-// import { auth } from '../services/firebase';
 import { FirebaseContext } from '../services/Firebase'
 import * as MISC from '../constants/miscConsts'
 

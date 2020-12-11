@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
-
 import {
   Route,
   BrowserRouter as Router,
   Switch,
   Redirect,
 } from "react-router-dom";
-import Home from './pages/Home';
-import Chat from './pages/Chat';
-import Profile from './pages/Profile';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
-import ForgotPassword from './pages/ForgotPassword';
-import NotFound from './pages/NotFound';
-import DeleteAccount from './pages/DeleteAccount';
+import Home from 'pages/Home';
+import Chat from 'pages/Chat';
+import Profile from 'pages/Profile';
+import Signup from 'pages/Signup';
+import Login from 'pages/Login';
+import ForgotPassword from 'pages/ForgotPassword';
+import NotFound from 'pages/NotFound';
+import DeleteAccount from 'pages/DeleteAccount';
 
-import { withFirebase } from './services/Firebase'
+import { withFirebase } from 'services/Firebase'
 
 import Spinner from 'react-loader-spinner'
 import SnackbarProvider from 'react-simple-snackbar'
 
-import './styles.css';
-import AdminPage from './pages/AdminPage';
+import 'styles/styles.css';
+import AdminPage from 'pages/AdminPage';
 
 // cette fonction est un HOC : Higher Order Component
 // elle renvoit le bon composant si on est authentifié, sinon elle revoit vers

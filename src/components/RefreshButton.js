@@ -1,5 +1,6 @@
 import React from 'react'
-import Refresh from '../Icons/Refresh'
+import Refresh from 'Icons/Refresh'
+import PropTypes from 'prop-types'
 
 const RefreshButton = ({onClick}) => {
     return (
@@ -7,4 +8,7 @@ const RefreshButton = ({onClick}) => {
     )
 }
 
+RefreshButton.propTypes = {
+    onClick: PropTypes.func
+}
 export default RefreshButton;

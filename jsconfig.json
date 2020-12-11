@@ -1,0 +1,8 @@
+{
+    "_comment1" : "this config file allows to do all imports from the src directory",
+    "_comment2" : "instead of having to import with a relative path",
+    "compilerOptions": {
+      "baseUrl": "src"
+    },
+    "include": ["src"]
+  }
