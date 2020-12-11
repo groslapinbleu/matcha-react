@@ -13,6 +13,7 @@ import Login from 'pages/Login';
 import ForgotPassword from 'pages/ForgotPassword';
 import NotFound from 'pages/NotFound';
 import DeleteAccount from 'pages/DeleteAccount';
+import Notification from 'pages/Notification';
 
 import { withFirebase } from 'services/Firebase'
 
@@ -20,7 +21,7 @@ import Spinner from 'react-loader-spinner'
 import SnackbarProvider from 'react-simple-snackbar'
 
 import 'styles/styles.css';
-import AdminPage from 'pages/AdminPage';
+import Admin from 'pages/Admin';
 
 // cette fonction est un HOC : Higher Order Component
 // elle renvoit le bon composant si on est authentifié, sinon elle revoit vers
@@ -98,7 +99,12 @@ class App extends Component {
               <PrivateRoute
                 path="/admin"
                 authenticated={this.state.authenticated}
-                component={AdminPage}
+                component={Admin}
+              />
+              <PrivateRoute
+                path="/notification"
+                authenticated={this.state.authenticated}
+                component={Notification}
               />
               <PrivateRoute
                 path="/deleteaccount"

@@ -1,0 +1,85 @@
+import React, { Component } from 'react';
+
+import { withFirebase } from 'services/Firebase';
+import MatchaButton from 'components/MatchaButton';
+import IndigoBox from 'components/IndigoBox';
+import { withSnackbar } from 'react-simple-snackbar'
+
+class UserItem extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false,
+      user: null,
+      ...props.location.state,
+    };
+  }
+
+  componentDidMount() {
+    if (this.state.user) {
+      return;
+    }
+
+    this.setState({ loading: true });
+
+    this.props.firebase
+      .user(this.props.match.params.id)
+      .on('value', snapshot => {
+        this.setState({
+          user: snapshot.val(),
+          loading: false,
+        });
+      });
+  }
+
+  componentWillUnmount() {
+    this.props.firebase.user(this.props.match.params.id).off();
+  }
+
+  onSendPasswordResetEmail = () => {
+    const { openSnackbar } = this.props
+    try {
+      this.props.firebase.doPasswordReset(this.state.user.email)
+      openSnackbar("Password reset message sent")
+
+    } catch (error) {
+      openSnackbar(error.message)
+    }
+
+  };
+
+  render() {
+    const { user, loading } = this.state;
+    return (
+      <IndigoBox title="User">
+        {loading && <div>Loading ...</div>}
+        {user && (
+          <div>
+            <p>
+              <strong>ID:</strong> {this.props.match.params.id}
+            </p>
+            <p>
+              <strong>E-Mail:</strong> {user.email}
+            </p>
+            <p>
+              <strong>Username:</strong> {user.username}
+            </p>
+            <p>
+              <strong>Description:</strong> {user.description}
+            </p>
+            <p>
+              <MatchaButton
+                text="Send Password Reset"
+                onClick={this.onSendPasswordResetEmail}
+              >
+              </MatchaButton>
+            </p>
+          </div>
+        )}
+      </IndigoBox>
+    );
+  }
+}
+
+export default withFirebase(withSnackbar(UserItem));
