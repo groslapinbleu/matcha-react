@@ -1,18 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const MatchaButton = ({text, onClick}) => {
+const MatchaButton = ({text, onClick=null, disabled=false, type='submit'}) => {
     // if onClick prop is not provided, the button is used within a form and needs to be of type submit
     return (
-        onClick
-        ? <button className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white" type="button" onClick={onClick}>{text}</button>
-        : <button className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white" type="submit" >{text}</button>
+        disabled
+        ? <button disabled={disabled} className="p-2 rounded-md bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-white" type={type} onClick={onClick}>{text}</button>
+        : <button disabled={disabled} className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white" type={type} onClick={onClick}>{text}</button>
     )
 }
 
 MatchaButton.propTypes = {
     onClick: PropTypes.func,
-    text: PropTypes.string
+    text: PropTypes.string,
+    disabled: PropTypes.bool
 }
 
 export default MatchaButton

@@ -76,6 +76,9 @@ class Firebase {
   doDelete = () =>
   this.auth.currentUser.delete()
 
+  doUseDeviceLanguage = () =>
+  this.auth.useDeviceLanguage()
+
 
   // *** Merge Auth and DB User API *** //
 

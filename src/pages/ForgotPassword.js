@@ -1,9 +1,11 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import Footer from '../components/Footer';
+import React, { Component } from "react"
+import { Link } from "react-router-dom"
+import Footer from '../components/Footer'
 import { withSnackbar } from 'react-simple-snackbar'
 import { withFirebase } from '../services/Firebase'
-import IndigoBox from "../components/IndigoBox";
+import IndigoBox from "../components/IndigoBox"
+import {isValidEmail} from 'helpers/validation'
+import MatchaButton from "components/MatchaButton"
 
 class ForgotPassword extends Component {
     constructor(props) {
@@ -28,14 +30,21 @@ class ForgotPassword extends Component {
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.value
-        });
+        })
+        // check email format
+        if (event.target.name === 'email' && !isValidEmail(event.target.value)) {
+            this.setState({error: "Invalid email"})
+        } else {
+            this.setState({error: ""})
+        }
     }
 
     async handleSubmit(event) {
         event.preventDefault()
         this.setState({ error: "" })
-        const { doPasswordReset } = this.props.firebase
+        const { doPasswordReset, doUseDeviceLanguage} = this.props.firebase
         try {
+            doUseDeviceLanguage()
             await doPasswordReset(this.state.email, this.state.password);
             // display message using a snackbar
             // cf. https://www.npmjs.com/package/react-simple-snackbar
@@ -49,6 +58,10 @@ class ForgotPassword extends Component {
     }
 
     render() {
+        const { email } = this.state;
+ 
+        const isInvalid = !isValidEmail(email)
+
         return (
             <div className="profile pt-20">
                 <IndigoBox title="Reset your password">
@@ -71,7 +84,7 @@ class ForgotPassword extends Component {
                             {this.state.error ? (
                                 <p>{this.state.error}</p>
                             ) : null}
-                            <button className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white" type="submit">Send reset email</button>
+                            <MatchaButton text="Send reset email" type="submit" disabled={isInvalid}></MatchaButton>
                         </div>
                         <hr />
                         <p>Already have an account? <Link className="hover:underline" to="/login">Login</Link> </p>

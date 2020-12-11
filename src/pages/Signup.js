@@ -7,6 +7,8 @@ import { isEmptyString } from '../helpers/validation'
 import RefreshButton from '../components/RefreshButton';
 import { withFirebase } from '../services/Firebase'
 import IndigoBox from '../components/IndigoBox';
+import {isValidEmail} from 'helpers/validation'
+import MatchaButton from "components/MatchaButton"
 
 class SignUp extends Component {
 
@@ -80,7 +82,13 @@ class SignUp extends Component {
   }
 
 
+  // TODO: add a more thorough validation of email and password
+  // with clearer feedback to the user, field by field
   render() {
+    const { email, password } = this.state;
+ 
+    const isInvalid = !isValidEmail(email) || password === ''
+
     return (
       <div className="login pt-20">
         <IndigoBox title="Sign Up">
@@ -99,7 +107,8 @@ class SignUp extends Component {
             </div>
             <div>
               {this.state.error ? <p className="text-red-500">{this.state.error}</p> : null}
-              <button className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white" type="submit">Sign up</button>
+              <MatchaButton text="Sign Up" type="submit" disabled={isInvalid}></MatchaButton>
+
               <p>Or</p>
               <p>
                 <button className="hover:underline " onClick={this.googleSignIn} type="button">

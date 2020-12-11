@@ -26,9 +26,12 @@ class DeleteAccount extends Component {
     }
 
     render() {
+        const { auth } = this.props.firebase
+
         return (
             <div className="p-5">
                 <RedBox title="Delete Account">
+                    <p>{auth.currentUser.email}/{auth.currentUser.displayName}</p>
                     <p className="text-3xl">Are you sure?</p>
                     <p className="text-xl">This action cannot be undone</p>
                     <button className="m-2 p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white" type="button" onClick={this.handleDelete}>Confirm deletion</button>

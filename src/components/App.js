@@ -62,7 +62,9 @@ class App extends Component {
   componentDidMount() {
     // firebase is expected to be provided as a prop
     const { auth } = this.props.firebase
-    auth.onAuthStateChanged((user) => {
+    // subscribe to auth state change and store listener
+    // for future cleanup
+    this.listener = auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({
           authenticated: true,
@@ -75,6 +77,11 @@ class App extends Component {
         });
       }
     })
+  }
+
+  componentWillUnmount() {
+    // remove listener to avoid emory leak
+    this.listener();
   }
 
   render() {

@@ -40,6 +40,7 @@ class UserItem extends Component {
   onSendPasswordResetEmail = () => {
     const { openSnackbar } = this.props
     try {
+      this.props.firebase.doUseDeviceLanguage()
       this.props.firebase.doPasswordReset(this.state.user.email)
       openSnackbar("Password reset message sent")
 

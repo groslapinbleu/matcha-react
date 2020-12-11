@@ -9,6 +9,7 @@ import { isEmptyString } from '../helpers/validation'
 import { withFirebase } from '../services/Firebase'
 import RedBox from '../components/RedBox';
 import IndigoBox from '../components/IndigoBox';
+import PasswordChangeForm from 'components/PasswordChangeForm';
 
 
 class Profile extends Component {
@@ -161,7 +162,12 @@ class Profile extends Component {
             }
           </IndigoBox>
         </section>
-        <section className="p-5">
+        <section className="p-5 shadow">
+          <IndigoBox title="Reset password">
+          <PasswordChangeForm />
+          </IndigoBox>
+        </section>
+        <section className="p-5 shadow">
           <RedBox title="Danger Zone">
             <Link className="hover:underline" to="/deleteaccount">Delete your account </Link>
           </RedBox>
