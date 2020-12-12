@@ -17,6 +17,8 @@ function Admin({ firebase }) {
                     <p>This page should only be accessible to admin profiles...</p>
                     <p> Work In Progress</p>
                 </IndigoBox>
+            </section>
+            <section className="p-5 shadow">
                 <Switch>
                     <Route exact path="/admin/:id" component={UserItem} />
                     <Route exact path="/admin" component={UserList} />

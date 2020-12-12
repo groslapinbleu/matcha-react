@@ -11,16 +11,15 @@ class UserList extends Component {
     this.state = {
       loading: false,
       users: [],
+      error: null
     };
   }
 
   componentDidMount() {
     this.setState({ loading: true });
-    console.log("usersObject : calling firebase")
     try {
       this.props.firebase.users().on('value', snapshot => {
         const usersObject = snapshot.val();
-        console.log("UserList: usersObject = " + usersObject)
         const usersList = Object.keys(usersObject).map(key => ({
           ...usersObject[key],
           uid: key,
@@ -29,10 +28,12 @@ class UserList extends Component {
         this.setState({
           users: usersList,
           loading: false,
+          error: null
         })
       })
     } catch (error) {
       console.log(error.message)
+      this.setState({ error })
     }
   }
 
@@ -71,6 +72,7 @@ class UserList extends Component {
               </span>
             </li>
           ))}
+          {this.state.error && <li>{this.state.error.message}</li>}
         </ul>
       </IndigoBox>);
   }
