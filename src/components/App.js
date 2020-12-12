@@ -38,6 +38,20 @@ function PrivateRoute({ component: Component, authenticated, ...rest }) {
 }
 
 // cette fonction est un HOC : Higher Order Component
+// elle renvoit le bon composant si on est authentifié, sinon elle revoit vers
+// la page de login
+function ProtectedRoute({ component: Component, authenticated, admin, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={(props) => (authenticated === true)
+        ? admin === true ? <Component {...props} /> : <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+        : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />}
+    />
+  )
+}
+
+// cette fonction est un HOC : Higher Order Component
 // elle renvoit le bon composant si on est pas authentifié (soit signup et login), sinon elle revoit vers
 // la home page
 function PublicRoute({ component: Component, authenticated, ...rest }) {
@@ -56,23 +70,30 @@ class App extends Component {
     super();
     this.state = {
       authenticated: false,
+      admin: false,
       loading: true,
     };
   }
   componentDidMount() {
     // firebase is expected to be provided as a prop
-    const { auth } = this.props.firebase
+    const { onAuthStateChangedWithRoles } = this.props.firebase
     // subscribe to auth state change and store listener
     // for future cleanup
-    this.listener = auth.onAuthStateChanged((user) => {
+    this.listener = onAuthStateChangedWithRoles((user) => {
       if (user) {
+        // TODO: check protected
+        const roles = user.roles
+        console.log('this user has the following roles : ', roles)
+        const admin = !!roles['ADMIN']
         this.setState({
           authenticated: true,
+          admin: admin,
           loading: false,
         });
       } else {
         this.setState({
           authenticated: false,
+          admin:false,
           loading: false,
         });
       }
@@ -103,9 +124,10 @@ class App extends Component {
                 authenticated={this.state.authenticated}
                 component={Chat}
               />
-              <PrivateRoute
+              <ProtectedRoute
                 path="/admin"
                 authenticated={this.state.authenticated}
+                admin={this.state.admin}
                 component={Admin}
               />
               <PrivateRoute

@@ -1,8 +1,7 @@
 import React from 'react';
-import { withFirebase } from 'services/Firebase'
 import Navbar from 'components/Navbar'
 
-function Header({firebase}) {
+function Header() {
   return (
     <header>
       <Navbar />
@@ -10,5 +9,5 @@ function Header({firebase}) {
   );
 }
 
-export default withFirebase(Header)
+export default Header
 

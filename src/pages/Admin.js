@@ -15,7 +15,6 @@ function Admin({ firebase }) {
             <section className="p-5 shadow">
                 <IndigoBox title="Admin Page">
                     <p>This page should only be accessible to admin profiles...</p>
-                    <p> Work In Progress</p>
                 </IndigoBox>
             </section>
             <section className="p-5 shadow">

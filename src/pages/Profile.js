@@ -21,7 +21,8 @@ class Profile extends Component {
       updatingDisplayName: false,
       updatingDescription: false,
       loadingUser: false,
-      description: ""
+      description: "",
+      roles: {}
     };
     this.updateTheDisplayName = this.updateTheDisplayName.bind(this);
     this.updateTheDescription = this.updateTheDescription.bind(this);
@@ -41,7 +42,7 @@ class Profile extends Component {
           const userData = snapshot.val();
           if (userData) {
             console.log("user.description=" + userData.description)
-            this.setState({ displayName: userData.username, description: userData.description });
+            this.setState({ displayName: userData.username, description: userData.description, roles: userData.roles });
           }
           this.setState({ loadingUser: false })
         });
@@ -122,6 +123,13 @@ class Profile extends Component {
     return (
       <div className="profile">
         <Header></Header>
+        {this.state.roles && this.state.roles.ADMIN !== undefined
+          ? <section className="p-5 shadow">
+            <IndigoBox title="Admin">
+              <Link className="hover:underline" to="/Admin">Go to admin menu</Link>
+            </IndigoBox>
+          </section>
+          : null}
         <section className="p-5 shadow">
           <IndigoBox title="Profile">
             {auth.currentUser

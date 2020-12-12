@@ -74,14 +74,56 @@ class Firebase {
   }
 
   doDelete = () =>
-  this.auth.currentUser.delete()
+    this.auth.currentUser.delete()
 
   doUseDeviceLanguage = () =>
-  this.auth.useDeviceLanguage()
+    this.auth.useDeviceLanguage()
 
 
   // *** Merge Auth and DB User API *** //
+  // onAuthStateChanged is encapsulated and returns an auth object
+  // which is enriched with Realtime DB information
+  onAuthStateChangedWithRoles = (next) => {
+    console.log("onAuthStateChangedWithRoles")
+    return this.auth.onAuthStateChanged(async authUser => {
+      if (authUser) {
+        console.log("the user is now signed-in")
+        await this.user(authUser.uid)
+          .once('value')
+          .then(snapshot => {
+            const dbUser = snapshot.val();
 
+            // default empty roles
+            if (!dbUser.roles) {
+              dbUser.roles = {};
+            } 
+
+            // merge auth and db user
+            authUser = {
+              uid: authUser.uid,
+              email: authUser.email,
+              emailVerified: authUser.emailVerified,
+              providerData: authUser.providerData,
+              ...dbUser,
+            }
+            console.log('onAuthUserListener : authUser.roles = ' + authUser.roles)
+
+            // store this merged user into current Firebase instance for future use
+            this.authUser = { ...authUser }
+
+            // provide the user for immediate use 
+          });
+      } else {
+        // cleanup authUser
+        console.log("the user is now signed-out")
+        this.authUser = null
+      }
+      console.log('now calling next')
+      next(authUser)
+    })
+  };
+
+  // original version 
   onAuthUserListener = (next, fallback) => {
     console.log("onAuthUserListener")
     return this.auth.onAuthStateChanged(authUser => {
@@ -104,7 +146,6 @@ class Firebase {
               providerData: authUser.providerData,
               ...dbUser,
             };
-
             next(authUser);
           });
       } else {

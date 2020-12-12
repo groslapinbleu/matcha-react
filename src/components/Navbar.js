@@ -58,9 +58,6 @@ function Navbar({ firebase }) {
                                             <Link className={decorateLink("/notification")} to="/notification">Notification</Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link className={decorateLink("/admin")} to="/admin">Admin</Link>
-                                        </li>
-                                        <li className="nav-item">
                                             <MatchaButton text="Logout" onClick={() => firebase.auth.signOut()}>    </MatchaButton>
                                         </li>
                                     </React.Fragment>
