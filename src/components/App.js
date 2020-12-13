@@ -84,7 +84,7 @@ class App extends Component {
         // TODO: check protected
         const roles = user.roles
         console.log('this user has the following roles : ', roles)
-        const admin = !!roles['ADMIN']
+        const admin = roles['ADMIN']===true
         this.setState({
           authenticated: true,
           admin: admin,

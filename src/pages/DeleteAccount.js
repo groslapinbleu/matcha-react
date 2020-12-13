@@ -4,6 +4,7 @@ import RedBox from '../components/RedBox'
 import { withFirebase } from '../services/Firebase'
 import Footer from '../components/Footer';
 import { withSnackbar } from 'react-simple-snackbar'
+import MatchaButton from 'components/MatchaButton';
 
 class DeleteAccount extends Component {
 
@@ -34,7 +35,7 @@ class DeleteAccount extends Component {
                     <p>{auth.currentUser.email}/{auth.currentUser.displayName}</p>
                     <p className="text-3xl">Are you sure?</p>
                     <p className="text-xl">This action cannot be undone</p>
-                    <button className="m-2 p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white" type="button" onClick={this.handleDelete}>Confirm deletion</button>
+                    <MatchaButton text="Confirm deletion" type="button" onClick={this.handleDelete}></MatchaButton>
                     <Link className="hover:underline" to="/profile">Cancel</Link>
                 </RedBox>
                 <Footer></Footer>

@@ -2,7 +2,7 @@ import React from "react"
 import { Link, useLocation } from 'react-router-dom';
 import { withFirebase } from 'services/Firebase'
 import * as MISC from 'constants/miscConsts'
-import Menu from 'Icons/Menu'
+import MenuIcon from 'Icons/MenuIcon'
 import MatchaButton from "./MatchaButton";
 
 
@@ -31,7 +31,7 @@ function Navbar({ firebase }) {
                             className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
                             type="button"
                             onClick={() => setNavbarOpen(!navbarOpen)}
-                        ><Menu />
+                        ><MenuIcon />
                         </button>
                     </div>
                     <div
@@ -58,7 +58,7 @@ function Navbar({ firebase }) {
                                             <Link className={decorateLink("/notification")} to="/notification">Notification</Link>
                                         </li>
                                         <li className="nav-item">
-                                            <MatchaButton text="Logout" onClick={() => firebase.auth.signOut()}>    </MatchaButton>
+                                            <MatchaButton text="Logout" onClick={() => firebase.auth.signOut()}/>
                                         </li>
                                     </React.Fragment>
                                     : <React.Fragment>

@@ -7,8 +7,9 @@ import { isEmptyString } from '../helpers/validation'
 import RefreshButton from '../components/RefreshButton';
 import { withFirebase } from '../services/Firebase'
 import IndigoBox from '../components/IndigoBox';
-import {isValidEmail} from 'helpers/validation'
+import { isValidEmail } from 'helpers/validation'
 import MatchaButton from "components/MatchaButton"
+import { defaultUserData } from 'models/UserData';
 
 class SignUp extends Component {
 
@@ -52,11 +53,13 @@ class SignUp extends Component {
       doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
         .then(authUser => {
           if (authUser) {
-            return user(authUser.user.uid)
-            .set({
+            let dbUser = {
+              ...defaultUserData,
               username: this.state.username,
-              email: this.state.email,
-            })
+              email: this.state.email
+            }
+            return user(authUser.user.uid)
+              .set(dbUser)
           }
         })
         .catch(error => {
@@ -90,7 +93,7 @@ class SignUp extends Component {
   // with clearer feedback to the user, field by field
   render() {
     const { email, password } = this.state;
- 
+
     const isInvalid = !isValidEmail(email) || password === ''
 
     return (
@@ -111,7 +114,7 @@ class SignUp extends Component {
             </div>
             <div>
               {this.state.error ? <p className="text-red-500">{this.state.error}</p> : null}
-              <MatchaButton text="Sign Up" type="submit" disabled={isInvalid}></MatchaButton>
+              <MatchaButton text="Sign Up" type="Submit" disabled={isInvalid}></MatchaButton>
 
               <p>Or</p>
               <p>

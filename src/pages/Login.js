@@ -6,7 +6,8 @@ import Footer from '../components/Footer'
 import IndigoBox from '../components/IndigoBox'
 import { withFirebase } from '../services/Firebase'
 import * as MISC from '../constants/miscConsts'
-
+import MatchaButton from 'components/MatchaButton'
+import {isValidEmail} from 'helpers/validation'
 
 class Login extends Component {
   constructor(props) {
@@ -38,6 +39,9 @@ class Login extends Component {
   }
 
   render() {
+    const { email, password } = this.state
+    const isInvalid = !isValidEmail(email) || password === ''
+
     return (
       <div className="profile pt-20">
         <IndigoBox title={`Login to ${MISC.APP_NAME}`}>
@@ -70,7 +74,7 @@ class Login extends Component {
               {this.state.error ? (
                 <p>{this.state.error}</p>
               ) : null}
-              <button className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white" type="submit">Login</button>
+              <MatchaButton text="Login" type="submit" disabled={isInvalid}></MatchaButton>
             </div>
             <hr />
             <p>

@@ -1,7 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
-
+import { defaultUserData } from 'models/UserData'
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -91,34 +91,59 @@ class Firebase {
         await this.user(authUser.uid)
           .once('value')
           .then(snapshot => {
-            const dbUser = snapshot.val();
+            let dbUser = snapshot.val();
+            console.log('dbUser=' + dbUser)
+            let mustWriteInDB = false
+            if (!dbUser) {
+              // since we didn't find data in db, we will need 
+              // to write initial data
+              mustWriteInDB = true
+              dbUser = {
+                ...defaultUserData
+              }
+            }
 
-            // default empty roles
-            if (!dbUser.roles) {
-              dbUser.roles = {};
-            } 
+            // default username to displayName
+            if (dbUser.username === "") {
+              dbUser.username = authUser.displayName
+            }
+
+            // default photoUrl
+            if (!dbUser.photoURL) {
+              dbUser.photoURL = authUser.photoURL
+            }
 
             // merge auth and db user
             authUser = {
+              ...dbUser,
               uid: authUser.uid,
               email: authUser.email,
               emailVerified: authUser.emailVerified,
               providerData: authUser.providerData,
-              ...dbUser,
+
             }
-            console.log('onAuthUserListener : authUser.roles = ' + authUser.roles)
+
 
             // store this merged user into current Firebase instance for future use
             this.authUser = { ...authUser }
+            // debug
+            Object.entries(this.authUser).forEach(val => {
+              const [key, value] = val
+              console.log(key, value)
+            })
 
-            // provide the user for immediate use 
+            if (mustWriteInDB) {
+              this.user(authUser.uid)
+                .set(authUser)
+            }
+
           });
       } else {
         // cleanup authUser
         console.log("the user is now signed-out")
         this.authUser = null
       }
-      console.log('now calling next')
+      console.log('now calling next with merged user')
       next(authUser)
     })
   };
