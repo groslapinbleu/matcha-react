@@ -10,17 +10,17 @@ export const defaultUserData = {
         roles : {ADMIN: false}
     }
 
-    export const genders = {
-        0 : "other",
-        1 : "female",
-        2 : "male"
-    }
+    export const genders = [
+        "other",
+        "female",
+        "male"
+    ]
 
-    export const regions = {
-        0 : "other",
-        1 : "Ile-de-France",
-        2 : "Hauts-de-France",
-        3 : "Bretagne",
-        4 : "Normandie",
-        5 : "Auvergne-Rhônes-Alpes"
-    }
+    export const regions = [
+        "other",
+        "Ile-de-France",
+        "Hauts-de-France",
+        "Bretagne",
+        "Normandie",
+        "Auvergne-Rhônes-Alpes"
+    ]
