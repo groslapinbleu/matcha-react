@@ -8,23 +8,24 @@ import MatchaButton from 'components/MatchaButton';
 
 class DeleteAccount extends Component {
 
-    handleDelete = () => {
-        const { auth, doDelete } = this.props.firebase
+    handleDelete = async () => {
+        const { auth, doDelete, user } = this.props.firebase
         console.log("Ready to delete account of user " + auth.currentUser)
         const { openSnackbar } = this.props
 
-        doDelete()
-            .then(function () {
-                // User deleted.
-                console.log('Account deleted!')
-                // note: we are automatically redirected to landing page
-            })
-            .catch(function (error) {
+        user(auth.currentUser.uid).remove()
+            .then(console.log('Account database information deleted!'))
+            .then(doDelete())
+            .then(console.log('Account authentication information deleted!'))
+            // note: we are automatically redirected to landing page
+            .catch((error) => {
                 // An error happened.
                 console.log('Account deletion failed')
                 openSnackbar(error.message)
             })
+
     }
+
 
     render() {
         const { auth } = this.props.firebase
