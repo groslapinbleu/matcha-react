@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import Footer from '../components/Footer'
 import { withSnackbar } from 'react-simple-snackbar'
 import { withFirebase } from '../services/Firebase'
-import IndigoBox from "../components/IndigoBox"
+import MatchaBox from "../components/MatchaBox"
 import {isValidEmail} from 'helpers/validation'
 import MatchaButton from "components/MatchaButton"
 
@@ -64,7 +64,7 @@ class ForgotPassword extends Component {
 
         return (
             <div className="profile pt-20">
-                <IndigoBox title="Reset your password">
+                <MatchaBox title="Reset your password">
                     <form className=""
                         autoComplete="off"
                         onSubmit={this.handleSubmit}
@@ -90,7 +90,7 @@ class ForgotPassword extends Component {
                         <p>Already have an account? <Link className="hover:underline" to="/login">Login</Link> </p>
                         <p>Don't have an account? <Link className="hover:underline" to="/signup">Sign up</Link></p>
                     </form>
-                </IndigoBox>
+                </MatchaBox>
                 <Footer></Footer>
             </div>
         );

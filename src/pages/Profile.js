@@ -3,8 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Link } from "react-router-dom";
 import { withFirebase } from '../services/Firebase'
-import RedBox from '../components/RedBox';
-import IndigoBox from '../components/IndigoBox';
+import MatchaBox from '../components/MatchaBox';
 import ProfileForm from 'components/ProfileForm'
 import PasswordChangeForm from 'components/PasswordChangeForm';
 import Spinner from 'react-loader-spinner'
@@ -85,28 +84,28 @@ class Profile extends Component {
           ? <div className="flex items-center justify-center"><Spinner type='Puff' color='#038E9F' height={50} width={50} /></div>
           : this.state.roles && this.state.roles.ADMIN === true
             ? <section className="p-5 shadow">
-              <IndigoBox title="Admin">
+              <MatchaBox title="Admin">
                 <Link className="hover:underline" to="/Admin">Go to admin menu</Link>
-              </IndigoBox>
+              </MatchaBox>
             </section>
             : null}
         <section className="p-5 shadow">
           {userData
-            ? <IndigoBox title="Profile">
+            ? <MatchaBox title="Profile">
               <ProfileForm user={userData} onSubmit={this.handleFormSubmit} />
-            </IndigoBox>
+            </MatchaBox>
             : <div className="flex items-center justify-center"><Spinner type='Puff' color='#038E9F' height={50} width={50} /></div>
           }
         </section>
         <section className="p-5 shadow">
-          <IndigoBox title="Reset password">
+          <MatchaBox title="Reset password">
             <PasswordChangeForm />
-          </IndigoBox>
+          </MatchaBox>
         </section>
         <section className="p-5 shadow">
-          <RedBox title="Danger Zone">
+          <MatchaBox title="Danger Zone" color="red">
             <Link className="hover:underline" to="/deleteaccount">Delete your account </Link>
-          </RedBox>
+          </MatchaBox>
         </section >
         <Footer></Footer>
       </div>

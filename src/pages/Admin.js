@@ -1,6 +1,6 @@
 import React from 'react';
 import { withFirebase } from 'services/Firebase'
-import IndigoBox from 'components/IndigoBox';
+import MatchaBox from 'components/MatchaBox';
 import Footer from "components/Footer";
 import Header from "components/Header";
 import UserItem from "components/UserItem"
@@ -13,9 +13,9 @@ function Admin({ firebase }) {
         <div>
             <Header></Header>
             <section className="p-5 shadow">
-                <IndigoBox title="Admin Page">
+                <MatchaBox title="Admin Page">
                     <p>This page should only be accessible to admin profiles...</p>
-                </IndigoBox>
+                </MatchaBox>
             </section>
             <section className="p-5 shadow">
                 <Switch>

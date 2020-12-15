@@ -6,7 +6,7 @@ import userNameGenerator from '../helpers/userNameGenerator'
 import { isEmptyString } from '../helpers/validation'
 import RefreshButton from '../components/RefreshButton';
 import { withFirebase } from '../services/Firebase'
-import IndigoBox from '../components/IndigoBox';
+import MatchaBox from '../components/MatchaBox';
 import { isValidEmail } from 'helpers/validation'
 import MatchaButton from "components/MatchaButton"
 import { defaultUserData } from 'models/UserData';
@@ -98,7 +98,7 @@ class SignUp extends Component {
 
     return (
       <div className="login pt-20">
-        <IndigoBox title="Sign Up">
+        <MatchaBox title="Sign Up">
 
           <form onSubmit={this.handleSubmit}>
             <p>Fill in the form below to create an account.</p>
@@ -131,7 +131,7 @@ class SignUp extends Component {
             <hr />
             <p>Already have an account? <Link className="hover:underline" to="/login">Login</Link> </p>
           </form>
-        </IndigoBox>
+        </MatchaBox>
         <Footer></Footer>
       </div>
     )

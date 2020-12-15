@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 // import Header from "../components/Header";
 // import { signin } from "../helpers/auth";
 import Footer from '../components/Footer'
-import IndigoBox from '../components/IndigoBox'
+import MatchaBox from '../components/MatchaBox'
 import { withFirebase } from '../services/Firebase'
 import * as MISC from '../constants/miscConsts'
 import MatchaButton from 'components/MatchaButton'
@@ -44,7 +44,7 @@ class Login extends Component {
 
     return (
       <div className="profile pt-20">
-        <IndigoBox title={`Login to ${MISC.APP_NAME}`}>
+        <MatchaBox title={`Login to ${MISC.APP_NAME}`}>
           <form className=""
             autoComplete="off"
             onSubmit={this.handleSubmit}
@@ -89,7 +89,7 @@ class Login extends Component {
               Don't have an account? <Link className="hover:underline" to="/signup">Sign up</Link>
             </p>
           </form>
-        </IndigoBox>
+        </MatchaBox>
         <Footer></Footer>
       </div>
     );

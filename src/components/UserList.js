@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import IndigoBox from "components/IndigoBox"
+import MatchaBox from "components/MatchaBox"
 import { withFirebase } from 'services/Firebase';
 // import * as ROUTES from '../../constants/routes';
 
@@ -45,7 +45,7 @@ class UserList extends Component {
     const { users, loading } = this.state;
 
     return (
-      <IndigoBox title="Users">
+      <MatchaBox title="Users">
         <h2>Users</h2>
         {loading && <div>Loading ...</div>}
         <ul>
@@ -74,7 +74,7 @@ class UserList extends Component {
           ))}
           {this.state.error && <li>{this.state.error.message}</li>}
         </ul>
-      </IndigoBox>);
+      </MatchaBox>);
   }
 }
 

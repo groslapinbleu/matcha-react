@@ -4,6 +4,8 @@ import UserIcon from '../Icons/UserIcon';
 import Alert from '../components/Alert';
 import { isEmptyString } from '../helpers/validation'
 import MatchaButton from 'components/MatchaButton'
+import RadioButton from 'components/RadioButton';
+import { regions, genders } from 'models/UserData'
 
 class ProfileForm extends Component {
     constructor(props) {
@@ -15,7 +17,7 @@ class ProfileForm extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChangeButton = this.handleChangeButton.bind(this);
+        this.handleChangeRadioButton = this.handleChangeRadioButton.bind(this);
         this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this);
     }
 
@@ -30,10 +32,10 @@ class ProfileForm extends Component {
         })
     }
 
-    handleChangeButton(event) {
+    handleChangeRadioButton(name, value) {
         const userData = {
             ...this.state.userData,
-            [event.target.name]: parseInt(event.target.value, 10)
+            [name]: parseInt(value, 10)
         }
         this.setState({
             userData,
@@ -107,29 +109,37 @@ class ProfileForm extends Component {
                                 <tr className="border-b-2 border-solid">
                                     <th>Gender</th>
                                     <td>
-                                        <label>
-                                            <input className="mr-5" type="radio" name="gender" value={2} checked={userData.gender === 2} onChange={this.handleChangeButton} />
-                                        Male</label><br />
-                                        <label>
-                                            <input className="mr-5" type="radio" name="gender" value={1} checked={userData.gender === 1} onChange={this.handleChangeButton} />
-                                        Female</label><br />
-                                        <label>
-                                            <input className="mr-5" type="radio" name="gender" value={0} checked={userData.gender === 0} onChange={this.handleChangeButton} />
-                                        Other</label>
+                                        <RadioButton
+                                            selectedElement={this.state.userData.gender}
+                                            arrayValues={genders}
+                                            name="gender"
+                                            className="mr-5"
+                                            onSelect={this.handleChangeRadioButton}
+                                        ></RadioButton>
                                     </td>
                                 </tr>
                                 <tr className="border-b-2 border-solid">
                                     <th>Preferred gender</th>
                                     <td>
-                                        <label>
-                                            <input className="mr-5" type="radio" name="preferredGender" value={2} checked={userData.preferredGender === 2} onChange={this.handleChangeButton} />
-                                        Male</label><br />
-                                        <label>
-                                            <input className="mr-5" type="radio" name="preferredGender" value={1} checked={userData.preferredGender === 1} onChange={this.handleChangeButton} />
-                                        Female</label><br />
-                                        <label>
-                                            <input className="mr-5" type="radio" name="preferredGender" value={0} checked={userData.preferredGender === 0} onChange={this.handleChangeButton} />
-                                        Other</label>
+                                        <RadioButton
+                                            selectedElement={this.state.userData.preferredGender}
+                                            arrayValues={genders}
+                                            name="preferredGender"
+                                            className="mr-5"
+                                            onSelect={this.handleChangeRadioButton}
+                                        ></RadioButton>
+                                    </td>
+                                </tr>
+                                <tr className="border-b-2 border-solid">
+                                    <th>Region</th>
+                                    <td>
+                                        <RadioButton
+                                            selectedElement={this.state.userData.region}
+                                            arrayValues={regions}
+                                            name="region"
+                                            className="mr-5"
+                                            onSelect={this.handleChangeRadioButton}
+                                        ></RadioButton>
                                     </td>
                                 </tr>
                                 <tr className="border-b-2 border-solid">

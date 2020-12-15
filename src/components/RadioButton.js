@@ -18,7 +18,7 @@ class RadioButton extends Component {
         console.log("RadioButton handleChange")
         const value = parseInt(event.target.value, 10)
         this.setState({ selectedElement: value })
-        this.props.onSelect(value)
+        this.props.onSelect(event.target.name, value)
     }
 
     render() {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { withFirebase } from 'services/Firebase';
 import MatchaButton from 'components/MatchaButton';
-import IndigoBox from 'components/IndigoBox';
+import MatchaBox from 'components/MatchaBox';
 import { withSnackbar } from 'react-simple-snackbar'
 
 class UserItem extends Component {
@@ -53,7 +53,7 @@ class UserItem extends Component {
   render() {
     const { user, loading } = this.state;
     return (
-      <IndigoBox title="User">
+      <MatchaBox title="User">
         {loading && <div>Loading ...</div>}
         {user && (
           <div>
@@ -78,7 +78,7 @@ class UserItem extends Component {
             </p>
           </div>
         )}
-      </IndigoBox>
+      </MatchaBox>
     );
   }
 }
