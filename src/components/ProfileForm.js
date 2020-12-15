@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import UserIcon from '../Icons/UserIcon';
+import Avatar from '../components/Avatar';
 import Alert from '../components/Alert';
 import { isEmptyString } from '../helpers/validation'
 import MatchaButton from 'components/MatchaButton'
@@ -86,17 +86,25 @@ class ProfileForm extends Component {
                                 </tr>
                                 <tr className="border-b-2 border-solid">
                                     <th>Photo</th><td>
-                                        {userData.photoURL
-                                            ? <img className="rounded-full shadow h-24 w-24 mx-auto" src={userData.photoURL} alt={this.state.username} />
-                                            : <UserIcon height={16} width={16}  ></UserIcon>
-                                        }
+                                        <Avatar username={this.state.username} photoURL={userData.photoURL}></Avatar>
                                     </td>
                                 </tr>
                                 <tr className="border-b-2 border-solid">
-
                                     <th>Username</th>
                                     <td>
-                                        <input name="username" placeholder="User Name" value={userData.username} type="text" onChange={this.handleChange} required></input>
+                                        <input name="username" placeholder="Username" value={userData.username} type="text" onChange={this.handleChange} required></input>
+                                    </td>
+                                </tr>
+                                <tr className="border-b-2 border-solid">
+                                    <th>Firstname</th>
+                                    <td>
+                                        <input name="firstname" placeholder="Firstname" value={userData.firstname} type="text" onChange={this.handleChange} required></input>
+                                    </td>
+                                </tr>
+                                <tr className="border-b-2 border-solid">
+                                    <th>Lastname</th>
+                                    <td>
+                                        <input name="lastname" placeholder="Lastname" value={userData.lastname} type="text" onChange={this.handleChange} required></input>
                                     </td>
                                 </tr>
                                 <tr className="border-b-2 border-solid">

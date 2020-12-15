@@ -67,6 +67,12 @@ class UserItem extends Component {
               <strong>Username:</strong> {user.username}
             </p>
             <p>
+              <strong>Firstrname:</strong> {user.firstname}
+            </p>
+            <p>
+              <strong>Lastname:</strong> {user.lastname}
+            </p>
+            <p>
               <strong>Description:</strong> {user.description}
             </p>
             <p>

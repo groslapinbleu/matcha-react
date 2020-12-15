@@ -19,7 +19,9 @@ class SignUp extends Component {
       error: null,
       email: '',
       password: '',
-      username: userNameGenerator()
+      username: userNameGenerator(),
+      firstname: '',
+      lastname: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -56,7 +58,9 @@ class SignUp extends Component {
             let dbUser = {
               ...defaultUserData,
               username: this.state.username,
-              email: this.state.email
+              email: this.state.email,
+              firstname: this.state.firstname,
+              lastname: this.state.lastname,
             }
             return user(authUser.user.uid)
               .set(dbUser)
@@ -104,7 +108,13 @@ class SignUp extends Component {
             <p>Fill in the form below to create an account.</p>
             <hr />
             <div className="inline-flex">
-              <input placeholder="Display Name" name="username" onChange={this.handleChange} value={this.state.username} type="text" required></input><RefreshButton onClick={() => { this.setUserName() }} />
+              <input placeholder="Username" name="username" onChange={this.handleChange} value={this.state.username} type="text" required></input><RefreshButton onClick={() => { this.setUserName() }} />
+            </div>
+            <div>
+              <input placeholder="Firstname" name="firstname" onChange={this.handleChange} value={this.state.firstname} type="text" required></input>
+            </div>
+            <div>
+              <input placeholder="Lastname" name="lastname" onChange={this.handleChange} value={this.state.lastname} type="text" required></input>
             </div>
             <div>
               <input placeholder="Email" name="email" type="email" onChange={this.handleChange} value={this.state.email}></input>

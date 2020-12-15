@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import MatchaBox from "components/MatchaBox"
+import Avatar from "components/Avatar"
+
 import { withFirebase } from 'services/Firebase';
 // import * as ROUTES from '../../constants/routes';
 
-class UserList extends Component {
+class UserSearchList extends Component {
   constructor(props) {
     super(props);
 
@@ -50,35 +52,32 @@ class UserList extends Component {
         <table className="table-auto ">
           <thead>
             <tr>
-              <th className="border border-indigo-800">Email</th>
+              <th className="border border-indigo-800">Photo</th>
               <th className="border border-indigo-800">Username</th>
-              <th className="border border-indigo-800">Firstname</th>
-              <th className="border border-indigo-800">Lastname</th>
+              <th className="border border-indigo-800">Connected</th>
             </tr>
           </thead>
           <tbody>
             {users.map(user => (
               <tr key={user.uid}>
                 <td className="border border-indigo-800">
-                  {user.email}
+                <Avatar username={user.username} photoURL={user.photoURL}></Avatar>
                 </td>
                 <td className="border border-indigo-800">
                   {user.username}
                 </td>
                 <td className="border border-indigo-800">
-                  {user.firstname}
-                </td>
-                <td className="border border-indigo-800">
-                  {user.lastname}
+                  CONNECTED YES/NO
                 </td>
                 <td className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white">
                   <Link
                     to={{
-                      pathname: `/admin/${user.uid}`,
+                      // pathname: `/admin/${user.uid}`,
+                      pathname: `/chat`,
                       state: { user },
                     }}
                   >
-                    Details
+                    Chat
                 </Link>
                 </td>
               </tr>
@@ -90,4 +89,4 @@ class UserList extends Component {
   }
 }
 
-export default withFirebase(UserList);
+export default withFirebase(UserSearchList);

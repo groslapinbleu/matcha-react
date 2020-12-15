@@ -55,6 +55,9 @@ function Navbar({ firebase }) {
                                             <Link className={decorateLink("/chat")} to="/chat">Chat</Link>
                                         </li>
                                         <li className="nav-item">
+                                            <Link className={decorateLink("/search")} to="/search">Search</Link>
+                                        </li>
+                                        <li className="nav-item">
                                             <Link className={decorateLink("/notification")} to="/notification">Notification</Link>
                                         </li>
                                         <li className="nav-item">

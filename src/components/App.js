@@ -14,6 +14,7 @@ import ForgotPassword from 'pages/ForgotPassword';
 import NotFound from 'pages/NotFound';
 import DeleteAccount from 'pages/DeleteAccount';
 import Notification from 'pages/Notification';
+import Search from 'pages/Search';
 
 import { withFirebase } from 'services/Firebase'
 
@@ -129,6 +130,11 @@ class App extends Component {
                 authenticated={this.state.authenticated}
                 admin={this.state.admin}
                 component={Admin}
+              />
+              <PrivateRoute
+                path="/search"
+                authenticated={this.state.authenticated}
+                component={Search}
               />
               <PrivateRoute
                 path="/notification"

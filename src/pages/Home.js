@@ -12,7 +12,7 @@ const Home = () => (
       <div className="pt-20">
         <div className="container mx-auto text-center py-5 bg-indigo-50">
           <h1 className="text-4xl">Welcome to {MISC.APP_NAME}</h1>
-          <p className="text-2xl">A great place to share your thoughts with friends</p>
+          <p className="text-2xl">Meet me here!</p>
           <FirebaseContext.Consumer>
             {
               firebase => {

@@ -85,7 +85,7 @@ class Profile extends Component {
           : this.state.roles && this.state.roles.ADMIN === true
             ? <section className="p-5 shadow">
               <MatchaBox title="Admin">
-                <Link className="hover:underline" to="/Admin">Go to admin menu</Link>
+                <Link className="hover:underline" to="/admin">Go to admin menu</Link>
               </MatchaBox>
             </section>
             : null}

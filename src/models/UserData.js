@@ -1,6 +1,8 @@
 export const defaultUserData = {
         email : "",
         username : "",
+        firstname: "",
+        lastname: "",
         photoURL : null, 
         description : "",
         gender : 0,
