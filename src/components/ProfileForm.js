@@ -4,7 +4,8 @@ import Avatar from '../components/Avatar';
 import Alert from '../components/Alert';
 import { isEmptyString } from '../helpers/validation'
 import MatchaButton from 'components/MatchaButton'
-import RadioButton from 'components/RadioButton';
+import RadioButtons from 'components/RadioButtons';
+import Dropdown from 'components/Dropdown'
 import { regions, genders } from 'models/UserData'
 
 class ProfileForm extends Component {
@@ -117,37 +118,46 @@ class ProfileForm extends Component {
                                 <tr className="border-b-2 border-solid">
                                     <th>Gender</th>
                                     <td>
-                                        <RadioButton
+                                        <RadioButtons
                                             selectedElement={this.state.userData.gender}
-                                            arrayValues={genders}
+                                            elementList={genders}
                                             name="gender"
                                             className="mr-5"
                                             onSelect={this.handleChangeRadioButton}
-                                        ></RadioButton>
+                                        ></RadioButtons>
                                     </td>
                                 </tr>
                                 <tr className="border-b-2 border-solid">
                                     <th>Preferred gender</th>
                                     <td>
-                                        <RadioButton
+                                        <RadioButtons
                                             selectedElement={this.state.userData.preferredGender}
-                                            arrayValues={genders}
+                                            elementList={genders}
                                             name="preferredGender"
                                             className="mr-5"
                                             onSelect={this.handleChangeRadioButton}
-                                        ></RadioButton>
+                                        ></RadioButtons>
                                     </td>
                                 </tr>
                                 <tr className="border-b-2 border-solid">
                                     <th>Region</th>
                                     <td>
-                                        <RadioButton
+                                        {/* <RadioButtons
                                             selectedElement={this.state.userData.region}
-                                            arrayValues={regions}
+                                            elementList={regions}
                                             name="region"
                                             className="mr-5"
                                             onSelect={this.handleChangeRadioButton}
-                                        ></RadioButton>
+                                        ></RadioButtons> */}
+                                        <Dropdown
+                                            selectedElement={this.state.userData.region}
+                                            elementList={regions}
+                                            name="region"
+                                            className="mr-5"
+                                            onSelect={this.handleChangeRadioButton}
+                                        >
+                                        </Dropdown>
+
                                     </td>
                                 </tr>
                                 <tr className="border-b-2 border-solid">

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 
-class RadioButton extends Component {
+class RadioButtons extends Component {
     constructor(props) {
         super(props)
         let index = 0
-        if (props.selectedElement >= 0 && props.selectedElement < props.arrayValues.length) {
+        if (props.selectedElement >= 0 && props.selectedElement < props.elementList.length) {
             index = props.selectedElement
         }
         this.state = {
@@ -25,7 +25,7 @@ class RadioButton extends Component {
         return (
             <div>
                 {
-                    this.props.arrayValues.map((element, index) => {
+                    this.props.elementList.map((element, index) => {
                         // console.log("index: "+index + " element: " + element)
                         return (
                             <div key={`RadioButton-${index}`}>
@@ -48,11 +48,11 @@ class RadioButton extends Component {
     }
 }
 
-RadioButton.propTypes = {
+RadioButtons.propTypes = {
     selectedElement: PropTypes.number.isRequired,
-    arrayValues: PropTypes.array.isRequired,
+    elementList: PropTypes.array.isRequired,
     name: PropTypes.string.isRequired,
     className: PropTypes.string,
     onSelect: PropTypes.func
 }
-export default RadioButton;
+export default RadioButtons;
