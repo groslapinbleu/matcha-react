@@ -12,10 +12,16 @@ class Search extends Component {
         this.state = {
             searchstring: ''
         };
+        this.handleChange = this.handleChange.bind(this);
 
     }
 
 
+    handleChange(event) {
+        this.setState({
+          [event.target.name]: event.target.value
+        });
+      }
 
     render() {
         return (
@@ -26,10 +32,7 @@ class Search extends Component {
                 <section className="p-5 shadow">
                     <MatchaBox title="Search criteria">
                         <form>
-                            <input type="text" placeholder="Enter search string" value={this.state.searchstring}></input>
-                            <label>
-                            <input type="checkbox" checked={true}></input>
-                            Same region</label>
+                            <input type="text" placeholder="Enter search string" value={this.state.searchstring} onChange={this.handleChange}></input>
                         </form>
                     </MatchaBox>
                     <MatchaBox title="Search Results">

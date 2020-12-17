@@ -13,26 +13,54 @@ class UserSearchList extends Component {
     this.state = {
       loading: false,
       users: [],
-      error: null
+      error: null,
+      limit: 5
     };
   }
 
   componentDidMount() {
+    this.onListenForUsers()
+  }
+
+  onListenForUsers = () => {
+    const { preferredGender } = this.props.firebase.authUser
+    console.log("preferredGender = " + preferredGender)
     this.setState({ loading: true });
     try {
-      this.props.firebase.users().on('value', snapshot => {
-        const usersObject = snapshot.val();
-        const usersList = Object.keys(usersObject).map(key => ({
-          ...usersObject[key],
-          uid: key,
-        }))
+      preferredGender === 0
+        ? this.props.firebase.users()
+          .orderByChild('preferredGender')
+          .limitToLast(this.state.limit)
+          .on('value', snapshot => {
+            const usersObject = snapshot.val();
+            const usersList = Object.keys(usersObject).map(key => ({
+              ...usersObject[key],
+              uid: key,
+            }))
+            this.setState({
+              users: usersList,
+              loading: false,
+              error: null
+            })
+          })
 
-        this.setState({
-          users: usersList,
-          loading: false,
-          error: null
-        })
-      })
+        : this.props.firebase.users()
+          .orderByChild('gender')
+          .limitToLast(this.state.limit)
+          .equalTo(preferredGender)
+          .on('value', snapshot => {
+            const usersObject = snapshot.val();
+            const usersList = Object.keys(usersObject).map(key => ({
+              ...usersObject[key],
+              uid: key,
+            }))
+
+            this.setState({
+              users: usersList,
+              loading: false,
+              error: null
+            })
+          })
     } catch (error) {
       console.log(error.message)
       this.setState({ error })
@@ -61,7 +89,7 @@ class UserSearchList extends Component {
             {users.map(user => (
               <tr key={user.uid}>
                 <td className="border border-indigo-800">
-                <Avatar username={user.username} photoURL={user.photoURL}></Avatar>
+                  <Avatar username={user.username} photoURL={user.photoURL}></Avatar>
                 </td>
                 <td className="border border-indigo-800">
                   {user.username}
