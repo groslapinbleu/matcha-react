@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import MatchaBox from "components/MatchaBox"
+import MatchaButton from "components/MatchaButton"
 import Avatar from "components/Avatar"
 
 import { withFirebase } from 'services/Firebase';
 // import * as ROUTES from '../../constants/routes';
+
 
 class UserSearchList extends Component {
   constructor(props) {
@@ -15,52 +17,63 @@ class UserSearchList extends Component {
       users: [],
       error: null,
       limit: 5
-    };
+    }
+    this.extractFilteredUsers = this.extractFilteredUsers.bind(this);
+    this.askConnection = this.askConnection.bind(this);
+
   }
 
   componentDidMount() {
     this.onListenForUsers()
   }
 
+  askConnection(userUid) {
+    console.log("askConnection")
+    // const { uid } = this.props.firebase.authUser
+    // this.props.firebase.user(userUid).child('')    
+  }
+
+  extractFilteredUsers(snapshot, uid) {
+    const usersObject = snapshot.val();
+    if (usersObject) {
+      const usersList = Object.keys(usersObject).map(key => ({
+        ...usersObject[key],
+        uid: key,
+      }))
+
+      // remove self and invisible users from user list
+      const filteredUserList = usersList.filter(user => user.uid !== uid && user.visible === true)
+      this.setState({
+        users: filteredUserList,
+      })
+  
+    }
+    this.setState({
+      loading: false,
+      error: null
+    })
+  }
+
+
+
   onListenForUsers = () => {
-    const { preferredGender } = this.props.firebase.authUser
+    const { preferredGender, uid } = this.props.firebase.authUser
+
     console.log("preferredGender = " + preferredGender)
     this.setState({ loading: true });
     try {
       preferredGender === 0
         ? this.props.firebase.users()
-          .orderByChild('preferredGender')
+          .orderByChild('gender')
           .limitToLast(this.state.limit)
-          .on('value', snapshot => {
-            const usersObject = snapshot.val();
-            const usersList = Object.keys(usersObject).map(key => ({
-              ...usersObject[key],
-              uid: key,
-            }))
-            this.setState({
-              users: usersList,
-              loading: false,
-              error: null
-            })
-          })
+          .on('value', snapshot => this.extractFilteredUsers(snapshot, uid))
 
         : this.props.firebase.users()
           .orderByChild('gender')
           .limitToLast(this.state.limit)
           .equalTo(preferredGender)
-          .on('value', snapshot => {
-            const usersObject = snapshot.val();
-            const usersList = Object.keys(usersObject).map(key => ({
-              ...usersObject[key],
-              uid: key,
-            }))
+          .on('value', snapshot => this.extractFilteredUsers(snapshot, uid))
 
-            this.setState({
-              users: usersList,
-              loading: false,
-              error: null
-            })
-          })
     } catch (error) {
       console.log(error.message)
       this.setState({ error })
@@ -97,7 +110,7 @@ class UserSearchList extends Component {
                 <td className="border border-indigo-800">
                   CONNECTED YES/NO
                 </td>
-                <td className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white">
+                <td className="text-white  font-bold text-xs px-4 py-2 rounded-full shadow outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600 hover:shadow-lg">
                   <Link
                     to={{
                       // pathname: `/admin/${user.uid}`,
@@ -107,6 +120,9 @@ class UserSearchList extends Component {
                   >
                     Chat
                 </Link>
+                </td>
+                <td>
+                  <MatchaButton text="Ask for connection" type="button" onClick={() => this.askConnection(user.uid)}/>
                 </td>
               </tr>
             ))}

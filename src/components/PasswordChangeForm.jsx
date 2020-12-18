@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withSnackbar } from 'react-simple-snackbar';
  
 import { withFirebase } from 'services/Firebase';
-import MatchaButton from './MatchaButton';
+import MatchaButton from 'components/MatchaButton';
  
 const INITIAL_STATE = {
   passwordOne: '',

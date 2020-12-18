@@ -17,7 +17,8 @@ class UserItem extends Component {
   }
 
   componentDidMount() {
-    if (this.state.user) {
+    const { user } = this.state
+    if (user) {
       return;
     }
 
@@ -25,7 +26,7 @@ class UserItem extends Component {
 
     this.props.firebase
       .user(this.props.match.params.id)
-      .on('value', snapshot => {
+      .on('value', (snapshot) => {
         this.setState({
           user: snapshot.val(),
           loading: false,
@@ -37,18 +38,16 @@ class UserItem extends Component {
     this.props.firebase.user(this.props.match.params.id).off();
   }
 
-  onSendPasswordResetEmail = () => {
+  onSendPasswordResetEmail() {
     const { openSnackbar } = this.props
     try {
       this.props.firebase.doUseDeviceLanguage()
       this.props.firebase.doPasswordReset(this.state.user.email)
-      openSnackbar("Password reset message sent")
-
+      openSnackbar('Password reset message sent')
     } catch (error) {
       openSnackbar(error.message)
     }
-
-  };
+  }
 
   render() {
     const { user, loading } = this.state;
@@ -58,29 +57,40 @@ class UserItem extends Component {
         {user && (
           <div>
             <p>
-              <strong>ID:</strong> {this.props.match.params.id}
+              <strong>ID:</strong>
+              {' '}
+              {this.props.match.params.id}
             </p>
             <p>
-              <strong>E-Mail:</strong> {user.email}
+              <strong>E-Mail:</strong>
+              {' '}
+              {user.email}
             </p>
             <p>
-              <strong>Username:</strong> {user.username}
+              <strong>Username:</strong>
+              {' '}
+              {user.username}
             </p>
             <p>
-              <strong>Firstrname:</strong> {user.firstname}
+              <strong>Firstrname:</strong>
+              {' '}
+              {user.firstname}
             </p>
             <p>
-              <strong>Lastname:</strong> {user.lastname}
+              <strong>Lastname:</strong>
+              {' '}
+              {user.lastname}
             </p>
             <p>
-              <strong>Description:</strong> {user.description}
+              <strong>Description:</strong>
+              {' '}
+              {user.description}
             </p>
             <p>
               <MatchaButton
                 text="Send Password Reset"
                 onClick={this.onSendPasswordResetEmail}
-              >
-              </MatchaButton>
+              />
             </p>
           </div>
         )}

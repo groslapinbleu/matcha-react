@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Redirect,
-} from "react-router-dom";
+} from 'react-router-dom';
 import Home from 'pages/Home';
 import Chat from 'pages/Chat';
 import Profile from 'pages/Profile';
@@ -31,9 +31,9 @@ function PrivateRoute({ component: Component, authenticated, ...rest }) {
   return (
     <Route
       {...rest}
-      render={(props) => authenticated === true
+      render={(props) => (authenticated === true
         ? <Component {...props} />
-        : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />}
+        : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />)}
     />
   )
 }
@@ -41,13 +41,15 @@ function PrivateRoute({ component: Component, authenticated, ...rest }) {
 // cette fonction est un HOC : Higher Order Component
 // elle renvoit le bon composant si on est authentifié, sinon elle revoit vers
 // la page de login
-function ProtectedRoute({ component: Component, authenticated, admin, ...rest }) {
+function ProtectedRoute({
+  component: Component, authenticated, admin, ...rest
+}) {
   return (
     <Route
       {...rest}
-      render={(props) => (authenticated === true)
+      render={(props) => ((authenticated === true)
         ? admin === true ? <Component {...props} /> : <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-        : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />}
+        : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />)}
     />
   )
 }
@@ -59,9 +61,9 @@ function PublicRoute({ component: Component, authenticated, ...rest }) {
   return (
     <Route
       {...rest}
-      render={(props) => authenticated === false
+      render={(props) => (authenticated === false
         ? <Component {...props} />
-        : <Redirect to='/' />}
+        : <Redirect to="/" />)}
     />
   )
 }
@@ -75,6 +77,7 @@ class App extends Component {
       loading: true,
     };
   }
+
   componentDidMount() {
     // firebase is expected to be provided as a prop
     const { onAuthStateChangedWithRoles } = this.props.firebase
@@ -83,18 +86,18 @@ class App extends Component {
     this.listener = onAuthStateChangedWithRoles((user) => {
       if (user) {
         // TODO: check protected
-        const roles = user.roles
+        const { roles } = user
         console.log('this user has the following roles : ', roles)
-        const admin = roles['ADMIN']===true
+        const admin = roles.ADMIN === true
         this.setState({
           authenticated: true,
-          admin: admin,
+          admin,
           loading: false,
         });
       } else {
         this.setState({
           authenticated: false,
-          admin:false,
+          admin: false,
           loading: false,
         });
       }
@@ -107,69 +110,67 @@ class App extends Component {
   }
 
   render() {
-
     return this.state.loading === true ? (
-      <div className="flex items-center justify-center"><Spinner type='Puff' color='#038E9F' height={50} width={50} /></div>
+      <div className="flex items-center justify-center"><Spinner type="Puff" color="#038E9F" height={50} width={50} /></div>
     ) : (
-        <SnackbarProvider>
-          <Router>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <PrivateRoute
-                path="/profile"
-                authenticated={this.state.authenticated}
-                component={Profile}
-              />
-              <PrivateRoute
-                path="/chat"
-                authenticated={this.state.authenticated}
-                component={Chat}
-              />
-              <ProtectedRoute
-                path="/admin"
-                authenticated={this.state.authenticated}
-                admin={this.state.admin}
-                component={Admin}
-              />
-              <PrivateRoute
-                path="/search"
-                authenticated={this.state.authenticated}
-                component={Search}
-              />
-              <PrivateRoute
-                path="/notification"
-                authenticated={this.state.authenticated}
-                component={Notification}
-              />
-              <PrivateRoute
-                path="/deleteaccount"
-                authenticated={this.state.authenticated}
-                component={DeleteAccount}
-              />
-              <PublicRoute
-                path="/signup"
-                authenticated={this.state.authenticated}
-                component={Signup}
-              />
-              <PublicRoute
-                path="/login"
-                authenticated={this.state.authenticated}
-                component={Login}
-              />
-              <PublicRoute
-                path="/forgotpassword"
-                authenticated={this.state.authenticated}
-                component={ForgotPassword}
-              />
-              <Route component={NotFound} />
-            </Switch>
-          </Router>
-        </SnackbarProvider>
-      );
+      <SnackbarProvider>
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <PrivateRoute
+              path="/profile"
+              authenticated={this.state.authenticated}
+              component={Profile}
+            />
+            <PrivateRoute
+              path="/chat"
+              authenticated={this.state.authenticated}
+              component={Chat}
+            />
+            <ProtectedRoute
+              path="/admin"
+              authenticated={this.state.authenticated}
+              admin={this.state.admin}
+              component={Admin}
+            />
+            <PrivateRoute
+              path="/search"
+              authenticated={this.state.authenticated}
+              component={Search}
+            />
+            <PrivateRoute
+              path="/notification"
+              authenticated={this.state.authenticated}
+              component={Notification}
+            />
+            <PrivateRoute
+              path="/deleteaccount"
+              authenticated={this.state.authenticated}
+              component={DeleteAccount}
+            />
+            <PublicRoute
+              path="/signup"
+              authenticated={this.state.authenticated}
+              component={Signup}
+            />
+            <PublicRoute
+              path="/login"
+              authenticated={this.state.authenticated}
+              component={Login}
+            />
+            <PublicRoute
+              path="/forgotpassword"
+              authenticated={this.state.authenticated}
+              component={ForgotPassword}
+            />
+            <Route component={NotFound} />
+          </Switch>
+        </Router>
+      </SnackbarProvider>
+    );
   }
 }
 
-
-// App is wrapped within the Firebase context 
+// App is wrapped within the Firebase context
 // so that the Firebase instance is available as a prop
 export default withFirebase(App);
