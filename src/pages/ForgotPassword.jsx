@@ -88,7 +88,7 @@ class ForgotPassword extends Component {
                         </div>
                         <hr />
                         <p>Already have an account? <Link className="hover:underline" to="/login">Login</Link> </p>
-                        <p>Don't have an account? <Link className="hover:underline" to="/signup">Sign up</Link></p>
+                        <p>Do not have an account? <Link className="hover:underline" to="/signup">Sign up</Link></p>
                     </form>
                 </MatchaBox>
                 <Footer></Footer>

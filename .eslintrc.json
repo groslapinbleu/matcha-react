@@ -3,10 +3,9 @@
         "browser": true,
         "es2021": true
     },
+    "parser": "babel-eslint",
     "extends": [
-        "plugin:react/recommended",
-        "airbnb"
-    ],
+        "plugin:react/recommended"    ],
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -19,8 +18,8 @@
     ],
     "rules": {
         "semi": "off",
-        "no-unused-expressions": ["error", { "allowTernary": true }]
-
+        "no-unused-expressions": ["error", { "allowTernary": true }],
+        "react/prop-types": "warn"
     },
     "settings": {
         "import/resolver": {

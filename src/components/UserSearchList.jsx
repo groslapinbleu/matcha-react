@@ -46,7 +46,7 @@ class UserSearchList extends Component {
       this.setState({
         users: filteredUserList,
       })
-  
+
     }
     this.setState({
       loading: false,
@@ -110,19 +110,22 @@ class UserSearchList extends Component {
                 <td className="border border-indigo-800">
                   CONNECTED YES/NO
                 </td>
-                <td className="text-white  font-bold text-xs px-4 py-2 rounded-full shadow outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600 hover:shadow-lg">
-                  <Link
-                    to={{
-                      // pathname: `/admin/${user.uid}`,
-                      pathname: `/chat`,
-                      state: { user },
-                    }}
-                  >
-                    Chat
+                <td>
+                  <MatchaButton>
+                    <Link
+                      to={{
+                        // pathname: `/admin/${user.uid}`,
+                        pathname: `/chat`,
+                        state: { user },
+                      }}
+                    >
+
+                      Engage conversation
                 </Link>
+                  </MatchaButton>
                 </td>
                 <td>
-                  <MatchaButton text="Ask for connection" type="button" onClick={() => this.askConnection(user.uid)}/>
+                  <MatchaButton text="Ask for connection" type="button" onClick={() => this.askConnection(user.uid)} />
                 </td>
               </tr>
             ))}
