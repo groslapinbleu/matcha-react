@@ -84,6 +84,11 @@ class UserSearchList extends Component {
     this.props.firebase.users().off();
   }
 
+  foundFriend(uid) {
+    const { authUser } = this.props.firebase
+    return uid in authUser.friends // && authUser.friends[uid] // friends is an object of key/values.
+  }
+
   render() {
     const { users, loading } = this.state;
 
@@ -108,7 +113,10 @@ class UserSearchList extends Component {
                   {user.username}
                 </td>
                 <td className="border border-indigo-800">
-                  CONNECTED YES/NO
+                  {this.foundFriend(user.uid)
+                    ? 'Already my friend'
+                    : 'not my friend yet'
+                  }
                 </td>
                 <td>
                   <MatchaButton>
@@ -119,8 +127,7 @@ class UserSearchList extends Component {
                         state: { user },
                       }}
                     >
-
-                      Engage conversation
+                      Chat
                 </Link>
                   </MatchaButton>
                 </td>
