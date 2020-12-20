@@ -85,67 +85,84 @@ class Firebase {
   // onAuthStateChanged is encapsulated and returns an auth object
   // which is enriched with Realtime DB information
   onAuthStateChangedWithRoles = (next) => {
-    console.log("onAuthStateChangedWithRoles")
-    return this.auth.onAuthStateChanged(async authUser => {
+    console.log("Firebase onAuthStateChangedWithRoles")
+    return this.auth.onAuthStateChanged(authUser => {
       if (authUser) {
         console.log("the user is now signed-in")
-        await this.user(authUser.uid)
-          .once('value')
-          .then(snapshot => {
-            let dbUser = snapshot.val();
-            console.log('dbUser=' + dbUser)
-            let mustWriteInDB = false
-            if (!dbUser) {
-              // since we didn't find data in db, we will need 
-              // to write initial data
-              mustWriteInDB = true
-              dbUser = {
-                ...defaultUserData
+        try {
+          this.user(authUser.uid)
+            .on('value', snapshot => {
+              // console.log("snapshot=" + snapshot)
+              let dbUser = snapshot.val();
+              console.log('dbUser=' + dbUser)
+              let mustWriteInDB = false
+              if (!dbUser) {
+                // since we didn't find data in db, we will need 
+                // to write initial data
+                mustWriteInDB = true
+                dbUser = {
+                  ...defaultUserData
+                }
               }
-            }
 
-            // default username to displayName
-            if (dbUser.username === "") {
-              dbUser.username = authUser.displayName
-            }
+              // default username to displayName
+              if (dbUser.username === "") {
+                dbUser.username = authUser.displayName
+              }
 
-            // default photoUrl
-            if (!dbUser.photoURL) {
-              dbUser.photoURL = authUser.photoURL
-            }
+              // default photoUrl
+              if (!dbUser.photoURL) {
+                dbUser.photoURL = authUser.photoURL
+              }
 
-            // merge auth and db user
-            authUser = {
-              ...dbUser,
-              uid: authUser.uid,
-              email: authUser.email,
-              emailVerified: authUser.emailVerified,
-              providerData: authUser.providerData,
+              // merge auth and db user
+              authUser = {
+                ...dbUser,
+                uid: authUser.uid,
+                email: authUser.email,
+                emailVerified: authUser.emailVerified,
+                providerData: authUser.providerData,
 
-            }
+              }
 
 
-            // store this merged user into current Firebase instance for future use
-            this.authUser = { ...authUser }
-            // debug
-            Object.entries(this.authUser).forEach(val => {
-              const [key, value] = val
-              console.log(key, value)
+              // store this merged user into current Firebase instance for future use
+              this.authUser = { ...authUser }
+              // debug
+              console.log("content of authUser :")
+              Object.entries(this.authUser).forEach(val => {
+                const [key, value] = val
+                console.log(key, value)
+              })
+
+              if (mustWriteInDB) {
+                console.log('writing user to db')
+                try {
+                  this.user(authUser.uid)
+                    .set(authUser)
+                } catch (error) {
+                  // an exception is thrown when the user has been deliberatly deleted : log it and ignore it
+                  console.log('oups, error when writing in db:' + error.message)
+                }
+              }
+              console.log('now calling next with merged user')
+              next(authUser)
             })
 
-            if (mustWriteInDB) {
-              this.user(authUser.uid)
-                .set(authUser)
-            }
+        }
+        catch (error) {
+          console.log("Firebase onAuthStateChangedWithRole, error caught " + error.message)
+        }
 
-          });
       } else {
         // cleanup authUser
         console.log("the user is now signed-out")
+        // FIXME: find a way to free up this listener
+        // this.user(authUser.uid).off()
         this.authUser = null
+        console.log('now calling next with merged user')
+        next(authUser)
       }
-      console.log('now calling next with merged user')
-      next(authUser)
     })
   };
 

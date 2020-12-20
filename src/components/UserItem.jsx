@@ -13,7 +13,9 @@ class UserItem extends Component {
       loading: false,
       user: null,
       ...props.location.state,
-    };
+    }
+    this.onSendPasswordResetEmail = this.onSendPasswordResetEmail.bind(this);
+
   }
 
   componentDidMount() {
@@ -24,7 +26,7 @@ class UserItem extends Component {
 
     this.setState({ loading: true });
 
-    this.props.firebase
+    this.ref = this.props.firebase
       .user(this.props.match.params.id)
       .on('value', (snapshot) => {
         this.setState({
@@ -35,11 +37,13 @@ class UserItem extends Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.user(this.props.match.params.id).off();
+    if (this.ref)
+      this.props.firebase.user(this.props.match.params.id).off('value', this.ref);
   }
 
   onSendPasswordResetEmail() {
     const { openSnackbar } = this.props
+
     const { user } = this.state
     try {
       this.props.firebase.doUseDeviceLanguage()

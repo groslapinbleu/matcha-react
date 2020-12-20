@@ -26,7 +26,7 @@ class Profile extends Component {
   componentDidMount() {
     const { auth, user } = this.props.firebase
     try {
-      user(auth.currentUser.uid)
+      this.ref = user(auth.currentUser.uid)
         .on("value", snapshot => {
           this.setState({ loadingUser: true })
           console.log("Profile ComponentDidMount callback : just read user data from db")
@@ -48,7 +48,7 @@ class Profile extends Component {
   componentWillUnmount() {
     const { auth, user } = this.props.firebase
     if (auth.currentUser)
-      user(auth.currentUser.uid).off()
+      user(auth.currentUser.uid).off('value', this.ref)
   }
 
   // this allows to validate the field when pressing the Enter key
