@@ -16,24 +16,65 @@ class UserSearchList extends Component {
       loading: false,
       users: [],
       error: null,
-      limit: 5
+      limit: 5,
+      toggleRefresh: false
     }
     this.extractFilteredUsers = this.extractFilteredUsers.bind(this);
     this.askConnection = this.askConnection.bind(this);
-
+    this.cancelConnection = this.cancelConnection.bind(this);
   }
 
   componentDidMount() {
     this.onListenForUsers()
   }
 
-  askConnection(userUid) {
+  askConnection(toUser) {
     console.log("askConnection")
-    // const { uid } = this.props.firebase.authUser
-    // this.props.firebase.user(userUid).child('')    
+    const isFriend = this.isFriend(toUser.uid)
+
+    const { authUser, user } = this.props.firebase
+    if (isFriend) {
+      // already friends, don't do anything
+      console.log("askConnection: user " + authUser.uid + " is already friend with " + toUser.uid)
+    } else {
+      const friends = {
+        ...authUser.friends,
+      }
+      friends[toUser.uid] = false
+      user(authUser.uid)
+        .child('friends')
+        .update(friends)
+        .then(
+          this.setState({
+            toggleRefresh: !this.state.toggleRefresh
+          })
+        )
+    }
+  }
+
+  cancelConnection(toUser) {
+    console.log("cancelConnection")
+    const isFriend = this.isFriend(toUser.uid)
+
+    const { authUser, user } = this.props.firebase
+    if (isFriend === false) {
+      const friends = {
+        ...authUser.friends,
+      }
+      friends[toUser.uid] = null
+      user(authUser.uid)
+        .child('friends')
+        .update(friends)
+        .then(
+          this.setState({
+            toggleRefresh: !this.state.toggleRefresh
+          })
+        )
+    }
   }
 
   extractFilteredUsers(snapshot, uid) {
+    console.log("extractFilteredUsers")
     const usersObject = snapshot.val();
     if (usersObject) {
       const usersList = Object.keys(usersObject).map(key => ({
@@ -55,6 +96,16 @@ class UserSearchList extends Component {
   }
 
 
+  isFriend(uid) {
+    const { authUser } = this.props.firebase
+    if (uid in authUser.friends) {
+      if (authUser.friends[uid]) {
+        return true
+      } else
+        return false
+    }
+    return null
+  }
 
   onListenForUsers = () => {
     const { preferredGender, uid } = this.props.firebase.authUser
@@ -76,7 +127,7 @@ class UserSearchList extends Component {
 
     } catch (error) {
       console.log(error.message)
-      this.setState({ error })
+      this.setState({ error, loading: false })
     }
   }
 
@@ -84,12 +135,9 @@ class UserSearchList extends Component {
     this.props.firebase.users().off();
   }
 
-  foundFriend(uid) {
-    const { authUser } = this.props.firebase
-    return uid in authUser.friends // && authUser.friends[uid] // friends is an object of key/values.
-  }
 
   render() {
+    console.log("UserSearchList render")
     const { users, loading } = this.state;
 
     return (
@@ -104,38 +152,56 @@ class UserSearchList extends Component {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
-              <tr key={user.uid}>
-                <td className="border border-indigo-800">
-                  <Avatar username={user.username} photoURL={user.photoURL}></Avatar>
-                </td>
-                <td className="border border-indigo-800">
-                  {user.username}
-                </td>
-                <td className="border border-indigo-800">
-                  {this.foundFriend(user.uid)
-                    ? 'Already my friend'
-                    : 'not my friend yet'
-                  }
-                </td>
-                <td>
-                  <MatchaButton>
-                    <Link
-                      to={{
-                        // pathname: `/admin/${user.uid}`,
-                        pathname: `/chat`,
-                        state: { user },
-                      }}
-                    >
-                      Chat
+            {users.map(user => {
+              const isFriend = this.isFriend(user.uid)
+              return (
+                <tr key={user.uid}>
+                  <td className="border border-indigo-800">
+                    <Avatar username={user.username} photoURL={user.photoURL}></Avatar>
+                  </td>
+                  <td className="border border-indigo-800">
+                    {user.username}
+                  </td>
+                  <td className="border border-indigo-800">
+                    {isFriend === null
+                      ? 'Not friend yet'
+                      : isFriend
+                        ? 'Already my friend'
+                        : 'Request to be friends already sent'
+                    }
+                  </td>
+                  {isFriend
+                    ?
+                    <td>
+                      <MatchaButton>
+                        <Link
+                          to={{
+                            // pathname: `/admin/${user.uid}`,
+                            pathname: `/chat`,
+                            state: { user },
+                          }}
+                        >
+                          Chat
                 </Link>
-                  </MatchaButton>
-                </td>
-                <td>
-                  <MatchaButton text="Ask for connection" type="button" onClick={() => this.askConnection(user.uid)} />
-                </td>
-              </tr>
-            ))}
+                      </MatchaButton>
+                    </td>
+                    : null
+                  }
+                  {isFriend === null // only show connection button if not already friends
+                    ? <td>
+                      <MatchaButton text="Ask for connection" type="button" onClick={() => this.askConnection(user)} />
+                    </td>
+                    : null
+                  }
+                  {isFriend === false // only show connection button if not already friends
+                    ? <td>
+                      <MatchaButton text="Cancel connection request" type="button" onClick={() => this.cancelConnection(user)} />
+                    </td>
+                    : null
+                  }
+                </tr>
+              )
+            })}
           </tbody>
         </table>
         {this.state.error && <li>{this.state.error.message}</li>}

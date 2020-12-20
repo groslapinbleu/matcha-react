@@ -11,6 +11,7 @@ const config = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
 
+// this class encapsulates all authentication and database objects and functions
 class Firebase {
   constructor() {
     app.initializeApp(config);

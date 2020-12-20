@@ -29,7 +29,7 @@ class Profile extends Component {
       user(auth.currentUser.uid)
         .on("value", snapshot => {
           this.setState({ loadingUser: true })
-          console.log("Profile ComponentDidMount : just read user data from db")
+          console.log("Profile ComponentDidMount callback : just read user data from db")
           const userData = snapshot.val();
           if (userData) {
             console.log("Profile ComponentDidMount :  user.description = " + userData.description)
