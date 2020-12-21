@@ -86,7 +86,7 @@ class Login extends Component {
               }}>Reset Password</Link>
             </p>
             <p>
-              Don't have an account? <Link className="hover:underline" to="/signup">Sign up</Link>
+              Do not have an account? <Link className="hover:underline" to="/signup">Sign up</Link>
             </p>
           </form>
         </MatchaBox>

@@ -4,7 +4,7 @@ import { withFirebase } from '../services/Firebase'
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Dropdown from 'components/Dropdown';
-import { regions } from 'models/UserData'
+import { regions } from 'models/User'
 
 
 class Notification extends Component {

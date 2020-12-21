@@ -9,7 +9,7 @@ import { withFirebase } from '../services/Firebase'
 import MatchaBox from '../components/MatchaBox';
 import { isValidEmail } from 'helpers/validation'
 import MatchaButton from "components/MatchaButton"
-import { defaultUserData } from 'models/UserData';
+import { defaultUserData } from 'models/User';
 
 class SignUp extends Component {
 

@@ -27,3 +27,13 @@ export const regions = [
   'Normandie',
   'Auvergne-Rhônes-Alpes',
 ]
+
+export function isBFriendOfA(userA, userB) {
+  if (userB.uid in userA.friends) {
+    if (userA.friends[userB.uid]) {
+      return true
+    } else
+      return false
+  }
+  return null
+}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import MatchaBox from "components/MatchaBox"
 import MatchaButton from "components/MatchaButton"
 import Avatar from "components/Avatar"
-
+import { isBFriendOfA } from 'models/User'
 import { withFirebase } from 'services/Firebase';
 // import * as ROUTES from '../../constants/routes';
 
@@ -21,7 +21,10 @@ class UserSearchList extends Component {
     }
     this.extractFilteredUsers = this.extractFilteredUsers.bind(this);
     this.askConnection = this.askConnection.bind(this);
-    this.cancelConnection = this.cancelConnection.bind(this);
+    this.cancelRequestForConnection = this.cancelRequestForConnection.bind(this);
+    this.acceptConnection = this.acceptConnection.bind(this);
+    this.rejectConnection = this.rejectConnection.bind(this);
+
   }
 
   componentDidMount() {
@@ -30,9 +33,10 @@ class UserSearchList extends Component {
 
   askConnection(toUser) {
     console.log("askConnection")
-    const isFriend = this.isFriend(toUser.uid)
-
     const { authUser, user } = this.props.firebase
+
+    const isFriend = isBFriendOfA(authUser, toUser)
+
     if (isFriend) {
       // already friends, don't do anything
       console.log("askConnection: user " + authUser.uid + " is already friend with " + toUser.uid)
@@ -44,19 +48,14 @@ class UserSearchList extends Component {
       user(authUser.uid)
         .child('friends')
         .update(friends)
-        .then(
-          this.setState({
-            toggleRefresh: !this.state.toggleRefresh
-          })
-        )
     }
   }
 
-  cancelConnection(toUser) {
+  cancelRequestForConnection(toUser) {
     console.log("cancelConnection")
-    const isFriend = this.isFriend(toUser.uid)
-
     const { authUser, user } = this.props.firebase
+    const isFriend = isBFriendOfA(authUser, toUser)
+
     if (isFriend === false) {
       const friends = {
         ...authUser.friends,
@@ -65,12 +64,32 @@ class UserSearchList extends Component {
       user(authUser.uid)
         .child('friends')
         .update(friends)
-        .then(
-          this.setState({
-            toggleRefresh: !this.state.toggleRefresh
-          })
-        )
     }
+  }
+
+  acceptConnection(fromUser) {
+    console.log("acceptConnection")
+    const { authUser, user } = this.props.firebase
+
+    const isFriend = isBFriendOfA(fromUser, authUser)
+
+    if (isFriend) {
+      // already friends, don't do anything
+      console.log("acceptConnection: user " + authUser.uid + " is already friend with " + fromUser.uid)
+    } else {
+      const friends = {
+        ...fromUser.friends,
+      }
+      friends[authUser.uid] = true
+      user(fromUser.uid)
+        .child('friends')
+        .update(friends)
+    }
+  }
+
+  rejectConnection(fromUser) {
+    console.log("rejectConnection")
+
   }
 
   extractFilteredUsers(snapshot, uid) {
@@ -96,16 +115,6 @@ class UserSearchList extends Component {
   }
 
 
-  isFriend(uid) {
-    const { authUser } = this.props.firebase
-    if (uid in authUser.friends) {
-      if (authUser.friends[uid]) {
-        return true
-      } else
-        return false
-    }
-    return null
-  }
 
   onListenForUsers = () => {
     const { preferredGender, uid } = this.props.firebase.authUser
@@ -139,7 +148,7 @@ class UserSearchList extends Component {
   render() {
     console.log("UserSearchList render")
     const { users, loading } = this.state;
-
+    const { authUser } = this.props.firebase
     return (
       <MatchaBox title="Users">
         {loading && <div>Loading ...</div>}
@@ -148,12 +157,14 @@ class UserSearchList extends Component {
             <tr>
               <th className="border border-indigo-800">Photo</th>
               <th className="border border-indigo-800">Username</th>
-              <th className="border border-indigo-800">Connected</th>
+              <th className="border border-indigo-800">Connected on my side</th>
+              <th className="border border-indigo-800">Connected on their side</th>
             </tr>
           </thead>
           <tbody>
             {users.map(user => {
-              const isFriend = this.isFriend(user.uid)
+              const isListedUserMyFriend = isBFriendOfA(authUser, user)
+              const amIFriendOfListedUser = isBFriendOfA(user, authUser)
               return (
                 <tr key={user.uid}>
                   <td className="border border-indigo-800">
@@ -163,14 +174,34 @@ class UserSearchList extends Component {
                     {user.username}
                   </td>
                   <td className="border border-indigo-800">
-                    {isFriend === null
-                      ? 'Not friend yet'
-                      : isFriend
+                    {isListedUserMyFriend === null
+                      ? <> Not my friend yet <br />
+                        <MatchaButton text="Ask for connection" type="button" onClick={() => this.askConnection(user)} />
+                      </>
+                      : isListedUserMyFriend
                         ? 'Already my friend'
-                        : 'Request to be friends already sent'
+                        : <> Request to be friends already sent <br />
+                          <MatchaButton text="Cancel connection request" type="button" onClick={() => this.cancelRequestForConnection(user)} />
+                        </>
+                    }
+
+
+                  </td>
+                  <td className="border border-indigo-800">
+                    {amIFriendOfListedUser === null
+                      ? 'I am not their friend yet'
+                      : amIFriendOfListedUser
+                        ? <> I am their friend already<br />
+                          <MatchaButton text="Reject connection request" type="button" onClick={() => this.rejectConnection(user)} />
+                        </>
+
+                        : <> They have asked me to be friends <br />
+                          <MatchaButton text="Accept connection request" type="button" onClick={() => this.acceptConnection(user)} />
+                          <MatchaButton text="Reject connection request" type="button" onClick={() => this.rejectConnection(user)} />
+                        </>
                     }
                   </td>
-                  {isFriend
+                  {isListedUserMyFriend && amIFriendOfListedUser
                     ?
                     <td>
                       <MatchaButton>
@@ -187,18 +218,7 @@ class UserSearchList extends Component {
                     </td>
                     : null
                   }
-                  {isFriend === null // only show connection button if not already friends
-                    ? <td>
-                      <MatchaButton text="Ask for connection" type="button" onClick={() => this.askConnection(user)} />
-                    </td>
-                    : null
-                  }
-                  {isFriend === false // only show connection button if not already friends
-                    ? <td>
-                      <MatchaButton text="Cancel connection request" type="button" onClick={() => this.cancelConnection(user)} />
-                    </td>
-                    : null
-                  }
+
                 </tr>
               )
             })}

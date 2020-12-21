@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import MatchaButton from 'components/MatchaButton'
 import RadioButtons from 'components/RadioButtons';
 import Dropdown from 'components/Dropdown'
-import { regions, genders } from 'models/UserData'
+import { regions, genders } from 'models/User'
 import { isEmptyString } from '../helpers/validation'
 import Alert from './Alert';
 import Avatar from './Avatar';
