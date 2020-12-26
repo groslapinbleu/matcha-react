@@ -30,12 +30,7 @@ class Search extends Component {
             <div>
                 <Header></Header>
                 <section className="p-5 shadow">
-                    <MatchaBox title="Search criteria">
-                        <form>
-                            <input type="text" placeholder="Enter search string" value={this.state.searchstring} onChange={this.handleChange}></input>
-                        </form>
-                    </MatchaBox>
-                    <MatchaBox title="Search Results">
+                    <MatchaBox title="Search">
                         <UserSearchList></UserSearchList>
                     </MatchaBox>
                 </section>

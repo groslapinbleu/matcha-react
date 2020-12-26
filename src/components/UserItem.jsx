@@ -56,28 +56,24 @@ class UserItem extends Component {
     }
   }
 
-  upgradeToAdmin() {
+  setAdmin(val) {
     const { openSnackbar } = this.props
     const uid = this.state.user.uid
     const { user } = this.props.firebase
     try {
-      user(uid).child('roles').set({ ADMIN: true })
+      user(uid).child('roles').set({ ADMIN: val })
       this.props.history.push("/admin")
     } catch (error) {
       openSnackbar(error.message)
     }
   }
 
+  upgradeToAdmin() {
+    this.setAdmin(true)
+  }
+
   downGradeToNormal() {
-    const { openSnackbar } = this.props
-    const uid = this.state.user.uid
-    const { user } = this.props.firebase
-    try {
-      user(uid).child('roles').set({ ADMIN: false })
-      this.props.history.push("/admin")
-    } catch (error) {
-      openSnackbar(error.message)
-    }
+    this.setAdmin(false)
   }
 
   render() {
@@ -118,6 +114,10 @@ class UserItem extends Component {
               <strong>Description:</strong>
               {' '}
               {user.description}
+            </p>
+            <p>
+              <strong>Visible:</strong>
+              {user.visible ? ' Yes' : ' No'}
             </p>
             <p>
               <strong>Admin:</strong>

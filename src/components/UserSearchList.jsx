@@ -17,18 +17,31 @@ class UserSearchList extends Component {
       users: [],
       error: null,
       limit: 5,
-      toggleRefresh: false
+      searchString: ''
     }
     this.extractFilteredUsers = this.extractFilteredUsers.bind(this);
     this.askConnection = this.askConnection.bind(this);
     this.cancelRequestForConnection = this.cancelRequestForConnection.bind(this);
     this.acceptConnection = this.acceptConnection.bind(this);
     this.rejectConnection = this.rejectConnection.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
 
   }
 
   componentDidMount() {
     this.onListenForUsers()
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    })
+  }
+
+  onSubmit(event) {
+    event.preventDefault()
+    // TODO: implement search
   }
 
   askConnection(toUser) {
@@ -145,13 +158,26 @@ class UserSearchList extends Component {
   }
 
 
+  // this function is used to select users that will be displayed at render time
+  selectUser = (user) => {
+    const { searchString } = this.state
+    const ret = user.username.includes(searchString)
+    // console.log("user.username = " + user.username + " searchString=" + searchString + " includes = " + ret)
+    return ret
+  }
+
   render() {
     console.log("UserSearchList render")
-    const { users, loading } = this.state;
+    const { users, loading } = this.state
+    const filteredUsers = users.filter(this.selectUser)
+
     const { authUser } = this.props.firebase
     return (
       <MatchaBox title="Users">
         {loading && <div>Loading ...</div>}
+        <form onSubmit={this.onSubmit}>
+          <input type="text" name="searchString" placeholder="Enter search string" value={this.state.searchstring} onChange={this.handleChange}></input>
+        </form>
         <table className="table-auto ">
           <thead>
             <tr>
@@ -162,7 +188,7 @@ class UserSearchList extends Component {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => {
+            {filteredUsers.map(user => {
               const isListedUserMyFriend = isBFriendOfA(authUser, user)
               const amIFriendOfListedUser = isBFriendOfA(user, authUser)
               return (
@@ -184,8 +210,6 @@ class UserSearchList extends Component {
                           <MatchaButton text="Cancel connection request" type="button" onClick={() => this.cancelRequestForConnection(user)} />
                         </>
                     }
-
-
                   </td>
                   <td className="border border-indigo-800">
                     {amIFriendOfListedUser === null
