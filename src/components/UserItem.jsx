@@ -14,7 +14,9 @@ class UserItem extends Component {
       user: null,
       ...props.location.state,
     }
-    this.onSendPasswordResetEmail = this.onSendPasswordResetEmail.bind(this);
+    this.onSendPasswordResetEmail = this.onSendPasswordResetEmail.bind(this)
+    this.upgradeToAdmin = this.upgradeToAdmin.bind(this)
+    this.downGradeToNormal = this.downGradeToNormal.bind(this)
 
   }
 
@@ -54,8 +56,34 @@ class UserItem extends Component {
     }
   }
 
+  upgradeToAdmin() {
+    const { openSnackbar } = this.props
+    const uid = this.state.user.uid
+    const { user } = this.props.firebase
+    try {
+      user(uid).child('roles').set({ ADMIN: true })
+      this.props.history.push("/admin")
+    } catch (error) {
+      openSnackbar(error.message)
+    }
+  }
+
+  downGradeToNormal() {
+    const { openSnackbar } = this.props
+    const uid = this.state.user.uid
+    const { user } = this.props.firebase
+    try {
+      user(uid).child('roles').set({ ADMIN: false })
+      this.props.history.push("/admin")
+    } catch (error) {
+      openSnackbar(error.message)
+    }
+  }
+
   render() {
-    const { user, loading } = this.state;
+    const { user, loading } = this.state
+    const isAdmin = user.roles && user.roles.ADMIN && user.roles.ADMIN === true
+
     return (
       <MatchaBox title="User">
         {loading && <div>Loading ...</div>}
@@ -77,7 +105,7 @@ class UserItem extends Component {
               {user.username}
             </p>
             <p>
-              <strong>Firstrname:</strong>
+              <strong>Firstname:</strong>
               {' '}
               {user.firstname}
             </p>
@@ -92,10 +120,26 @@ class UserItem extends Component {
               {user.description}
             </p>
             <p>
+              <strong>Admin:</strong>
+              {isAdmin ? ' Yes' : ' No'}
+            </p>
+            <p>
               <MatchaButton
                 text="Send Password Reset"
                 onClick={this.onSendPasswordResetEmail}
               />
+              {isAdmin
+                ?
+                <MatchaButton
+                  text="Downgrade to normal profile"
+                  onClick={this.downGradeToNormal}
+                />
+                :
+                <MatchaButton
+                  text="Upgrade to admin profile"
+                  onClick={this.upgradeToAdmin}
+                />
+              }
             </p>
           </div>
         )}

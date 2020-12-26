@@ -14,7 +14,7 @@ function Admin({ firebase }) {
       <Header />
       <section className="p-5 shadow">
         <MatchaBox title="Admin Page">
-          <p>This page should only be accessible to admin profiles...</p>
+          <p>This page is only accessible to admin profiles.</p>
         </MatchaBox>
       </section>
       <section className="p-5 shadow">
