@@ -28,8 +28,9 @@ class MessagePage extends Component {
   }
 
   onListenForMessages = () => {
-    const { auth, messages } = this.props.firebase
-    this.setState({ user: auth.currentUser })
+    const { auth, messages, authUser } = this.props.firebase
+    const currentUser = authUser
+    this.setState({ user: currentUser })
     this.setState({ error: null, loadingMessages: true });
     const chatArea = this.myRef.current;
     try {
@@ -78,7 +79,7 @@ class MessagePage extends Component {
           text: this.state.text,
           createdAt: Date.now(),
           userId: this.state.user.uid,
-          displayName: this.state.user.displayName
+          username: this.state.user.username
         });
         this.setState({ text: '' });
         chatArea.scrollBy(0, chatArea.scrollHeight);
@@ -111,7 +112,7 @@ class MessagePage extends Component {
         <div className="mt-8 p-6 h-2/3 overflow-y-scroll bg-indigo-50" ref={this.myRef}>
           {this.state.loadingMessages
             ? <div className="flex items-center justify-center"><Spinner type='Puff' color='#038E9F' height={50} width={50} /></div>
-            : ""}
+            : <div className="flex items-center justify-center"><strong>Forum Page: everyone can talk to everyone</strong></div>}
           {/* chat area */}
           {this.state.messages.map(chat => {
             return <Message key={chat.createdAt} user={this.state.user} chat={chat} onRemoveMessage={this.onRemoveMessage}></Message>

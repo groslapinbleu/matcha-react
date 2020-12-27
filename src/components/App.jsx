@@ -88,7 +88,7 @@ class App extends Component {
       if (user) {
         // TODO: check protected
         const { roles } = user
-        console.log('this user has the following roles : ', roles)
+        // console.log('this user has the following roles : ', roles)
         const admin = roles && roles.ADMIN && roles.ADMIN === true
         this.setState({
           authenticated: true,
@@ -129,7 +129,7 @@ class App extends Component {
                 component={MessagePage}
               />
               <PrivateRoute
-                path="/chat"
+                path="/chat/:id"
                 authenticated={this.state.authenticated}
                 component={Chat}
               />

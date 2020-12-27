@@ -22,7 +22,7 @@ const Message = ({ user, chat, onRemoveMessage }) => {
         {chat.text}
         <span className="text-xs float-right">
           {' '}
-          {chat.displayName}
+          {chat.username}
           {' '}
           -
           {' '}
