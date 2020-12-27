@@ -129,7 +129,7 @@ class App extends Component {
                 component={MessagePage}
               />
               <PrivateRoute
-                path="/chat/:id"
+                path="/chat/:id/:username"
                 authenticated={this.state.authenticated}
                 component={Chat}
               />

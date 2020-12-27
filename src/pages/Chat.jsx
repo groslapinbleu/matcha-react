@@ -113,6 +113,7 @@ class Chat extends Component {
   }
 
   render() {
+    const { username } = this.props.match.params
     return (
       <div className="">
 
@@ -122,7 +123,7 @@ class Chat extends Component {
         <div className="mt-8 p-6 h-2/3 overflow-y-scroll bg-indigo-50" ref={this.myRef}>
           {this.state.loadingMessages
             ? <div className="flex items-center justify-center"><Spinner type='Puff' color='#038E9F' height={50} width={50} /></div>
-            : <div className="flex items-center justify-center"><strong>Private Chat Page</strong></div>}
+            : <div className="flex items-center justify-center"><strong>{`Private Chat Page with ${username}`}</strong></div>}
           {/* chat area */}
           {this.state.messages.map(chat => {
             return <Message key={chat.createdAt} user={this.state.user} chat={chat} onRemoveMessage={this.onRemoveMessage}></Message>

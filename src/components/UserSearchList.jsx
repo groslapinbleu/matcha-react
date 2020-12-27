@@ -232,7 +232,7 @@ class UserSearchList extends Component {
                         <Link
                           to={{
                             // pathname: `/admin/${user.uid}`,
-                            pathname: `/chat/${user.uid}`,
+                            pathname: `/chat/${user.uid}/${user.username}`,
                             state: { user },
                           }}
                         >
