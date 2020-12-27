@@ -208,6 +208,15 @@ class Firebase {
   message = uid => this.db.ref(`messages/${uid}`);
 
   messages = () => this.db.ref('messages');
+
+  // *** chat API ***
+  // every couple of users have their own conversation based on chatId, where
+  // chatId = uid1+uid2 with uid1 < uid2
+  chat = (chatId, uid) => this.db.ref(`chats/${chatId}/${uid}`)
+
+  chats = (chatId) => this.db.ref(`chats/${chatId}`)
+
+    
 }
 
 export default Firebase;

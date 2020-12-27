@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import Home from 'pages/Home';
 import Chat from 'pages/Chat';
+import MessagePage from 'pages/MessagePage';
 import Profile from 'pages/Profile';
 import Signup from 'pages/Signup';
 import Login from 'pages/Login';
@@ -113,61 +114,66 @@ class App extends Component {
     return this.state.loading === true ? (
       <div className="flex items-center justify-center"><Spinner type="Puff" color="#038E9F" height={50} width={50} /></div>
     ) : (
-      <SnackbarProvider>
-        <Router>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <PrivateRoute
-              path="/profile"
-              authenticated={this.state.authenticated}
-              component={Profile}
-            />
-            <PrivateRoute
-              path="/chat"
-              authenticated={this.state.authenticated}
-              component={Chat}
-            />
-            <ProtectedRoute
-              path="/admin"
-              authenticated={this.state.authenticated}
-              admin={this.state.admin}
-              component={Admin}
-            />
-            <PrivateRoute
-              path="/search"
-              authenticated={this.state.authenticated}
-              component={Search}
-            />
-            <PrivateRoute
-              path="/notification"
-              authenticated={this.state.authenticated}
-              component={Notification}
-            />
-            <PrivateRoute
-              path="/deleteaccount"
-              authenticated={this.state.authenticated}
-              component={DeleteAccount}
-            />
-            <PublicRoute
-              path="/signup"
-              authenticated={this.state.authenticated}
-              component={Signup}
-            />
-            <PublicRoute
-              path="/login"
-              authenticated={this.state.authenticated}
-              component={Login}
-            />
-            <PublicRoute
-              path="/forgotpassword"
-              authenticated={this.state.authenticated}
-              component={ForgotPassword}
-            />
-            <Route component={NotFound} />
-          </Switch>
-        </Router>
-      </SnackbarProvider>
-    );
+        <SnackbarProvider>
+          <Router>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <PrivateRoute
+                path="/profile"
+                authenticated={this.state.authenticated}
+                component={Profile}
+              />
+              <PrivateRoute
+                path="/message"
+                authenticated={this.state.authenticated}
+                component={MessagePage}
+              />
+              <PrivateRoute
+                path="/chat"
+                authenticated={this.state.authenticated}
+                component={Chat}
+              />
+              <ProtectedRoute
+                path="/admin"
+                authenticated={this.state.authenticated}
+                admin={this.state.admin}
+                component={Admin}
+              />
+              <PrivateRoute
+                path="/search"
+                authenticated={this.state.authenticated}
+                component={Search}
+              />
+              <PrivateRoute
+                path="/notification"
+                authenticated={this.state.authenticated}
+                component={Notification}
+              />
+              <PrivateRoute
+                path="/deleteaccount"
+                authenticated={this.state.authenticated}
+                component={DeleteAccount}
+              />
+              <PublicRoute
+                path="/signup"
+                authenticated={this.state.authenticated}
+                component={Signup}
+              />
+              <PublicRoute
+                path="/login"
+                authenticated={this.state.authenticated}
+                component={Login}
+              />
+              <PublicRoute
+                path="/forgotpassword"
+                authenticated={this.state.authenticated}
+                component={ForgotPassword}
+              />
+              <Route component={NotFound} />
+            </Switch>
+          </Router>
+        </SnackbarProvider>
+      );
   }
 }
 

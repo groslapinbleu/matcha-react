@@ -53,7 +53,7 @@ function Navbar({ firebase }) {
                                         <Link className={decorateLink('/profile')} to="/profile">Profile</Link>
                                       </li>
                                       <li className="nav-item">
-                                        <Link className={decorateLink('/chat')} to="/chat">Chat</Link>
+                                        <Link className={decorateLink('/message')} to="/message">Message</Link>
                                       </li>
                                       <li className="nav-item">
                                         <Link className={decorateLink('/search')} to="/search">Search</Link>
