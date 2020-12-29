@@ -5,8 +5,9 @@ import RadioButtons from 'components/RadioButtons';
 import Dropdown from 'components/Dropdown'
 import { regions, genders } from 'models/User'
 import { isEmptyString } from '../helpers/validation'
-import Alert from './Alert';
-import Avatar from './Avatar';
+import Alert from './Alert'
+import Avatar from './Avatar'
+import DatePicker from './DatePicker'
 
 class ProfileForm extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class ProfileForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeRadioButton = this.handleChangeRadioButton.bind(this);
     this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this);
+    this.handleDayChange = this.handleDayChange.bind(this);
   }
 
   handleChange(event) {
@@ -49,6 +51,17 @@ class ProfileForm extends Component {
     const userData = {
       ...this.state.userData,
       [event.target.name]: !this.state.userData[event.target.name],
+    }
+    this.setState({
+      userData,
+      modified: true,
+    })
+  }
+
+  handleDayChange(day) {
+    const userData = {
+      ...this.state.userData,
+      birthday: day
     }
     this.setState({
       userData,
@@ -159,6 +172,12 @@ class ProfileForm extends Component {
                         onSelect={this.handleChangeRadioButton}
                       />
 
+                    </td>
+                  </tr>
+                  <tr className="border-b-2 border-solid">
+                    <th>Birthday</th>
+                    <td>
+                      <DatePicker onDayChange={this.handleDayChange} value={this.state.userData.birthday}/>
                     </td>
                   </tr>
                   <tr className="border-b-2 border-solid">

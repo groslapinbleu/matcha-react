@@ -1,5 +1,5 @@
 import React from 'react';
-import formatTime from '../helpers/formatTime'
+import formatTime from 'helpers/formatTime'
 
 const Message = ({ user, chat, onRemoveMessage }) => {
   if (user.uid === chat.userId) {
@@ -18,7 +18,7 @@ const Message = ({ user, chat, onRemoveMessage }) => {
   }
   return (
     <div>
-      <div className="p-1 m-2 max-w-2xl rounded-lg break-words speech-bubble bg-gray-200">
+      <div className="p-1 m-2 max-w-2xl rounded-lg break-words bg-gray-200">
         {chat.text}
         <span className="text-xs float-right">
           {' '}
