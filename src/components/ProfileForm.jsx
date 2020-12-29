@@ -4,7 +4,7 @@ import MatchaButton from 'components/MatchaButton'
 import RadioButtons from 'components/RadioButtons';
 import Dropdown from 'components/Dropdown'
 import { regions, genders } from 'models/User'
-import { isEmptyString } from '../helpers/validation'
+import { isEmptyString, isValidEmail } from '../helpers/validation'
 import Alert from './Alert'
 import Avatar from './Avatar'
 import DatePicker from './DatePicker'
@@ -91,8 +91,12 @@ class ProfileForm extends Component {
   render() {
     const { userData } = this.state
     console.group(`ProfileForm render : userData = ${userData}`)
-    const isInvalid = !this.state.modified || isEmptyString(userData.username) // TODO: mettre une vraie validation ici
-
+    const isInvalid = !this.state.modified 
+    || isEmptyString(userData.username)
+    || !isValidEmail(userData.email) 
+    || userData.birthday === null
+    || userData.birthday === undefined
+    
     return (
       <div>
         { userData

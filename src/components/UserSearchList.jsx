@@ -5,6 +5,7 @@ import MatchaButton from "components/MatchaButton"
 import Avatar from "components/Avatar"
 import { isBFriendOfA } from 'models/User'
 import { withFirebase } from 'services/Firebase'
+import Star from 'Icons/Star'
 import age from 'helpers/age'
 // import * as ROUTES from '../../constants/routes';
 
@@ -206,11 +207,11 @@ class UserSearchList extends Component {
                   </td>
                   <td className="border border-indigo-800">
                     {isListedUserMyFriend === null
-                      ? <> Not my friend yet <br />
-                        <MatchaButton text="Ask for connection" type="button" onClick={() => this.askConnection(user)} />
+                      ? <> Not my friend yet <Star /> <br />
+                        <MatchaButton text="Ask for connection" type="button" onClick={() => this.askConnection(user)}></MatchaButton>
                       </>
                       : isListedUserMyFriend
-                        ? 'Already my friend'
+                        ? <> Already my friend <Star fill='yellow'/> </> 
                         : <> Request to be friends already sent <br />
                           <MatchaButton text="Cancel connection request" type="button" onClick={() => this.cancelRequestForConnection(user)} />
                         </>

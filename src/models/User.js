@@ -5,6 +5,7 @@ export const defaultUserData = {
   lastname: '',
   photoURL: null,
   description: '',
+  birthday: null,
   gender: 0,
   region: 0,
   preferredGender: 0,
