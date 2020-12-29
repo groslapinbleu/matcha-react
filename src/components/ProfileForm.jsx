@@ -8,6 +8,7 @@ import { isEmptyString } from '../helpers/validation'
 import Alert from './Alert'
 import Avatar from './Avatar'
 import DatePicker from './DatePicker'
+import moment from 'moment'
 
 class ProfileForm extends Component {
   constructor(props) {
@@ -15,7 +16,11 @@ class ProfileForm extends Component {
     this.state = {
       error: null,
       modified: false,
-      userData: { ...this.props.user },
+      userData: { 
+        ...this.props.user,
+        birthday: new Date(this.props.user.birthday) // this convertion is needed because
+        // Firebase Realtime db stores Date objects as UTC strings
+        },
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

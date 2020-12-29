@@ -4,7 +4,8 @@ import MatchaBox from "components/MatchaBox"
 import MatchaButton from "components/MatchaButton"
 import Avatar from "components/Avatar"
 import { isBFriendOfA } from 'models/User'
-import { withFirebase } from 'services/Firebase';
+import { withFirebase } from 'services/Firebase'
+import age from 'helpers/age'
 // import * as ROUTES from '../../constants/routes';
 
 
@@ -183,6 +184,7 @@ class UserSearchList extends Component {
             <tr>
               <th className="border border-indigo-800">Photo</th>
               <th className="border border-indigo-800">Username</th>
+              <th className="border border-indigo-800">Age</th>
               <th className="border border-indigo-800">Connected on my side</th>
               <th className="border border-indigo-800">Connected on their side</th>
             </tr>
@@ -198,6 +200,9 @@ class UserSearchList extends Component {
                   </td>
                   <td className="border border-indigo-800">
                     {user.username}
+                  </td>
+                  <td className="border border-indigo-800">
+                    {age(new Date(user.birthday))}
                   </td>
                   <td className="border border-indigo-800">
                     {isListedUserMyFriend === null
