@@ -194,7 +194,12 @@ class UserSearchList extends Component {
             {filteredUsers.map(user => {
               const isListedUserMyFriend = isBFriendOfA(authUser, user)
               const amIFriendOfListedUser = isBFriendOfA(user, authUser)
+              const compatible = (authUser.preferredGender === 0 && user.preferredGender === 0)
+              || (authUser.preferredGender === 0 && authUser.gender == user.preferredGender)
+              || (authUser.preferredGender === user.gender && authUser.gender == user.preferredGender)
+              if (compatible)
               return (
+              
                 <tr key={user.uid}>
                   <td className="border border-indigo-800">
                     <Avatar username={user.username} photoURL={user.photoURL}></Avatar>
