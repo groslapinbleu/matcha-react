@@ -3,8 +3,8 @@ import MatchaBox from '../components/MatchaBox';
 import { withFirebase } from '../services/Firebase'
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import Dropdown from 'components/Dropdown';
-import { regions } from 'models/User'
+import MultiChoiceSelector from 'components/MultiChoiceSelector';
+import { tags } from 'models/User'
 
 
 class Notification extends Component {
@@ -12,7 +12,7 @@ class Notification extends Component {
         console.log("Notification constructor")
         super(props);
         this.state = {
-            selectedElement: 0
+            selectedElements: []
         };
 
     }
@@ -30,14 +30,14 @@ class Notification extends Component {
                 <section className="p-5 shadow">
                     <MatchaBox title="Notification Page">
                         <p>Work In Progress</p>
-                        <Dropdown
-                            selectedElement={this.state.selectedElement}
-                            elementList={regions}
-                            name="region"
-                            className="mr-5"
+                        <MultiChoiceSelector
+                            selectedElements={this.state.selectedElements}
+                            elementList={tags}
+                            name="tags"
+                            className="ml-3 mr-1"
                             onSelect={this.handleChangeDropdown}
-                            >
-                        </Dropdown>
+                            multiple={true}
+                            />
                     </MatchaBox>
                 </section>
                 <Footer></Footer>

@@ -11,7 +11,8 @@ export const defaultUserData = {
   preferredGender: 0,
   visible: false,
   roles: { ADMIN: false },
-  friends: { 1 : false }, // Format: {uid : boolean}
+  friends: { }, // Format: {uid : boolean}
+  tags: [],
 }
 
 export const genders = [
@@ -29,8 +30,22 @@ export const regions = [
   'Auvergne-Rhônes-Alpes',
 ]
 
+export const tags = [
+  'sex',
+  'love',
+  'bondage',
+  'romance',
+  'movies',
+  'literature',
+  'theater',
+  'cooking',
+  'kids', 
+  'money',
+]
+
 export function isBFriendOfA(userA, userB) {
-  if (userB.uid in userA.friends) {
+
+  if (userA.friends && userB.uid in userA.friends) {
     if (userA.friends[userB.uid]) {
       return true
     } else

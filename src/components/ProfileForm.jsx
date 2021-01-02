@@ -3,11 +3,13 @@ import PropTypes from 'prop-types'
 import MatchaButton from 'components/MatchaButton'
 import RadioButtons from 'components/RadioButtons';
 import Dropdown from 'components/Dropdown'
-import { regions, genders } from 'models/User'
+import { defaultUserData, regions, genders, tags } from 'models/User'
 import { isEmptyString, isValidEmail } from '../helpers/validation'
 import Alert from './Alert'
 import Avatar from './Avatar'
 import DatePicker from './DatePicker'
+import MultiChoiceSelector from 'components/MultiChoiceSelector'
+
 
 class ProfileForm extends Component {
   constructor(props) {
@@ -16,6 +18,7 @@ class ProfileForm extends Component {
       error: null,
       modified: false,
       userData: { 
+        ...defaultUserData,
         ...this.props.user,
         birthday: new Date(this.props.user.birthday) // this convertion is needed because
         // Firebase Realtime db stores Date objects as UTC strings
@@ -25,6 +28,7 @@ class ProfileForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeRadioButton = this.handleChangeRadioButton.bind(this);
     this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this);
+    this.handleChangeMultiChoiceSelector = this.handleChangeMultiChoiceSelector.bind(this);
     this.handleDayChange = this.handleDayChange.bind(this);
   }
 
@@ -60,6 +64,20 @@ class ProfileForm extends Component {
       userData,
       modified: true,
     })
+  }
+
+  handleChangeMultiChoiceSelector(name, value) {
+    console.log('handleChangeMultiChoiceSelector')
+
+    const userData = {
+      ...this.state.userData,
+      [name]: value,
+    }
+    this.setState({
+      userData,
+      modified: true,
+    })
+
   }
 
   handleDayChange(day) {
@@ -165,13 +183,6 @@ class ProfileForm extends Component {
                   <tr className="border-b-2 border-solid">
                     <th>Region</th>
                     <td>
-                      {/* <RadioButtons
-                                            selectedElement={this.state.userData.region}
-                                            elementList={regions}
-                                            name="region"
-                                            className="mr-5"
-                                            onSelect={this.handleChangeRadioButton}
-                                        ></RadioButtons> */}
                       <Dropdown
                         selectedElement={this.state.userData.region}
                         elementList={regions}
@@ -186,6 +197,19 @@ class ProfileForm extends Component {
                     <th>Birthday</th>
                     <td>
                       <DatePicker onDayChange={this.handleDayChange} value={this.state.userData.birthday}/>
+                    </td>
+                  </tr>
+                  <tr className="border-b-2 border-solid">
+                    <th>Tags</th>
+                    <td>
+                    <MultiChoiceSelector
+                            selectedElements={this.state.userData.tags}
+                            elementList={tags}
+                            name="tags"
+                            className="ml-3 mr-1"
+                            onSelect={this.handleChangeMultiChoiceSelector}
+                            multiple={true}
+                            />
                     </td>
                   </tr>
                   <tr className="border-b-2 border-solid">
