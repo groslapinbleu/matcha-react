@@ -23,7 +23,7 @@ class Dropdown extends Component {
     }
 
     render() {
-        console.log("Dropdown render")
+        // console.log("Dropdown render")
 
         return (
             <select className={this.props.className}

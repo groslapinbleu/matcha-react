@@ -8,7 +8,6 @@ import { isEmptyString, isValidEmail } from '../helpers/validation'
 import Alert from './Alert'
 import Avatar from './Avatar'
 import DatePicker from './DatePicker'
-import moment from 'moment'
 
 class ProfileForm extends Component {
   constructor(props) {
@@ -195,7 +194,7 @@ class ProfileForm extends Component {
                       <label>
                         <input className="mr-5" type="checkbox" name="visible" checked={userData.visible} onChange={this.handleChangeCheckbox} />
                         I want my profile to be visible to others
-                                      </label>
+                      </label>
                     </td>
                   </tr>
                 </tbody>

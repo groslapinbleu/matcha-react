@@ -7,6 +7,8 @@ import { isBFriendOfA } from 'models/User'
 import { withFirebase } from 'services/Firebase'
 import Star from 'Icons/Star'
 import age from 'helpers/age'
+import Spinner from 'react-loader-spinner'
+
 // import * as ROUTES from '../../constants/routes';
 
 
@@ -130,6 +132,15 @@ class UserSearchList extends Component {
   }
 
 
+  // returns true if the authenticated user and another user
+  // have compatible gender preferrences
+  isCompatible(user) {
+    const { authUser } = this.props.firebase
+
+      return (authUser.preferredGender === 0 && user.preferredGender === 0)
+      || (authUser.preferredGender === 0 && authUser.gender == user.preferredGender)
+      || (authUser.preferredGender === user.gender && authUser.gender == user.preferredGender)
+  }
 
   onListenForUsers = () => {
     const { preferredGender, uid } = this.props.firebase.authUser
@@ -176,7 +187,8 @@ class UserSearchList extends Component {
     const { authUser } = this.props.firebase
     return (
       <MatchaBox title="Users">
-        {loading && <div>Loading ...</div>}
+        {loading && <div className="flex items-center justify-center"><Spinner type='Puff' color='#038E9F' height={50} width={50} /></div>
+        }
         <form onSubmit={this.onSubmit}>
           <input type="text" name="searchString" placeholder="Enter search string" value={this.state.searchstring} onChange={this.handleChange}></input>
         </form>
@@ -194,68 +206,65 @@ class UserSearchList extends Component {
             {filteredUsers.map(user => {
               const isListedUserMyFriend = isBFriendOfA(authUser, user)
               const amIFriendOfListedUser = isBFriendOfA(user, authUser)
-              const compatible = (authUser.preferredGender === 0 && user.preferredGender === 0)
-              || (authUser.preferredGender === 0 && authUser.gender == user.preferredGender)
-              || (authUser.preferredGender === user.gender && authUser.gender == user.preferredGender)
+              const compatible = this.isCompatible(user)
               if (compatible)
-              return (
-              
-                <tr key={user.uid}>
-                  <td className="border border-indigo-800">
-                    <Avatar username={user.username} photoURL={user.photoURL}></Avatar>
-                  </td>
-                  <td className="border border-indigo-800">
-                    {user.username}
-                  </td>
-                  <td className="border border-indigo-800">
-                    {age(new Date(user.birthday))}
-                  </td>
-                  <td className="border border-indigo-800">
-                    {isListedUserMyFriend === null
-                      ? <> Not my friend yet <Star /> <br />
-                        <MatchaButton text="Ask for connection" type="button" onClick={() => this.askConnection(user)}></MatchaButton>
-                      </>
-                      : isListedUserMyFriend
-                        ? <> Already my friend <Star fill='yellow'/> </> 
-                        : <> Request to be friends already sent <br />
-                          <MatchaButton text="Cancel connection request" type="button" onClick={() => this.cancelRequestForConnection(user)} />
-                        </>
-                    }
-                  </td>
-                  <td className="border border-indigo-800">
-                    {amIFriendOfListedUser === null
-                      ? 'I am not their friend yet'
-                      : amIFriendOfListedUser
-                        ? <> I am their friend already<br />
-                          <MatchaButton text="Reject connection request" type="button" onClick={() => this.rejectConnection(user)} />
-                        </>
-
-                        : <> They have asked me to be friends <br />
-                          <MatchaButton text="Accept connection request" type="button" onClick={() => this.acceptConnection(user)} />
-                          <MatchaButton text="Reject connection request" type="button" onClick={() => this.rejectConnection(user)} />
-                        </>
-                    }
-                  </td>
-                  {isListedUserMyFriend && amIFriendOfListedUser
-                    ?
-                    <td>
-                      <MatchaButton>
-                        <Link
-                          to={{
-                            // pathname: `/admin/${user.uid}`,
-                            pathname: `/chat/${user.uid}/${user.username}`,
-                            state: { user },
-                          }}
-                        >
-                          Chat
-                </Link>
-                      </MatchaButton>
+                return (
+                  <tr key={user.uid}>
+                    <td className="border border-indigo-800">
+                      <Avatar username={user.username} photoURL={user.photoURL}></Avatar>
                     </td>
-                    : null
-                  }
+                    <td className="border border-indigo-800">
+                      {user.username}
+                    </td>
+                    <td className="border border-indigo-800">
+                      {age(new Date(user.birthday))}
+                    </td>
+                    <td className="border border-indigo-800">
+                      {isListedUserMyFriend === null
+                        ? <> Not my friend yet <Star /> <br />
+                          <MatchaButton text="Ask for connection" type="button" onClick={() => this.askConnection(user)}></MatchaButton>
+                        </>
+                        : isListedUserMyFriend
+                          ? <> Already my friend <Star fill='yellow' /> </>
+                          : <> Request to be friends already sent <br />
+                            <MatchaButton text="Cancel connection request" type="button" onClick={() => this.cancelRequestForConnection(user)} />
+                          </>
+                      }
+                    </td>
+                    <td className="border border-indigo-800">
+                      {amIFriendOfListedUser === null
+                        ? 'I am not their friend yet'
+                        : amIFriendOfListedUser
+                          ? <> I am their friend already<br />
+                            <MatchaButton text="Reject connection request" type="button" onClick={() => this.rejectConnection(user)} />
+                          </>
 
-                </tr>
-              )
+                          : <> They have asked me to be friends <br />
+                            <MatchaButton text="Accept connection request" type="button" onClick={() => this.acceptConnection(user)} />
+                            <MatchaButton text="Reject connection request" type="button" onClick={() => this.rejectConnection(user)} />
+                          </>
+                      }
+                    </td>
+                    {isListedUserMyFriend && amIFriendOfListedUser
+                      ?
+                      <td>
+                        <MatchaButton>
+                          <Link
+                            to={{
+                              // pathname: `/admin/${user.uid}`,
+                              pathname: `/chat/${user.uid}/${user.username}`,
+                              state: { user },
+                            }}
+                          >
+                            Chat
+                </Link>
+                        </MatchaButton>
+                      </td>
+                      : null
+                    }
+
+                  </tr>
+                )
             })}
           </tbody>
         </table>
