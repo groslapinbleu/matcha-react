@@ -36,7 +36,7 @@ class Notification extends Component {
                             name="tags"
                             className="ml-3 mr-1"
                             onSelect={this.handleChangeDropdown}
-                            multiple={true}
+                            multiple={false}
                             />
                     </MatchaBox>
                 </section>
