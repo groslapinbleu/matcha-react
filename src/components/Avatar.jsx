@@ -1,14 +1,26 @@
-// @flow
+import React from 'react';
+import UserIcon from 'Icons/UserIcon';
+import PropTypes from 'prop-types';
 
-import React from 'react'
-import UserIcon from 'Icons/UserIcon'
+const Avatar = ({ username, photoURL, rounded = true }) => {
+  let className = 'shadow h-24 w-24 mx-auto';
+  if (rounded) {
+    className += ' rounded-full';
+  }
+  return (
+    <>
+      {photoURL ? (
+        <img className={className} src={photoURL} alt={username} />
+      ) : (
+        <UserIcon height={16} width={16} />
+      )}
+    </>
+  );
+};
 
-const Avatar = ({ username, photoURL }) => (
-  <>
-    {photoURL
-      ? <img className="rounded-full shadow h-24 w-24 mx-auto" src={photoURL} alt={username} />
-      : <UserIcon height={16} width={16} />}
-  </>
-)
-
-export default Avatar
+Avatar.propTypes = {
+  username: PropTypes.string,
+  photoURL: PropTypes.string,
+  rounded: PropTypes.bool,
+};
+export default Avatar;
