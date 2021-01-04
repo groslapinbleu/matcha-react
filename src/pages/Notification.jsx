@@ -46,10 +46,7 @@ class Notification extends Component {
         </section>
         <section>
           <MatchaBox title='Images'>
-            <ImageList
-              images={authUser.images}
-              onImageListChange={this.onImageListChange}
-            />
+            <ImageList />
           </MatchaBox>
         </section>
         <Footer></Footer>

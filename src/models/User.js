@@ -13,7 +13,6 @@ export const defaultUserData = {
   roles: { ADMIN: false },
   friends: {}, // Format: {uid : boolean}
   tags: [], // see tags array below
-  images: [],
 };
 
 export const genders = [

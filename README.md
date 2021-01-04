@@ -1,14 +1,14 @@
 # matcha-react
 
 ## Objectives of the project
+
 Develop a dating app with React and Firebase.
 
-
 ## techologies
-This project uses React with tailwindCSS for styling, and Firebase for user management and Firebase Realtime Database as the database.
 
+This project uses React with tailwindCSS for styling, and Firebase for user management, Firebase Realtime Database as the database, and Firebase Storage for image files.
 
-## Firebase rules
+## Firebase Realtime database rules
 
 ```
 {
@@ -39,6 +39,19 @@ This project uses React with tailwindCSS for styling, and Firebase for user mana
     }
 }
 
+```
+
+## Firebase storage rules
+
+```
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /images/{userId}/{anyUserFile=**}{
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
 ```
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

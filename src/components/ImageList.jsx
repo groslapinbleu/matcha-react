@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import Avatar from 'components/Avatar';
+import Image from 'components/Image';
 import PropTypes from 'prop-types';
 import MatchaButton from 'components/MatchaButton';
 import FileInput from 'components/FileInput';
+import { withFirebase } from 'services/Firebase';
+import { readJsonConfigFile } from 'typescript';
 
 class ImageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      edit: false,
+      editList: false,
       addingFile: false,
-      images: [...this.props.images], // make a local copy of the prop
+      items: [],
     };
     this.handleEdit = this.handleEdit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -18,20 +20,53 @@ class ImageList extends Component {
     this.handleNewImage = this.handleNewImage.bind(this);
   }
 
+  componentDidMount() {
+    console.log('ImageList componentDidMount');
+    const { images } = this.props.firebase;
+    const { uid } = this.props.firebase.authUser;
+    const databaseItems = [];
+    const listRef = images(uid);
+    listRef
+      .listAll()
+      .then((res) => {
+        // res.prefixes.forEach(function (folderRef) {
+        //   console.log('folderRef: ' + folderRef);
+        // });
+        res.items.forEach((item) => {
+          console.log('item: ' + item);
+          databaseItems.push(item);
+        });
+        this.setState({ items: databaseItems });
+      })
+      .catch((error) => console.log('error: ' + error.message));
+  }
+
   handleEdit(event) {
-    if (this.state.edit) {
-      // send updated list back to calling component when finishing edit
-      this.props.onImageListChange(this.state.images);
-    }
-    this.setState({ edit: !this.state.edit });
+    console.log('ImageList handleEdit');
+    this.setState({ editList: !this.state.editList, addingFile: false });
   }
 
   handleDelete(event, index) {
     console.log('handleDelete with index ' + index);
-    const images = [...this.state.images];
-    images.splice(index, 1);
-    // TODO: delete image in remote storage
-    this.setState({ images });
+    const items = [...this.state.items];
+    const item = items[index];
+    items.forEach((item, index) => console.log('index ' + index + ' ' + item));
+    console.log('Deleting item ' + item + ' in remote storage');
+    item
+      .delete()
+      .then(() => {
+        console.log('Remote deletion successul');
+        items.forEach((item, index) =>
+          console.log('index ' + index + ' ' + item)
+        );
+
+        items.splice(index, 1);
+        items.forEach((item, index) =>
+          console.log('index ' + index + ' ' + item)
+        );
+        this.setState({ items });
+      })
+      .catch((error) => console.log(error.message));
   }
 
   handleAddImage(event) {
@@ -39,23 +74,45 @@ class ImageList extends Component {
   }
 
   handleNewImage(file) {
-    console.log('new image file : ' + file.name);
-    const images = [...this.state.images];
-    // TODO: store file into remote storage... meanwhile I can preview the local file
-    images.push(URL.createObjectURL(file));
+    const items = [...this.state.items];
+    const { image } = this.props.firebase;
+    const { uid } = this.props.firebase.authUser;
 
-    this.setState({ images, addingFile: false });
+    console.log('Adding item ' + file.name + ' into remote storage');
+    const newItemRef = image(uid, file.name);
+    newItemRef
+      .put(file)
+      .then((snapshot) => {
+        // note : if a file with the same name already exist in the remote storage,
+        // it will be replaced by the new one. Therefor I only add the new one
+        // to state.items if if does not already exist
+        const index = items.findIndex((item) => {
+          return item.name === file.name;
+        });
+        if (index > -1) {
+          console.log(
+            file.name +
+              ' already exists in this.state.items: no need to push it'
+          );
+        } else {
+          items.push(newItemRef);
+          this.setState({ items });
+        }
+        this.setState({ addingFile: false });
+      })
+      .catch((error) => console.log(error.message));
   }
 
   render() {
+    console.log('ImageList render');
     return (
       <div>
         <div className='inline-flex'>
-          {this.state.images.map((image, index) => {
+          {this.state.items.map((item, index) => {
             return (
-              <div key={`image-${image}`} className='mr-5'>
-                <Avatar username={image} photoURL={image} rounded={false} />
-                {this.state.edit ? (
+              <div key={`image-${item.name}`} className='mr-5'>
+                <Image className='' username='' item={item} />
+                {this.state.editList ? (
                   <MatchaButton
                     text='X'
                     onClick={(e) => this.handleDelete(e, index)}
@@ -66,9 +123,9 @@ class ImageList extends Component {
               </div>
             );
           })}
-          {this.state.edit &&
+          {this.state.editList &&
           !this.state.addingFile &&
-          this.state.images.length < 5 ? (
+          this.state.items.length < 5 ? (
             <MatchaButton text='+' onClick={this.handleAddImage} />
           ) : null}
           {this.state.addingFile ? (
@@ -76,7 +133,7 @@ class ImageList extends Component {
           ) : null}
         </div>
         <br />
-        {this.state.edit ? (
+        {this.state.editList ? (
           <MatchaButton text='Done' onClick={this.handleEdit} />
         ) : (
           <MatchaButton text='Edit Images' onClick={this.handleEdit} />
@@ -87,7 +144,6 @@ class ImageList extends Component {
 }
 
 ImageList.propTypes = {
-  images: PropTypes.array.isRequired,
   onImageListChange: PropTypes.func,
 };
-export default ImageList;
+export default withFirebase(ImageList);
