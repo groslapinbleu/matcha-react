@@ -18,9 +18,6 @@ class ProfileForm extends Component {
       modified: false,
       userData: {
         ...defaultUserData,
-        ...this.props.user,
-        birthday: new Date(this.props.user.birthday), // this convertion is needed because
-        // Firebase Realtime db stores Date objects as UTC strings
       },
     };
     this.handleChange = this.handleChange.bind(this);
@@ -31,6 +28,21 @@ class ProfileForm extends Component {
       this
     );
     this.handleDayChange = this.handleDayChange.bind(this);
+  }
+
+  updateStateFromProps() {
+    const userData = {
+      ...this.state.userData,
+      ...this.props.user,
+      birthday: new Date(this.props.user.birthday), // this convertion is needed because
+      // Firebase Realtime db stores Date objects as UTC strings
+    };
+    this.setState({ userData });
+  }
+
+  componentDidMount() {
+    console.log('ProfileForm componentDidMount');
+    this.updateStateFromProps();
   }
 
   handleChange(event) {

@@ -3,6 +3,7 @@ import UserIcon from 'Icons/UserIcon';
 import PropTypes from 'prop-types';
 
 const Avatar = ({ username, photoURL, rounded = true }) => {
+  console.log('Avatar');
   let className = 'shadow h-24 w-24 mx-auto';
   if (rounded) {
     className += ' rounded-full';

@@ -18,6 +18,7 @@ class ImageList extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAddImage = this.handleAddImage.bind(this);
     this.handleNewImage = this.handleNewImage.bind(this);
+    this.handleSelectForProfile = this.handleSelectForProfile.bind(this);
   }
 
   componentDidMount() {
@@ -69,6 +70,23 @@ class ImageList extends Component {
       .catch((error) => console.log(error.message));
   }
 
+  handleSelectForProfile(event, index) {
+    console.log('handleSelectForProfile with index ' + index);
+    // TODO: must write url of selected photo into authenticated User photoURL atribute
+    const { user, auth } = this.props.firebase;
+
+    // 1. get an url from the item
+    const item = this.state.items[index];
+
+    item
+      .getDownloadURL()
+      .then((url) => {
+        // 2. then update the user in firebase realtime db
+        user(auth.currentUser.uid).update({ photoURL: url });
+      })
+      .catch((error) => console.log(error.message));
+  }
+
   handleAddImage(event) {
     this.setState({ addingFile: true });
   }
@@ -113,10 +131,16 @@ class ImageList extends Component {
               <div key={`image-${item.name}`} className='mr-5'>
                 <Image className='' username='' item={item} />
                 {this.state.editList ? (
-                  <MatchaButton
-                    text='X'
-                    onClick={(e) => this.handleDelete(e, index)}
-                  />
+                  <>
+                    <MatchaButton
+                      text='X'
+                      onClick={(e) => this.handleDelete(e, index)}
+                    />
+                    <MatchaButton
+                      text='Select for profile'
+                      onClick={(e) => this.handleSelectForProfile(e, index)}
+                    />
+                  </>
                 ) : (
                   ''
                 )}

@@ -23,11 +23,24 @@ export const genders = [
 
 export const regions = [
   'other', // index 0 is the default value
-  'Ile-de-France',
-  'Hauts-de-France',
-  'Bretagne',
-  'Normandie',
   'Auvergne-Rhônes-Alpes',
+  'Bourgogne-Franche-Comté',
+  'Bretagne',
+  'Centre-Val de Loire',
+  'Corse',
+  'Grand Est',
+  'Hauts-de-France',
+  'Île-de-France',
+  'Normandie',
+  'Nouvelle-Aquitaine',
+  'Occitanie',
+  'Pays-de-Loire',
+  "Provence-Alpes-Côte d'Azur",
+  'Guadeloupe',
+  'Martinique',
+  'Guyane',
+  'La Réunion',
+  'Mayotte',
 ];
 
 export const tags = [
