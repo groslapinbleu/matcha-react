@@ -105,7 +105,9 @@ class Profile extends Component {
           {userData ? (
             <MatchaBox title='Profile'>
               <ProfileForm
-                key={userData.photoURL} // this key will ensure that the ProfileForm will re-render if the photoURL changes
+                key={
+                  userData.photoURL
+                } /* this key will ensure that the ProfileForm will re-render if the photoURL changes */
                 user={userData}
                 onSubmit={this.handleFormSubmit}
               />

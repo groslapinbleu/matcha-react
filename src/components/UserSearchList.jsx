@@ -194,7 +194,7 @@ class UserSearchList extends Component {
 
     const { authUser } = this.props.firebase;
     return (
-      <>
+      <div>
         {loading && (
           <div className='flex items-center justify-center'>
             <Spinner type='Puff' color='#038E9F' height={50} width={50} />
@@ -209,121 +209,155 @@ class UserSearchList extends Component {
             onChange={this.handleChange}
           ></input>
         </form>
-        <table className='table-auto '>
-          <thead>
-            <tr>
-              <th className='border border-indigo-800'>Photo</th>
-              <th className='border border-indigo-800'>Username</th>
-              <th className='border border-indigo-800'>Age</th>
-              <th className='border border-indigo-800'>Connected on my side</th>
-              <th className='border border-indigo-800'>
-                Connected on their side
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredUsers.map((user) => {
-              const isListedUserMyFriend = isBFriendOfA(authUser, user);
-              const amIFriendOfListedUser = isBFriendOfA(user, authUser);
-              const compatible = this.isCompatible(user);
-              if (compatible)
-                return (
-                  <tr key={user.uid}>
-                    <td className='border border-indigo-800'>
-                      <Avatar
-                        username={user.username}
-                        photoURL={user.photoURL}
-                      ></Avatar>
-                    </td>
-                    <td className='border border-indigo-800'>
-                      {user.username}
-                    </td>
-                    <td className='border border-indigo-800'>
-                      {age(new Date(user.birthday))}
-                    </td>
-                    <td className='border border-indigo-800'>
-                      {isListedUserMyFriend === null ? (
-                        <>
-                          {' '}
-                          Not my friend yet <Star /> <br />
-                          <MatchaButton
-                            text='Ask for connection'
-                            type='button'
-                            onClick={() => this.askConnection(user)}
-                          ></MatchaButton>
-                        </>
-                      ) : isListedUserMyFriend ? (
-                        <>
-                          {' '}
-                          Already my friend <Star fill='yellow' />{' '}
-                        </>
-                      ) : (
-                        <>
-                          {' '}
-                          Request to be friends already sent <br />
-                          <MatchaButton
-                            text='Cancel connection request'
-                            type='button'
-                            onClick={() =>
-                              this.cancelRequestForConnection(user)
-                            }
-                          />
-                        </>
-                      )}
-                    </td>
-                    <td className='border border-indigo-800'>
-                      {amIFriendOfListedUser === null ? (
-                        'I am not their friend yet'
-                      ) : amIFriendOfListedUser ? (
-                        <>
-                          {' '}
-                          I am their friend already
-                          <br />
-                          <MatchaButton
-                            text='Reject connection request'
-                            type='button'
-                            onClick={() => this.rejectConnection(user)}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          {' '}
-                          They have asked me to be friends <br />
-                          <MatchaButton
-                            text='Accept connection request'
-                            type='button'
-                            onClick={() => this.acceptConnection(user)}
-                          />
-                          <MatchaButton
-                            text='Reject connection request'
-                            type='button'
-                            onClick={() => this.rejectConnection(user)}
-                          />
-                        </>
-                      )}
-                    </td>
-                    {isListedUserMyFriend && amIFriendOfListedUser ? (
-                      <td>
-                        <MatchaButton>
-                          <Link
-                            to={{
-                              // pathname: `/admin/${user.uid}`,
-                              pathname: `/chat/${user.uid}/${user.username}`,
-                              state: { user },
-                            }}
-                          >
-                            Chat
-                          </Link>
-                        </MatchaButton>
-                      </td>
-                    ) : null}
-                  </tr>
-                );
-            })}
-          </tbody>
-        </table>
-        {this.state.error && <li>{this.state.error.message}</li>}
-      </>
+        <div className='flex items-center justify-center'>
+          <div className='shadow overflow-hidden border-b border-gray-200 rounded-lg flex-shrink'>
+            <table className=' min-w-full divide-y divide-gray-200'>
+              <thead>
+                <tr>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  ></th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    Username
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    Age
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    Connected on my side
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    Connected on their side
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  ></th>
+                </tr>
+              </thead>
+              <tbody className='bg-white divide-y divide-gray-200'>
+                {filteredUsers.map((user) => {
+                  const isListedUserMyFriend = isBFriendOfA(authUser, user);
+                  const amIFriendOfListedUser = isBFriendOfA(user, authUser);
+                  const compatible = this.isCompatible(user);
+                  if (compatible)
+                    return (
+                      <tr key={user.uid}>
+                        <td className='px-6 py-4 whitespace-nowrap'>
+                          <div className='flex items-center'>
+                            <div className='flex-shrink-0 '>
+                              <Avatar
+                                username={user.username}
+                                photoURL={user.photoURL}
+                                small={true}
+                              ></Avatar>
+                            </div>
+                          </div>
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap'>
+                          {user.username}
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap'>
+                          {age(new Date(user.birthday))}
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap'>
+                          {isListedUserMyFriend === null ? (
+                            <>
+                              {' '}
+                              Not my friend yet <Star /> <br />
+                              <MatchaButton
+                                text='Ask for connection'
+                                type='button'
+                                onClick={() => this.askConnection(user)}
+                              ></MatchaButton>
+                            </>
+                          ) : isListedUserMyFriend ? (
+                            <>
+                              {' '}
+                              Already my friend <Star fill='yellow' />{' '}
+                            </>
+                          ) : (
+                            <>
+                              {' '}
+                              Request to be friends already sent <br />
+                              <MatchaButton
+                                text='Cancel connection request'
+                                type='button'
+                                onClick={() =>
+                                  this.cancelRequestForConnection(user)
+                                }
+                              />
+                            </>
+                          )}
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap'>
+                          {amIFriendOfListedUser === null ? (
+                            'I am not their friend yet'
+                          ) : amIFriendOfListedUser ? (
+                            <>
+                              {' '}
+                              I am their friend already
+                              <br />
+                              <MatchaButton
+                                text='Reject connection request'
+                                type='button'
+                                onClick={() => this.rejectConnection(user)}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              {' '}
+                              They have asked me to be friends <br />
+                              <MatchaButton
+                                text='Accept connection request'
+                                type='button'
+                                onClick={() => this.acceptConnection(user)}
+                              />
+                              <MatchaButton
+                                text='Reject connection request'
+                                type='button'
+                                onClick={() => this.rejectConnection(user)}
+                              />
+                            </>
+                          )}
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap'>
+                          {isListedUserMyFriend && amIFriendOfListedUser ? (
+                            <MatchaButton>
+                              <Link
+                                to={{
+                                  // pathname: `/admin/${user.uid}`,
+                                  pathname: `/chat/${user.uid}/${user.username}`,
+                                  state: { user },
+                                }}
+                              >
+                                Chat
+                              </Link>
+                            </MatchaButton>
+                          ) : null}
+                        </td>
+                      </tr>
+                    );
+                })}
+              </tbody>
+            </table>
+          </div>
+          {this.state.error && <li>{this.state.error.message}</li>}
+        </div>
+      </div>
     );
   }
 }
