@@ -5,14 +5,20 @@ import PropTypes from 'prop-types';
 const Avatar = ({ username, photoURL, rounded = true, small = false }) => {
   console.log('Avatar');
   const size = small ? 16 : 24;
-  let className = `shadow h-${size} w-${size} mx-auto`;
+  let className = `shadow  h-${size} w-${size}  mx-auto overflow-hidden`;
   if (rounded) {
     className += ' rounded-full';
   }
   return (
     <>
       {photoURL ? (
-        <img className={className} src={photoURL} alt={username} />
+        <div className={className}>
+          <img
+            className='h-full w-full object-cover'
+            src={photoURL}
+            alt={username}
+          />
+        </div>
       ) : (
         <UserIcon height={size} width={size} />
       )}
