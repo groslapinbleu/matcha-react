@@ -217,10 +217,6 @@ class UserSearchList extends Component {
                   <th
                     scope='col'
                     className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  ></th>
-                  <th
-                    scope='col'
-                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     Username
                   </th>
@@ -265,10 +261,8 @@ class UserSearchList extends Component {
                                 small={true}
                               ></Avatar>
                             </div>
+                            <span className='pl-3 pr-6'>{user.username}</span>
                           </div>
-                        </td>
-                        <td className='px-6 py-4 whitespace-nowrap'>
-                          {user.username}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
                           {age(new Date(user.birthday))}
