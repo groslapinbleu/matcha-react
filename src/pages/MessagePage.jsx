@@ -8,6 +8,7 @@ import { isEmptyString } from '../helpers/validation';
 import { withFirebase } from '../services/Firebase';
 import MatchaButton from 'components/MatchaButton';
 import Check from 'Icons/Check';
+import MatchaBox from 'components/MatchaBox';
 
 class MessagePage extends Component {
   constructor(props) {
@@ -114,8 +115,12 @@ class MessagePage extends Component {
             onClick={this.onNextPage}
           />
         </div>
+        <div className='flex items-center justify-center'>
+          <strong>Forum Page: everyone can talk to everyone</strong>
+        </div>
         <div
-          className='mt-8 p-6 h-2/3 overflow-y-scroll bg-indigo-50'
+          className='m-8 p-6 max-h-96 overflow-y-scroll bg-indigo-50 
+          border-2 border-gray-500'
           ref={this.myRef}
         >
           {this.state.loadingMessages ? (
@@ -123,9 +128,7 @@ class MessagePage extends Component {
               <Spinner type='Puff' color='#038E9F' height={50} width={50} />
             </div>
           ) : (
-            <div className='flex items-center justify-center'>
-              <strong>Forum Page: everyone can talk to everyone</strong>
-            </div>
+            ''
           )}
           {/* chat area */}
           {this.state.messages.map((chat) => {

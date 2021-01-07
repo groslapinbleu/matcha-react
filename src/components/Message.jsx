@@ -7,24 +7,35 @@ const Message = ({ user, chat, onRemoveMessage }) => {
   if (user.uid === chat.userId) {
     return (
       <div className='flex'>
-        <div className='flex-grow p-1 m-2 max-w-2xl rounded-lg break-words speech-bubble bg-green-300 text-white ml-auto'>
-          {chat.text}
-          <span className='text-xs float-right'>
+        <div className='flex-grow'>
+          <div className='p-2 max-w-lg rounded-lg break-words bg-green-400 text-white ml-auto'>
+            {chat.text}
+            <span className='float-right'>
+              <MatchaButton
+                text='x'
+                color='green'
+                onClick={() => onRemoveMessage(chat.uid)}
+              />
+            </span>
+          </div>
+
+          <div className='text-xs float-right'>
             myself -{formatTime(chat.createdAt)}
-          </span>
+          </div>
         </div>
-        <MatchaButton text='X' onClick={() => onRemoveMessage(chat.uid)} />
       </div>
     );
   }
   return (
-    <div>
-      <div className='p-1 m-2 max-w-2xl rounded-lg break-words bg-gray-200'>
-        {chat.text}
-        <span className='text-xs float-right'>
+    <div className='flex'>
+      <div className='flex-grow'>
+        <div className='p-2 max-w-lg rounded-lg break-words bg-gray-200'>
+          {chat.text}
+        </div>
+        <div className='text-xs float-left'>
           {' '}
           {chat.username} - {formatTime(chat.createdAt)}
-        </span>
+        </div>
       </div>
     </div>
   );
