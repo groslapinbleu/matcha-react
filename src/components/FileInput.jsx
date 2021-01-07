@@ -18,9 +18,9 @@ class FileInput extends React.Component {
     console.log(file);
 
     if (file) {
-      if (file.size > 1048576) {
+      if (file.size > 2097152) {
         this.setState({
-          errorMessage: 'Sorry, files should not be bigger than 1Mb',
+          errorMessage: 'Sorry, files should not be bigger than 2Mb',
         });
       } else {
         this.setState({
@@ -36,11 +36,16 @@ class FileInput extends React.Component {
     return (
       <div>
         <div>
+          <div>
+            <label>
+              Select image file (jpeg, png or gif) with a max size of 2 Mb
+            </label>
+          </div>
           <input
             type='file'
             name='myFile'
             onChange={this.uploadFile}
-            accept='image/png, image/jpeg, image/jpg'
+            accept='image/png, image/jpeg, image/jpg, , image/gif'
           />
         </div>
         {errorMessage && <div>{errorMessage}</div>}

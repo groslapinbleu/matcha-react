@@ -194,7 +194,7 @@ class UserSearchList extends Component {
 
     const { authUser } = this.props.firebase;
     return (
-      <div>
+      <div className=''>
         {loading && (
           <div className='flex items-center justify-center'>
             <Spinner type='Puff' color='#038E9F' height={50} width={50} />
@@ -209,9 +209,9 @@ class UserSearchList extends Component {
             onChange={this.handleChange}
           ></input>
         </form>
-        <div className='flex items-center justify-center'>
-          <div className='shadow overflow-hidden border-b border-gray-200 rounded-lg flex-shrink'>
-            <table className=' min-w-full divide-y divide-gray-200'>
+        <div className='flex items-center justify-center '>
+          <div className='shadow  border-b border-gray-200 rounded-lg flex-shrink'>
+            <table className='divide-y divide-gray-200'>
               <thead>
                 <tr>
                   <th

@@ -125,10 +125,10 @@ class ImageList extends Component {
     console.log('ImageList render');
     return (
       <div>
-        <div className='inline-flex'>
+        <div className='space-x-4'>
           {this.state.items.map((item, index) => {
             return (
-              <div key={`image-${item.name}`} className='mr-5'>
+              <div key={`image-${item.name}`} className='mr-5 inline-block'>
                 <Image className='' username='' item={item} />
                 {this.state.editList ? (
                   <>
@@ -150,10 +150,14 @@ class ImageList extends Component {
           {this.state.editList &&
           !this.state.addingFile &&
           this.state.items.length < 5 ? (
-            <MatchaButton text='+' onClick={this.handleAddImage} />
+            <div className='inline-block'>
+              <MatchaButton text='+' onClick={this.handleAddImage} />
+            </div>
           ) : null}
           {this.state.addingFile ? (
-            <FileInput onClick={this.handleNewImage} />
+            <div className='inline-block'>
+              <FileInput onClick={this.handleNewImage} />
+            </div>
           ) : null}
         </div>
         <br />
