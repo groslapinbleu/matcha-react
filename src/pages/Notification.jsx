@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import ImageList from '../components/ImageList';
 import MultiChoiceSelector from 'components/MultiChoiceSelector';
+import MatchaTable from 'components/MatchaTable';
 import { tags } from 'models/User';
 
 class Notification extends Component {
@@ -44,9 +45,9 @@ class Notification extends Component {
             />
           </MatchaBox>
         </section>
-        <section>
-          <MatchaBox title='Images'>
-            <ImageList />
+        <section className='p-5 shadow'>
+          <MatchaBox title='Table'>
+            <MatchaTable />
           </MatchaBox>
         </section>
         <Footer></Footer>

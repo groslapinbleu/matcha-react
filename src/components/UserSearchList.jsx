@@ -209,8 +209,8 @@ class UserSearchList extends Component {
             onChange={this.handleChange}
           ></input>
         </form>
-        <div className='flex items-center justify-center '>
-          <div className='shadow  border-b border-gray-200 rounded-lg flex-shrink'>
+        <div>
+          <div className='shadow  border-b border-gray-200 rounded-lg'>
             <table className='divide-y divide-gray-200'>
               <thead>
                 <tr>
