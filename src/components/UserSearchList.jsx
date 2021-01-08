@@ -333,8 +333,7 @@ class UserSearchList extends Component {
                             <MatchaButton>
                               <Link
                                 to={{
-                                  // pathname: `/admin/${user.uid}`,
-                                  pathname: `/chat/${user.uid}/${user.username}`,
+                                  pathname: `/chat/${user.uid}`,
                                   state: { user },
                                 }}
                               >

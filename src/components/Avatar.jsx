@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 
 const Avatar = ({ username, photoURL, rounded = true, small = false }) => {
   console.log('Avatar');
-  const size = small ? 16 : 24;
-  let className = `shadow  h-${size} w-${size}  mx-auto overflow-hidden`;
+  const size = small ? 8 : 24;
+  let className = `shadow  h-${size} w-${size}  overflow-hidden`;
   if (rounded) {
     className += ' rounded-full';
   }

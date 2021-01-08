@@ -93,7 +93,7 @@ class Chat extends Component {
           text: this.state.text,
           createdAt: Date.now(),
           userId: this.state.user.uid,
-          username: this.state.user.username,
+          // username: this.state.user.username,
         });
         this.setState({ text: '' });
         chatArea.scrollBy(0, chatArea.scrollHeight);
@@ -117,7 +117,7 @@ class Chat extends Component {
   };
 
   render() {
-    const { username } = this.props.match.params;
+    const { username } = this.props.location.state.user;
     return (
       <div className=''>
         <Header />
@@ -147,6 +147,7 @@ class Chat extends Component {
               <Message
                 key={chat.createdAt}
                 user={this.state.user}
+                otherUser={this.props.location.state.user}
                 chat={chat}
                 onRemoveMessage={this.onRemoveMessage}
               ></Message>

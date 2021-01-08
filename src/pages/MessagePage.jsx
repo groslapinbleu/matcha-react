@@ -136,6 +136,7 @@ class MessagePage extends Component {
               <Message
                 key={chat.createdAt}
                 user={this.state.user}
+                otherUser={{ username: chat.username }}
                 chat={chat}
                 onRemoveMessage={this.onRemoveMessage}
               ></Message>

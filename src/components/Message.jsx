@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import formatTime from 'helpers/formatTime';
 import MatchaButton from './MatchaButton';
+import Avatar from 'components/Avatar';
 
-const Message = ({ user, chat, onRemoveMessage }) => {
+const Message = ({ user, otherUser, chat, onRemoveMessage }) => {
   if (user.uid === chat.userId) {
     return (
       <div className='flex'>
@@ -30,11 +31,23 @@ const Message = ({ user, chat, onRemoveMessage }) => {
     <div className='flex'>
       <div className='flex-grow'>
         <div className='p-2 max-w-lg rounded-lg break-words bg-gray-200'>
-          {chat.text}
+          <div className='flex'>
+            {otherUser ? (
+              <div className='flex-shrink-0'>
+                <Avatar
+                  username={otherUser.username}
+                  photoURL={otherUser.photoURL}
+                  small={true}
+                />
+              </div>
+            ) : (
+              ''
+            )}
+            <span className='pl-3 pr-6'>{chat.text}</span>
+          </div>
         </div>
         <div className='text-xs float-left'>
-          {' '}
-          {chat.username} - {formatTime(chat.createdAt)}
+          {otherUser.username} - {formatTime(chat.createdAt)}
         </div>
       </div>
     </div>
@@ -43,6 +56,7 @@ const Message = ({ user, chat, onRemoveMessage }) => {
 Message.propTypes = {
   onRemoveMessage: PropTypes.func,
   user: PropTypes.object,
+  otherUser: PropTypes.object,
   chat: PropTypes.object,
 };
 
