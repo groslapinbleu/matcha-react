@@ -93,7 +93,6 @@ class Chat extends Component {
           text: this.state.text,
           createdAt: Date.now(),
           userId: this.state.user.uid,
-          // username: this.state.user.username,
         });
         this.setState({ text: '' });
         chatArea.scrollBy(0, chatArea.scrollHeight);
@@ -128,8 +127,11 @@ class Chat extends Component {
             onClick={this.onNextPage}
           />
         </div>
+        <div className='flex items-center justify-center'>
+          <strong>{`Private Chat Page with ${username}`}</strong>
+        </div>
         <div
-          className='mt-8 p-6 h-2/3 overflow-y-scroll bg-indigo-50'
+          className='mt-8 mx-1 p-6 max-h-96 overflow-y-scroll bg-indigo-50'
           ref={this.myRef}
         >
           {this.state.loadingMessages ? (
@@ -137,9 +139,7 @@ class Chat extends Component {
               <Spinner type='Puff' color='#038E9F' height={50} width={50} />
             </div>
           ) : (
-            <div className='flex items-center justify-center'>
-              <strong>{`Private Chat Page with ${username}`}</strong>
-            </div>
+            ''
           )}
           {/* chat area */}
           {this.state.messages.map((chat) => {
@@ -155,13 +155,12 @@ class Chat extends Component {
           })}
         </div>
         <form onSubmit={this.handleSubmit} className='flex mx-auto max-w-2xl'>
-          <textarea
+          <input
             className='border-solid border-2 w-full rounded-lg '
             name='text'
             onChange={this.handleChange}
             value={this.state.text}
-          ></textarea>
-          {/* <button type="submit" className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white">Send</button> */}
+          />
           <MatchaButton icon={<Check />} />
           {this.state.error ? (
             <p className='text-red-500'>{this.state.error}</p>

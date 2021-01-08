@@ -77,8 +77,6 @@ class MessagePage extends Component {
       const chatArea = this.myRef.current;
       try {
         await messages().push({
-          // await setArrayValue("messages",{
-          // db.ref(ref).push(data)
           text: this.state.text,
           createdAt: Date.now(),
           userId: this.state.user.uid,
@@ -119,8 +117,7 @@ class MessagePage extends Component {
           <strong>Forum Page: everyone can talk to everyone</strong>
         </div>
         <div
-          className='m-8 p-6 max-h-96 overflow-y-scroll bg-indigo-50 
-          border-2 border-gray-500'
+          className='mt-8 p-6 mx-1 max-h-96 overflow-y-scroll bg-indigo-50'
           ref={this.myRef}
         >
           {this.state.loadingMessages ? (
@@ -144,12 +141,12 @@ class MessagePage extends Component {
           })}
         </div>
         <form onSubmit={this.handleSubmit} className='flex mx-auto max-w-2xl'>
-          <textarea
+          <input
             className='border-solid border-2 w-full rounded-lg '
             name='text'
             onChange={this.handleChange}
             value={this.state.text}
-          ></textarea>
+          />
           <MatchaButton icon={<Check />} />
           {this.state.error ? (
             <p className='text-red-500'>{this.state.error}</p>

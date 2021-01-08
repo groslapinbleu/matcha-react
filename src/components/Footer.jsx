@@ -13,7 +13,7 @@ function Footer() {
               {MISC.APP_NAME}
             </Link>
           </span>
-          2020. Disclaimer: this application is a React learning project, not a
+          2021. Disclaimer: this application is a React learning project, not a
           commmercial application. <br />
           It comes with no level of support, and the data can be deleted
           anytime.
