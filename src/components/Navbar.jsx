@@ -75,6 +75,18 @@ function Navbar({ firebase }) {
                       Notification
                     </Link>
                   </li>
+                  {firebase.authUser &&
+                  firebase.authUser.roles &&
+                  firebase.authUser.roles.ADMIN &&
+                  firebase.authUser.roles.ADMIN === true ? (
+                    <li className='nav-item'>
+                      <Link className={decorateLink('/admin')} to='/admin'>
+                        Admin
+                      </Link>
+                    </li>
+                  ) : (
+                    ''
+                  )}
                   <li className='nav-item'>
                     <MatchaButton
                       text='Logout'
