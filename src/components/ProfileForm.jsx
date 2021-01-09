@@ -18,6 +18,9 @@ class ProfileForm extends Component {
       modified: false,
       userData: {
         ...defaultUserData,
+        ...this.props.user,
+        birthday: new Date(this.props.user.birthday), // this convertion is needed because
+        // Firebase Realtime db stores Date objects as UTC strings
       },
     };
     this.handleChange = this.handleChange.bind(this);

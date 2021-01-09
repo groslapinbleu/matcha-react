@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 
-import userNameGenerator from '../helpers/userNameGenerator'
-import { isEmptyString } from '../helpers/validation'
+import userNameGenerator from '../helpers/userNameGenerator';
+import { isEmptyString } from '../helpers/validation';
 import RefreshButton from '../components/RefreshButton';
-import { withFirebase } from '../services/Firebase'
+import { withFirebase } from '../services/Firebase';
 import MatchaBox from '../components/MatchaBox';
-import { isValidEmail } from 'helpers/validation'
-import MatchaButton from "components/MatchaButton"
+import { isValidEmail } from 'helpers/validation';
+import MatchaButton from 'components/MatchaButton';
 import { defaultUserData } from 'models/User';
 
 class SignUp extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -21,7 +20,7 @@ class SignUp extends Component {
       password: '',
       username: userNameGenerator(),
       firstname: '',
-      lastname: ''
+      lastname: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,28 +31,27 @@ class SignUp extends Component {
 
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   }
 
   setUserName() {
     this.setState({
-      username: userNameGenerator()
+      username: userNameGenerator(),
     });
   }
-
 
   async handleSubmit(event) {
     event.preventDefault();
 
-    const { doCreateUserWithEmailAndPassword, user } = this.props.firebase
+    const { doCreateUserWithEmailAndPassword, user } = this.props.firebase;
     if (isEmptyString(this.state.username))
-      this.setState({ error: 'Display Name cannot be empty' })
+      this.setState({ error: 'Display Name cannot be empty' });
     else {
-      this.setState({ error: '' })
+      this.setState({ error: '' });
 
       doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then(authUser => {
+        .then((authUser) => {
           if (authUser) {
             let dbUser = {
               ...defaultUserData,
@@ -61,19 +59,18 @@ class SignUp extends Component {
               email: this.state.email,
               firstname: this.state.firstname,
               lastname: this.state.lastname,
-            }
-            return user(authUser.user.uid)
-              .set(dbUser)
+            };
+            return user(authUser.user.uid).set(dbUser);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.setState({ error: error.message });
-        })
+        });
     }
   }
 
   async googleSignIn() {
-    const { doSignInWithGoogle } = this.props.firebase
+    const { doSignInWithGoogle } = this.props.firebase;
 
     try {
       await doSignInWithGoogle();
@@ -83,7 +80,7 @@ class SignUp extends Component {
   }
 
   async githubSignIn() {
-    const { doSignInWithGithub } = this.props.firebase
+    const { doSignInWithGithub } = this.props.firebase;
 
     try {
       await doSignInWithGithub();
@@ -92,60 +89,116 @@ class SignUp extends Component {
     }
   }
 
-
   // TODO: add a more thorough validation of email and password
   // with clearer feedback to the user, field by field
   render() {
     const { email, password } = this.state;
 
-    const isInvalid = !isValidEmail(email) || password === ''
+    const isInvalid = !isValidEmail(email) || password === '';
 
     return (
-      <div className="login pt-20">
-        <MatchaBox title="Sign Up">
-
+      <div className='login pt-20'>
+        <MatchaBox title='Sign Up'>
           <form onSubmit={this.handleSubmit}>
             <p>Fill in the form below to create an account.</p>
             <hr />
-            <div className="inline-flex">
-              <input placeholder="Username" name="username" onChange={this.handleChange} value={this.state.username} type="text" required></input><RefreshButton onClick={() => { this.setUserName() }} />
+
+            <div>
+              <input
+                placeholder='Email'
+                name='email'
+                type='email'
+                onChange={this.handleChange}
+                value={this.state.email}
+              ></input>
             </div>
             <div>
-              <input placeholder="Firstname" name="firstname" onChange={this.handleChange} value={this.state.firstname} type="text" required></input>
+              <input
+                placeholder='Password'
+                name='password'
+                onChange={this.handleChange}
+                value={this.state.password}
+                type='password'
+              ></input>
+            </div>
+            <div className='inline-flex'>
+              <input
+                placeholder='Username'
+                name='username'
+                onChange={this.handleChange}
+                value={this.state.username}
+                type='text'
+                required
+              ></input>
+              <RefreshButton
+                onClick={() => {
+                  this.setUserName();
+                }}
+              />
             </div>
             <div>
-              <input placeholder="Lastname" name="lastname" onChange={this.handleChange} value={this.state.lastname} type="text" required></input>
+              <input
+                placeholder='Firstname'
+                name='firstname'
+                onChange={this.handleChange}
+                value={this.state.firstname}
+                type='text'
+                required
+              ></input>
             </div>
             <div>
-              <input placeholder="Email" name="email" type="email" onChange={this.handleChange} value={this.state.email}></input>
+              <input
+                placeholder='Lastname'
+                name='lastname'
+                onChange={this.handleChange}
+                value={this.state.lastname}
+                type='text'
+                required
+              ></input>
             </div>
             <div>
-              <input placeholder="Password" name="password" onChange={this.handleChange} value={this.state.password} type="password"></input>
-            </div>
-            <div>
-              {this.state.error ? <p className="text-red-500">{this.state.error}</p> : null}
-              <MatchaButton text="Sign Up" type="Submit" disabled={isInvalid}></MatchaButton>
+              {this.state.error ? (
+                <p className='text-red-500'>{this.state.error}</p>
+              ) : null}
+              <MatchaButton
+                text='Sign Up'
+                type='Submit'
+                disabled={isInvalid}
+              ></MatchaButton>
 
               <p>Or</p>
               <p>
-                <button className="hover:underline " onClick={this.googleSignIn} type="button">
+                <button
+                  className='hover:underline '
+                  onClick={this.googleSignIn}
+                  type='button'
+                >
                   Sign up with Google
-            </button>
+                </button>
               </p>
               <p>
-                <button className="hover:underline" type="button" onClick={this.githubSignIn}>
+                <button
+                  className='hover:underline'
+                  type='button'
+                  onClick={this.githubSignIn}
+                >
                   Sign up with GitHub
-            </button>
+                </button>
               </p>
             </div>
             <hr />
-            <p>Already have an account? <Link className="hover:underline" to="/login">Login</Link> </p>
+            <p>
+              Already have an account?{' '}
+              <Link className='hover:underline' to='/login'>
+                Login
+              </Link>{' '}
+            </p>
           </form>
         </MatchaBox>
         <Footer></Footer>
       </div>
-    )
+    );
   }
 }
 
-export default withFirebase(SignUp)
+export default withFirebase(SignUp);
