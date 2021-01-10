@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import MatchaButton from 'components/MatchaButton';
 import FileInput from 'components/FileInput';
 import { withFirebase } from 'services/Firebase';
-import { readJsonConfigFile } from 'typescript';
 
 class ImageList extends Component {
   constructor(props) {

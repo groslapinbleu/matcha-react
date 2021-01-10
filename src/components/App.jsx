@@ -103,9 +103,8 @@ class App extends Component {
     const { onAuthStateChangedWithRoles } = this.props.firebase;
     // subscribe to auth state change and store listener
     // for future cleanup
-    this.listener = onAuthStateChangedWithRoles((user) => {
+    this.onAuthStateChangelistener = onAuthStateChangedWithRoles((user) => {
       if (user) {
-        // TODO: check protected
         const { roles } = user;
         // console.log('this user has the following roles : ', roles)
         const admin = roles && roles.ADMIN && roles.ADMIN === true;
@@ -126,7 +125,7 @@ class App extends Component {
 
   componentWillUnmount() {
     // remove listener to avoid emory leak
-    this.listener();
+    this.onAuthStateChangelistener();
   }
 
   render() {

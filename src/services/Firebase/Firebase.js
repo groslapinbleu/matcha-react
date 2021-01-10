@@ -80,6 +80,7 @@ class Firebase {
   doUseDeviceLanguage = () => this.auth.useDeviceLanguage();
 
   // *** Merge Auth and DB User API *** //
+
   // onAuthStateChanged is encapsulated and returns an auth object
   // which is enriched with Realtime DB information
   onAuthStateChangedWithRoles = (next) => {
@@ -181,6 +182,29 @@ class Firebase {
   // *** file API for images ***
   images = (uid) => this.imagesRef.child(uid);
   image = (uid, filename) => this.imagesRef.child(`${uid}/${filename}`);
+
+  // delete a single file
+  deleteFile = async (filePath) => {
+    const ref = this.storage.ref(filePath);
+    return await ref.delete();
+  };
+
+  // delete all files within directory uid
+  deleteFiles = async (uid) => {
+    const ref = this.images(uid);
+    const list = await ref.listAll();
+    let filesDeleted = 0;
+
+    for await (const fileRef of list.items) {
+      await this.deleteFile(fileRef.fullPath);
+      filesDeleted++;
+    }
+    for await (const folderRef of list.prefixes) {
+      filesDeleted += await deleteFolderRecursive(folderRef.fullPath);
+    }
+    console.log('deleteFiles: number of files deleted = ' + filesDeleted);
+    return filesDeleted;
+  };
 }
 
 export default Firebase;
