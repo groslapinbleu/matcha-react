@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RadioButtons snapshot test 1`] = `
+<div>
+  <div>
+    <label>
+      <input
+        checked={true}
+        className="border-indigo-300"
+        name="test"
+        onChange={[Function]}
+        type="radio"
+        value={0}
+      />
+      other
+    </label>
+    <br />
+  </div>
+  <div>
+    <label>
+      <input
+        checked={false}
+        className="border-indigo-300"
+        name="test"
+        onChange={[Function]}
+        type="radio"
+        value={1}
+      />
+      female
+    </label>
+    <br />
+  </div>
+  <div>
+    <label>
+      <input
+        checked={false}
+        className="border-indigo-300"
+        name="test"
+        onChange={[Function]}
+        type="radio"
+        value={2}
+      />
+      male
+    </label>
+    <br />
+  </div>
+</div>
+`;

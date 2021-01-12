@@ -30,6 +30,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "yarn test --coverage",
     "eject": "react-scripts eject",
     "build:styles": "postcss src/styles/tailwind.css -o src/styles.css",
     "prebuild": "yarn  build:styles",
@@ -61,7 +62,8 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.21.5",
-    "eslint-plugin-react-hooks": "^4.2.0"
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "react-test-renderer": "^17.0.1"
   },
   "description": "A dating app to learn React",
   "main": "index.js",
