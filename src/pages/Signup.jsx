@@ -53,12 +53,15 @@ class SignUp extends Component {
       doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
         .then((authUser) => {
           if (authUser) {
+            const now = Date.now();
             let dbUser = {
               ...defaultUserData,
               username: this.state.username,
               email: this.state.email,
               firstname: this.state.firstname,
               lastname: this.state.lastname,
+              created: now,
+              updated: now,
             };
             return user(authUser.user.uid).set(dbUser);
           }

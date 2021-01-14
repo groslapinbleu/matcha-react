@@ -72,12 +72,16 @@ class Profile extends Component {
 
   async handleFormSubmit(userData) {
     const { user, auth } = this.props.firebase;
+    const userDataWithDate = {
+      ...userData,
+      updated: Date.now(),
+    };
     await user(auth.currentUser.uid)
-      .update(userData)
+      .update(userDataWithDate)
       .catch((error) => this.setState({ error: error.message }));
 
     this.setState({
-      userData: userData,
+      userData: userDataWithDate,
     });
   }
 
@@ -106,8 +110,8 @@ class Profile extends Component {
             <MatchaBox title='Profile'>
               <ProfileForm
                 key={
-                  userData.photoURL
-                } /* this key will ensure that the ProfileForm will re-render if the photoURL changes */
+                  userData.updated
+                } /* this key will ensure that the ProfileForm will re-render if the user changes */
                 user={userData}
                 onSubmit={this.handleFormSubmit}
               />

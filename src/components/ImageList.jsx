@@ -81,7 +81,10 @@ class ImageList extends Component {
       .getDownloadURL()
       .then((url) => {
         // 2. then update the user in firebase realtime db
-        user(auth.currentUser.uid).update({ photoURL: url });
+        user(auth.currentUser.uid).update({
+          updated: Date.now(),
+          photoURL: url,
+        });
       })
       .catch((error) => console.log(error.message));
   }

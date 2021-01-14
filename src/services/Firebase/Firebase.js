@@ -98,8 +98,11 @@ class Firebase {
               // since we didn't find data in db, we will need
               // to write initial data
               mustWriteInDB = true;
+              const now = Date.now();
               dbUser = {
                 ...defaultUserData,
+                created: now,
+                updated: now,
               };
             }
 
