@@ -9,7 +9,7 @@ import Alert from './Alert';
 import Avatar from './Avatar';
 import DatePicker from './DatePicker';
 import MultiChoiceSelector from 'components/MultiChoiceSelector';
-import formatTime from 'helpers/formatTime';
+import formatDateTime from 'helpers/formatDateTime';
 
 class ProfileForm extends Component {
   constructor(props) {
@@ -277,7 +277,7 @@ class ProfileForm extends Component {
             </table>
             <MatchaButton text='Validate' type='submit' disabled={isInvalid} />
             <div className='text-center text-xs'>
-              Last updated {formatTime(this.props.user.updated)}
+              Last updated {formatDateTime(this.props.user.updated)}
             </div>
           </form>
         ) : (

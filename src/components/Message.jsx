@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import formatTime from 'helpers/formatTime';
+import formatDateTime from 'helpers/formatDateTime';
 import MatchaButton from './MatchaButton';
 import Avatar from 'components/Avatar';
 
@@ -21,7 +21,7 @@ const Message = ({ user, otherUser, chat, onRemoveMessage }) => {
           </div>
 
           <div className='text-xs float-right'>
-            myself -{formatTime(chat.createdAt)}
+            myself -{formatDateTime(chat.createdAt)}
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@ const Message = ({ user, otherUser, chat, onRemoveMessage }) => {
           </div>
         </div>
         <div className='text-xs float-left'>
-          {otherUser.username} - {formatTime(chat.createdAt)}
+          {otherUser.username} - {formatDateTime(chat.createdAt)}
         </div>
       </div>
     </div>
