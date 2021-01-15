@@ -97,14 +97,16 @@ class ProfileForm extends Component {
   }
 
   handleDayChange(day) {
-    const userData = {
-      ...this.state.userData,
-      birthday: day,
-    };
-    this.setState({
-      userData,
-      modified: true,
-    });
+    if (day) {
+      const userData = {
+        ...this.state.userData,
+        birthday: day.getTime(),
+      };
+      this.setState({
+        userData,
+        modified: true,
+      });
+    }
   }
 
   readUserDataFromState() {
@@ -242,7 +244,7 @@ class ProfileForm extends Component {
                   <td>
                     <DatePicker
                       onDayChange={this.handleDayChange}
-                      value={this.state.userData.birthday}
+                      value={new Date(this.state.userData.birthday)}
                     />
                   </td>
                 </tr>
@@ -277,7 +279,7 @@ class ProfileForm extends Component {
             </table>
             <MatchaButton text='Validate' type='submit' disabled={isInvalid} />
             <div className='text-center text-xs'>
-              Last updated {formatDateTime(this.props.user.updated)}
+              Last updated {formatDateTime(userData.updated)}
             </div>
           </form>
         ) : (

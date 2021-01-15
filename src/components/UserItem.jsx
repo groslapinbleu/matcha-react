@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { withFirebase } from 'services/Firebase';
 import MatchaButton from 'components/MatchaButton';
 import MatchaBox from 'components/MatchaBox';
-import { withSnackbar } from 'react-simple-snackbar'
+import { withSnackbar } from 'react-simple-snackbar';
+import formatDateTime from 'helpers/formatDateTime';
 
 class UserItem extends Component {
   constructor(props) {
@@ -13,15 +14,14 @@ class UserItem extends Component {
       loading: false,
       user: null,
       ...props.location.state,
-    }
-    this.onSendPasswordResetEmail = this.onSendPasswordResetEmail.bind(this)
-    this.upgradeToAdmin = this.upgradeToAdmin.bind(this)
-    this.downGradeToNormal = this.downGradeToNormal.bind(this)
-
+    };
+    this.onSendPasswordResetEmail = this.onSendPasswordResetEmail.bind(this);
+    this.upgradeToAdmin = this.upgradeToAdmin.bind(this);
+    this.downGradeToNormal = this.downGradeToNormal.bind(this);
   }
 
   componentDidMount() {
-    const { user } = this.state
+    const { user } = this.state;
     if (user) {
       return;
     }
@@ -40,84 +40,82 @@ class UserItem extends Component {
 
   componentWillUnmount() {
     if (this.ref)
-      this.props.firebase.user(this.props.match.params.id).off('value', this.ref);
+      this.props.firebase
+        .user(this.props.match.params.id)
+        .off('value', this.ref);
   }
 
   onSendPasswordResetEmail() {
-    const { openSnackbar } = this.props
+    const { openSnackbar } = this.props;
 
-    const { user } = this.state
+    const { user } = this.state;
     try {
-      this.props.firebase.doUseDeviceLanguage()
-      this.props.firebase.doPasswordReset(user.email)
-      openSnackbar('Password reset message sent')
+      this.props.firebase.doUseDeviceLanguage();
+      this.props.firebase.doPasswordReset(user.email);
+      openSnackbar('Password reset message sent');
     } catch (error) {
-      openSnackbar(error.message)
+      openSnackbar(error.message);
     }
   }
 
   setAdmin(val) {
-    const { openSnackbar } = this.props
-    const uid = this.state.user.uid
-    const { user } = this.props.firebase
+    const { openSnackbar } = this.props;
+    const uid = this.state.user.uid;
+    const { user } = this.props.firebase;
     try {
-      user(uid).child('roles').set({ ADMIN: val })
-      this.props.history.push("/admin")
+      user(uid).child('roles').set({ ADMIN: val });
+      this.props.history.push('/admin');
     } catch (error) {
-      openSnackbar(error.message)
+      openSnackbar(error.message);
     }
   }
 
   upgradeToAdmin() {
-    this.setAdmin(true)
+    this.setAdmin(true);
   }
 
   downGradeToNormal() {
-    this.setAdmin(false)
+    this.setAdmin(false);
   }
 
   render() {
-    const { user, loading } = this.state
-    const isAdmin = user.roles && user.roles.ADMIN && user.roles.ADMIN === true
+    const { user, loading } = this.state;
+    const isAdmin = user.roles && user.roles.ADMIN && user.roles.ADMIN === true;
 
     return (
-      <MatchaBox title="User">
+      <MatchaBox title='User'>
         {loading && <div>Loading ...</div>}
         {user && (
           <div>
             <p>
-              <strong>ID:</strong>
-              {' '}
-              {this.props.match.params.id}
+              <strong>ID:</strong> {this.props.match.params.id}
             </p>
             <p>
-              <strong>E-Mail:</strong>
-              {' '}
-              {user.email}
+              <strong>E-Mail:</strong> {user.email}
             </p>
             <p>
-              <strong>Username:</strong>
-              {' '}
-              {user.username}
+              <strong>Username:</strong> {user.username}
             </p>
             <p>
-              <strong>Firstname:</strong>
-              {' '}
-              {user.firstname}
+              <strong>Firstname:</strong> {user.firstname}
             </p>
             <p>
-              <strong>Lastname:</strong>
-              {' '}
-              {user.lastname}
+              <strong>Lastname:</strong> {user.lastname}
             </p>
             <p>
-              <strong>Description:</strong>
-              {' '}
-              {user.description}
+              <strong>Description:</strong> {user.description}
             </p>
             <p>
               <strong>Visible:</strong>
               {user.visible ? ' Yes' : ' No'}
+            </p>
+            <p>
+              <strong>Creation date:</strong>
+              {formatDateTime(user.created)}
+            </p>
+            <p>
+              <strong>Latest update:</strong>
+              {formatDateTime(user.updated)}
             </p>
             <p>
               <strong>Admin:</strong>
@@ -125,21 +123,20 @@ class UserItem extends Component {
             </p>
             <p>
               <MatchaButton
-                text="Send Password Reset"
+                text='Send Password Reset'
                 onClick={this.onSendPasswordResetEmail}
               />
-              {isAdmin
-                ?
+              {isAdmin ? (
                 <MatchaButton
-                  text="Downgrade to normal profile"
+                  text='Downgrade to normal profile'
                   onClick={this.downGradeToNormal}
                 />
-                :
+              ) : (
                 <MatchaButton
-                  text="Upgrade to admin profile"
+                  text='Upgrade to admin profile'
                   onClick={this.upgradeToAdmin}
                 />
-              }
+              )}
             </p>
           </div>
         )}
