@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
-
 import userNameGenerator from '../helpers/userNameGenerator';
 import { isEmptyString } from '../helpers/validation';
 import RefreshButton from '../components/RefreshButton';
@@ -10,6 +9,7 @@ import MatchaBox from '../components/MatchaBox';
 import { isValidEmail } from 'helpers/validation';
 import MatchaButton from 'components/MatchaButton';
 import { defaultUserData } from 'models/User';
+import { withTranslation } from 'react-i18next';
 
 class SignUp extends Component {
   constructor(props) {
@@ -95,20 +95,27 @@ class SignUp extends Component {
   // TODO: add a more thorough validation of email and password
   // with clearer feedback to the user, field by field
   render() {
+    const { t } = this.props;
+
     const { email, password } = this.state;
 
     const isInvalid = !isValidEmail(email) || password === '';
 
     return (
       <div className='login pt-20'>
-        <MatchaBox title='Sign Up'>
+        <MatchaBox title={t('signup_page.signup', 'Sign Up')}>
           <form onSubmit={this.handleSubmit}>
-            <p>Fill in the form below to create an account.</p>
+            <p>
+              {t(
+                'signup_page.fill_in_message',
+                'Fill in the form below to create an account.'
+              )}
+            </p>
             <hr />
 
             <div>
               <input
-                placeholder='Email'
+                placeholder={t('signup_page.email', 'Email')}
                 name='email'
                 type='email'
                 onChange={this.handleChange}
@@ -117,7 +124,7 @@ class SignUp extends Component {
             </div>
             <div>
               <input
-                placeholder='Password'
+                placeholder={t('signup_page.password', 'Password')}
                 name='password'
                 onChange={this.handleChange}
                 value={this.state.password}
@@ -126,7 +133,7 @@ class SignUp extends Component {
             </div>
             <div className='inline-flex'>
               <input
-                placeholder='Username'
+                placeholder={t('signup_page.username', 'Username')}
                 name='username'
                 onChange={this.handleChange}
                 value={this.state.username}
@@ -141,7 +148,7 @@ class SignUp extends Component {
             </div>
             <div>
               <input
-                placeholder='Firstname'
+                placeholder={t('signup_page.firstname', 'Firstname')}
                 name='firstname'
                 onChange={this.handleChange}
                 value={this.state.firstname}
@@ -151,7 +158,7 @@ class SignUp extends Component {
             </div>
             <div>
               <input
-                placeholder='Lastname'
+                placeholder={t('signup_page.lastname', 'Lastname')}
                 name='lastname'
                 onChange={this.handleChange}
                 value={this.state.lastname}
@@ -164,19 +171,19 @@ class SignUp extends Component {
                 <p className='text-red-500'>{this.state.error}</p>
               ) : null}
               <MatchaButton
-                text='Sign Up'
-                type='Submit'
+                text={t('signup_page.signup_button', 'Sign Up')}
+                type='submit'
                 disabled={isInvalid}
               ></MatchaButton>
 
-              <p>Or</p>
+              <p>{t('signup_page.or', 'Or')}</p>
               <p>
                 <button
                   className='hover:underline '
                   onClick={this.googleSignIn}
                   type='button'
                 >
-                  Sign up with Google
+                  {t('signup_page.signup_with_google', 'Sign up with Google')}
                 </button>
               </p>
               <p>
@@ -185,15 +192,18 @@ class SignUp extends Component {
                   type='button'
                   onClick={this.githubSignIn}
                 >
-                  Sign up with GitHub
+                  {t('signup_page.signup_with_github', 'Sign up with Github')}
                 </button>
               </p>
             </div>
             <hr />
             <p>
-              Already have an account?{' '}
+              {t(
+                'signup_page.already_have_account',
+                'Already have an account?'
+              )}{' '}
               <Link className='hover:underline' to='/login'>
-                Login
+                {t('signup_page.login', 'Login')}
               </Link>{' '}
             </p>
           </form>
@@ -204,4 +214,4 @@ class SignUp extends Component {
   }
 }
 
-export default withFirebase(SignUp);
+export default withTranslation()(withFirebase(SignUp));

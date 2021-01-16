@@ -16,6 +16,32 @@
   },
   "create_account": "Create New Account",
   "login_to_account": "Login to Your Account",
+  "login_page": {
+    "login_to": "Login to",
+    "fill_in_message": "Fill in the form below to login to your account.",
+    "email": "Email",
+    "password": "Password",
+    "login_button": "Login",
+    "forgot_password": "Forgot your password?",
+    "reset_password": "Reset Password",
+    "no_account": "Do not have an account?",
+    "signup": "Sign Up"
+  },
   "empty_page": "Sorry, there is nothing here!",
-  "search_users": "Search other users"
+  "search_users": "Search other users",
+  "signup_page": {
+    "signup": "Sign Up",
+    "fill_in_message": "Fill in the form below to create an account.",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "signup_button": "Sign Up",
+    "or": "Or",
+    "signup_with_google": "Sign up with Google",
+    "signup_with_github": "Sign up with Github",
+    "already_have_account": "Already have an account?",
+    "login": "Login"
+  }
 }

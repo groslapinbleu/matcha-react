@@ -16,6 +16,32 @@
   },
   "create_account": "Créer un nouveau compte",
   "login_to_account": "Connectez-vous à votre compte",
+  "login_page": {
+    "login_to": "Connexion à",
+    "fill_in_message": "Veuillez remplir le formulaire ci-dessous pour vous connecter à votre compte.",
+    "email": "Email",
+    "password": "Mot de passe",
+    "login_button": "Connexion",
+    "forgot_password": "Mot de passe oublié ?",
+    "reset_password": "Réinitialiser votre mot de passe",
+    "no_account": "Vous n'avez pas de compte ?",
+    "signup": "Inscription"
+  },
   "empty_page": "Désolé, il n'y a rien ici !",
-  "search_users": "Rechercher des utilisateurs"
+  "search_users": "Rechercher des utilisateurs",
+  "signup_page": {
+    "signup": "Inscription",
+    "fill_in_message": "Veuillez remplir le formulaire ci-dessous pour créer un compte.",
+    "email": "Email",
+    "password": "Mot de passe",
+    "username": "Pseudo",
+    "firstname": "Prénom",
+    "lastname": "Nom de famille",
+    "signup_button": "Inscription",
+    "or": "Ou",
+    "signup_with_google": "Inscription avec Google",
+    "signup_with_github": "Inscription avec Github",
+    "already_have_account": "Vous avez déjà un compte ?",
+    "login": "Connexion"
+  }
 }

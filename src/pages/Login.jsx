@@ -1,21 +1,22 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 // import Header from "../components/Header";
 // import { signin } from "../helpers/auth";
-import Footer from '../components/Footer'
-import MatchaBox from '../components/MatchaBox'
-import { withFirebase } from '../services/Firebase'
-import * as MISC from '../constants/miscConsts'
-import MatchaButton from 'components/MatchaButton'
-import {isValidEmail} from 'helpers/validation'
+import Footer from '../components/Footer';
+import MatchaBox from '../components/MatchaBox';
+import { withFirebase } from '../services/Firebase';
+import * as MISC from '../constants/miscConsts';
+import MatchaButton from 'components/MatchaButton';
+import { isValidEmail } from 'helpers/validation';
+import { withTranslation } from 'react-i18next';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       error: null,
-      email: "",
-      password: ""
+      email: '',
+      password: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,70 +24,88 @@ class Login extends Component {
 
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   }
 
   async handleSubmit(event) {
     event.preventDefault();
-    this.setState({ error: "" });
+    this.setState({ error: '' });
     try {
       // firebase instance is provided via a prop
-      await this.props.firebase.doSignInWithEmailAndPassword(this.state.email, this.state.password);
+      await this.props.firebase.doSignInWithEmailAndPassword(
+        this.state.email,
+        this.state.password
+      );
     } catch (error) {
       this.setState({ error: error.message });
     }
   }
 
   render() {
-    const { email, password } = this.state
-    const isInvalid = !isValidEmail(email) || password === ''
+    const { t } = this.props;
+
+    const { email, password } = this.state;
+    const isInvalid = !isValidEmail(email) || password === '';
+    const title = t('login_page.login_to', 'Login to') + ' ' + MISC.APP_NAME;
 
     return (
-      <div className="profile pt-20">
-        <MatchaBox title={`Login to ${MISC.APP_NAME}`}>
-          <form className=""
-            autoComplete="off"
-            onSubmit={this.handleSubmit}
-          >
-              
-            <p>Fill in the form below to login to your account.</p>
+      <div className='profile pt-20'>
+        <MatchaBox title={title}>
+          <form className='' autoComplete='off' onSubmit={this.handleSubmit}>
+            <p>
+              {t(
+                'login_page.fill_in_message',
+                'Fill in the form below to login to your account.'
+              )}
+            </p>
             <hr />
             <div>
               <input
-                placeholder="Email"
-                name="email"
-                type="email"
+                placeholder={t('login_page.email', 'Email')}
+                name='email'
+                type='email'
                 onChange={this.handleChange}
                 value={this.state.email}
               />
             </div>
             <div>
               <input
-                placeholder="Password"
-                name="password"
+                placeholder={t('login_page.password', 'Password')}
+                name='password'
                 onChange={this.handleChange}
                 value={this.state.password}
-                type="password"
+                type='password'
               />
             </div>
             <div>
-              {this.state.error ? (
-                <p>{this.state.error}</p>
-              ) : null}
-              <MatchaButton text="Login" type="submit" disabled={isInvalid}></MatchaButton>
+              {this.state.error ? <p>{this.state.error}</p> : null}
+              <MatchaButton
+                text={t('login_page.login_button', 'Login')}
+                type='submit'
+                disabled={isInvalid}
+              ></MatchaButton>
             </div>
             <hr />
             <p>
-              Forgot your password? <Link className="hover:underline" to={{
-                pathname: '/forgotpassword',
-                state: {
-                  email: this.state.email
-                }
-              }}>Reset Password</Link>
+              {t('login_page.forgot_password', 'Forgot your password?')}{' '}
+              <Link
+                className='hover:underline'
+                to={{
+                  pathname: '/forgotpassword',
+                  state: {
+                    email: this.state.email,
+                  },
+                }}
+              >
+                {t('login_page.reset_password', 'Reset Password')}
+              </Link>
             </p>
             <p>
-              Do not have an account? <Link className="hover:underline" to="/signup">Sign up</Link>
+              {t('login_page.no_account', 'Do not have an account?')}{' '}
+              <Link className='hover:underline' to='/signup'>
+                {t('login_page.signup', 'Sign Up')}
+              </Link>
             </p>
           </form>
         </MatchaBox>
@@ -96,6 +115,6 @@ class Login extends Component {
   }
 }
 
-// Login is wrapped within the Firebase context 
+// Login is wrapped within the Firebase context
 // so that the Firebase instance is available as a prop
-export default withFirebase(Login)
+export default withTranslation()(withFirebase(Login));
