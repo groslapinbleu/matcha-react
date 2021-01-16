@@ -18,7 +18,7 @@ i18n
 
     //lng: 'en',
     fallbackLng: 'en',
-    whitelist: ['en', 'fr', 'fr-FR'],
+    whitelist: ['en', 'fr'],
 
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default

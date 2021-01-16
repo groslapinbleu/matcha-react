@@ -7,6 +7,8 @@ import ImageList from '../components/ImageList';
 import MultiChoiceSelector from 'components/MultiChoiceSelector';
 import MatchaTable from 'components/MatchaTable';
 import { tags } from 'models/User';
+import { withTranslation } from 'react-i18next';
+import navigatorLanguage from 'helpers/navigatorLanguage';
 
 class Notification extends Component {
   constructor(props) {
@@ -28,6 +30,7 @@ class Notification extends Component {
 
   render() {
     const { authUser } = this.props.firebase;
+    const { i18n } = this.props;
 
     return (
       <div>
@@ -50,10 +53,16 @@ class Notification extends Component {
             <MatchaTable />
           </MatchaBox>
         </section>
+        <section className='p-5 shadow'>
+          <MatchaBox title='Languages'>
+            <div>Navigator language = {navigatorLanguage()}</div>
+            <div>i18next language = {i18n.language}</div>
+          </MatchaBox>
+        </section>
         <Footer></Footer>
       </div>
     );
   }
 }
 
-export default withFirebase(Notification);
+export default withTranslation()(withFirebase(Notification));

@@ -9,7 +9,7 @@ module.exports = {
 
     default: ['JsxLexer'],
   },
-  locales: ['en', 'fr', 'fr-FR'],
+  locales: ['en', 'fr'],
   output: 'public/locales/$LOCALE/$NAMESPACE.json',
   input: ['src/**/*.{js,jsx,ts,tsx}'],
   verbose: true,
