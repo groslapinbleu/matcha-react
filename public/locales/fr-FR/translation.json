@@ -9,10 +9,13 @@
   "logout": "Déconnexion",
   "signin": "Connexion",
   "signup": "Inscription",
+  "admin_page_disclaimer": "Cette page n'est accessible qu'aux profils admin.",
   "welcome_home": {
     "part1": "Bienvenue à ",
     "part2": "On se retrouve ici !"
   },
   "create_account": "Créer un nouveau compte",
-  "login_to_account": "Connectez-vous à votre compte"
+  "login_to_account": "Connectez-vous à votre compte",
+  "empty_page": "Désolé, il n'y a rien ici !",
+  "search_users": "Rechercher des utilisateurs"
 }

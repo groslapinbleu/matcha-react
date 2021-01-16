@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 // to display the correct date format
 export default function DatePicker({ onDayChange, value }) {
   const navigatorLanguage = getNavigatorLanguage();
-  console.log('navigatorLanguage = ' + navigatorLanguage);
+  // console.log('navigatorLanguage = ' + navigatorLanguage);
   return (
     <div>
       <DayPickerInput

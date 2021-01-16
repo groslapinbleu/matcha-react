@@ -9,10 +9,13 @@
   "logout": "Logout",
   "signin": "Sign In",
   "signup": "Sign Up",
+  "admin_page_disclaimer": "This page is only accessible to admin profiles.",
   "welcome_home": {
     "part1": "Welcome to ",
     "part2": "Meet me here!"
   },
   "create_account": "Create New Account",
-  "login_to_account": "Login to Your Account"
+  "login_to_account": "Login to Your Account",
+  "empty_page": "Sorry, there is nothing here!",
+  "search_users": "Search other users"
 }
