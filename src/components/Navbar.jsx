@@ -4,6 +4,7 @@ import { withFirebase } from 'services/Firebase';
 import * as MISC from 'constants/miscConsts';
 import MenuIcon from 'Icons/MenuIcon';
 import MatchaButton from './MatchaButton';
+import { useTranslation } from 'react-i18next';
 
 // inspired from https://www.creative-tim.com/learning-lab/tailwind-starter-kit/documentation/react/navbars
 function Navbar({ firebase }) {
@@ -18,6 +19,7 @@ function Navbar({ firebase }) {
     }
     return deco;
   };
+  const { t } = useTranslation();
 
   return (
     <>
@@ -49,12 +51,12 @@ function Navbar({ firebase }) {
                 <>
                   <li className='nav-item'>
                     <span className='px-3 py-2 flex items-center text-xs font-bold leading-snug text-gray-200'>
-                      Hello {firebase.auth.currentUser.email}
+                      {t('welcome', 'Hello ')} {firebase.auth.currentUser.email}
                     </span>
                   </li>
                   <li className='nav-item'>
                     <Link className={decorateLink('/profile')} to='/profile'>
-                      Profile
+                      {t('profile', 'Profile ')}
                     </Link>
                   </li>
                   <li className='nav-item'>
@@ -64,7 +66,7 @@ function Navbar({ firebase }) {
                   </li>
                   <li className='nav-item'>
                     <Link className={decorateLink('/search')} to='/search'>
-                      Search
+                      {t('search', 'Search')}
                     </Link>
                   </li>
                   <li className='nav-item'>
@@ -89,7 +91,7 @@ function Navbar({ firebase }) {
                   )}
                   <li className='nav-item'>
                     <MatchaButton
-                      text='Logout'
+                      text={t('logout', 'Logout')}
                       onClick={() => firebase.auth.signOut()}
                     />
                   </li>
@@ -98,12 +100,12 @@ function Navbar({ firebase }) {
                 <>
                   <li className='nav-item'>
                     <Link className={decorateLink('/login')} to='/login'>
-                      Sign In
+                      {t('signin', 'Sign In')}
                     </Link>
                   </li>
                   <li className='nav-item'>
                     <Link className={decorateLink('/signup')} to='/signup'>
-                      Sign Up
+                      {t('signup', 'Sign Up')}
                     </Link>
                   </li>
                 </>

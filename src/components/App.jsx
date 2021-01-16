@@ -16,9 +16,7 @@ import NotFound from 'pages/NotFound';
 import DeleteAccount from 'pages/DeleteAccount';
 import Notification from 'pages/Notification';
 import Search from 'pages/Search';
-
 import { withFirebase } from 'services/Firebase';
-
 import Spinner from 'react-loader-spinner';
 import SnackbarProvider from 'react-simple-snackbar';
 

@@ -7,6 +7,7 @@ Develop a dating app with React and Firebase.
 ## techologies
 
 This project uses React with tailwindCSS for styling, and Firebase for user management, Firebase Realtime Database as the database, and Firebase Storage for image files.
+It also uses i18next for internationalization (only English ad French for now), as per https://www.robinwieruch.de/react-internationalization
 
 ## Firebase Realtime database rules
 

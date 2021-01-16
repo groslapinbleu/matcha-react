@@ -1,0 +1,18 @@
+{
+  "disclaimer": {
+    "part1": "2021. Avertissement : cette application est un projet d'apprentissage de React, et non une application commmerciale.",
+    "part2": "Il n'y a pas de support fourni, et des données peuvent être supprimées à tout instant."
+  },
+  "welcome": "Bienvenue ",
+  "profile": "Profil ",
+  "search": "Rechercher",
+  "logout": "Déconnexion",
+  "signin": "Connexion",
+  "signup": "Inscription",
+  "welcome_home": {
+    "part1": "Bienvenue à ",
+    "part2": "On se retrouve ici !"
+  },
+  "create_account": "Créer un nouveau compte",
+  "login_to_account": "Connectez-vous à votre compte"
+}
