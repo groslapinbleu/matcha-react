@@ -12,7 +12,7 @@
   "admin_page_disclaimer": "This page is only accessible to admin profiles.",
   "welcome_home": {
     "part1": "Welcome to ",
-    "part2": "Meet me here!"
+    "part2": "Nice to see you back!"
   },
   "create_account": "Create New Account",
   "login_to_account": "Login to Your Account",
@@ -28,6 +28,16 @@
     "signup": "Sign Up"
   },
   "empty_page": "Sorry, there is nothing here!",
+  "reset_page": {
+    "email_sent": "We have sent you a mail with a link to reset your password!",
+    "title": "Reset your password",
+    "enter_email_message": "Enter your email to reset your password.",
+    "send_reset_email_button": "Send reset email.",
+    "already_have_account": "Already have an account?",
+    "login": "Login",
+    "do_not_have_account": "Do not have an account?",
+    "signup": "Sign Up"
+  },
   "search_users": "Search other users",
   "signup_page": {
     "signup": "Sign Up",

@@ -11,7 +11,7 @@ import MessagePage from 'pages/MessagePage';
 import Profile from 'pages/Profile';
 import Signup from 'pages/Signup';
 import Login from 'pages/Login';
-import ForgotPassword from 'pages/ForgotPassword';
+import ResetPassword from 'pages/ResetPassword';
 import NotFound from 'pages/NotFound';
 import DeleteAccount from 'pages/DeleteAccount';
 import Notification from 'pages/Notification';
@@ -183,9 +183,9 @@ class App extends Component {
               component={Login}
             />
             <PublicRoute
-              path='/forgotpassword'
+              path='/resetpassword'
               authenticated={this.state.authenticated}
-              component={ForgotPassword}
+              component={ResetPassword}
             />
             <Route component={NotFound} />
           </Switch>

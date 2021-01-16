@@ -12,7 +12,7 @@
   "admin_page_disclaimer": "Cette page n'est accessible qu'aux profils admin.",
   "welcome_home": {
     "part1": "Bienvenue à ",
-    "part2": "On se retrouve ici !"
+    "part2": "Heureux de vous retrouver !"
   },
   "create_account": "Créer un nouveau compte",
   "login_to_account": "Connectez-vous à votre compte",
@@ -28,6 +28,16 @@
     "signup": "Inscription"
   },
   "empty_page": "Désolé, il n'y a rien ici !",
+  "reset_page": {
+    "email_sent": "Nous vous avons envoyé une email avec un lien pour réinitialiser votre mot de passe !",
+    "title": "Réinitialiser votre mot de passe",
+    "enter_email_message": "Entrez votre email pour réinitaliser votre mot de passe.",
+    "send_reset_email_button": "Envoyer email de réinitalisation",
+    "already_have_account": "Vous avez déjà un compte ?",
+    "login": "Connexion",
+    "do_not_have_account": "Vous n'avez pas de compte ?",
+    "signup": "Inscription"
+  },
   "search_users": "Rechercher des utilisateurs",
   "signup_page": {
     "signup": "Inscription",

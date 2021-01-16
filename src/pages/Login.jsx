@@ -92,7 +92,7 @@ class Login extends Component {
               <Link
                 className='hover:underline'
                 to={{
-                  pathname: '/forgotpassword',
+                  pathname: '/resetpassword',
                   state: {
                     email: this.state.email,
                   },
