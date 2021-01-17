@@ -33,7 +33,16 @@
     "last_updated": "Dernière mise à jour",
     "invalid_user": "Utilisateur invalide!"
   },
+  "user_search_list": {
+    "enter_string": "Pseudos à rechercher",
+    "username": "Pseudo",
+    "age": "Âge"
+  },
   "admin_page_disclaimer": "Cette page n'est accessible qu'aux profils admin.",
+  "chat": {
+    "get_more_messages_button": "Charger plus de messages",
+    "private_chat_page": "Page de chat privé avec "
+  },
   "delete_account_page": {
     "title": "Supprimer votre compte",
     "are_your_sure": {

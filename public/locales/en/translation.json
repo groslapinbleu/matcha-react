@@ -33,7 +33,16 @@
     "last_updated": "Last updated ",
     "invalid_user": "Invalid user!"
   },
+  "user_search_list": {
+    "enter_string": "Enter search string",
+    "username": "Username",
+    "age": "Age"
+  },
   "admin_page_disclaimer": "This page is only accessible to admin profiles.",
+  "chat": {
+    "get_more_messages_button": "Get more messages",
+    "private_chat_page": "Private Chat Page with "
+  },
   "delete_account_page": {
     "title": "Delete Account",
     "are_your_sure": {

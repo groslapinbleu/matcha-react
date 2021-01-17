@@ -8,6 +8,7 @@ import { isEmptyString } from '../helpers/validation';
 import { withFirebase } from '../services/Firebase';
 import MatchaButton from 'components/MatchaButton';
 import Check from 'Icons/Check';
+import { withTranslation } from 'react-i18next';
 
 class Chat extends Component {
   constructor(props) {
@@ -116,19 +117,23 @@ class Chat extends Component {
   };
 
   render() {
+    const { t } = this.props;
     const { username } = this.props.location.state.user;
     return (
       <div className=''>
         <Header />
         <div className='m-2 p-2'>
           <MatchaButton
-            text='Get more messages'
+            text={t('chat.get_more_messages_button', 'Get more messages')}
             type='button'
             onClick={this.onNextPage}
           />
         </div>
         <div className='flex items-center justify-center'>
-          <strong>{`Private Chat Page with ${username}`}</strong>
+          <strong>
+            {t('chat.private_chat_page', 'Private Chat Page with ')}
+            {username}
+          </strong>
         </div>
         <div
           className='mt-8 mx-1 p-6 max-h-96 overflow-y-scroll bg-indigo-50'
@@ -172,4 +177,4 @@ class Chat extends Component {
   }
 }
 
-export default withFirebase(Chat);
+export default withTranslation()(withFirebase(Chat));

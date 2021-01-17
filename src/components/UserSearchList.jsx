@@ -8,6 +8,7 @@ import { withFirebase } from 'services/Firebase';
 import Star from 'Icons/Star';
 import age from 'helpers/age';
 import Spinner from 'react-loader-spinner';
+import { withTranslation } from 'react-i18next';
 
 // import * as ROUTES from '../../constants/routes';
 
@@ -182,7 +183,9 @@ class UserSearchList extends Component {
   // this function is used to select users that will be displayed at render time
   selectUser = (user) => {
     const { searchString } = this.state;
-    const ret = user.username.includes(searchString);
+    const ret = user.username
+      .toUpperCase()
+      .includes(searchString.toUpperCase());
     // console.log("user.username = " + user.username + " searchString=" + searchString + " includes = " + ret)
     return ret;
   };
@@ -191,7 +194,7 @@ class UserSearchList extends Component {
     console.log('UserSearchList render');
     const { users, loading } = this.state;
     const filteredUsers = users.filter(this.selectUser);
-
+    const { t } = this.props;
     const { authUser } = this.props.firebase;
     return (
       <div className=''>
@@ -204,7 +207,10 @@ class UserSearchList extends Component {
           <input
             type='text'
             name='searchString'
-            placeholder='Enter search string'
+            placeholder={t(
+              'user_search_list.enter_string',
+              'Enter search string'
+            )}
             value={this.state.searchstring}
             onChange={this.handleChange}
           ></input>
@@ -218,13 +224,13 @@ class UserSearchList extends Component {
                     scope='col'
                     className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
-                    Username
+                    {t('user_search_list.username', 'Username')}
                   </th>
                   <th
                     scope='col'
                     className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
-                    Age
+                    {t('user_search_list.age', 'Age')}
                   </th>
                   <th
                     scope='col'
@@ -355,4 +361,4 @@ class UserSearchList extends Component {
   }
 }
 
-export default withFirebase(UserSearchList);
+export default withTranslation()(withFirebase(UserSearchList));
