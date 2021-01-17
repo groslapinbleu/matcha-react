@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Spinner from 'react-loader-spinner';
 import PropTypes from 'prop-types';
 
 class Image extends Component {
@@ -20,7 +21,9 @@ class Image extends Component {
     return (
       <>
         {this.state.loading ? (
-          'loading...'
+          <div className='flex items-center justify-center'>
+            <Spinner type='Puff' color='#038E9F' height={50} width={50} />
+          </div>
         ) : (
           <div>
             <img

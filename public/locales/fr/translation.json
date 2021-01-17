@@ -3,13 +3,46 @@
     "part1": "2021. Avertissement : cette application est un projet d'apprentissage de React, et non une application commmerciale.",
     "part2": "Il n'y a pas de support fourni, et des données peuvent être supprimées à tout instant."
   },
+  "image_list": {
+    "select_for_profile": "Selectionner pour le profil",
+    "done": "Terminé",
+    "edit_images": "Editer les images"
+  },
   "welcome": "Bienvenue ",
   "profile": "Profil ",
   "search": "Rechercher",
   "logout": "Déconnexion",
   "signin": "Connexion",
   "signup": "Inscription",
+  "password_change_form": {
+    "new_password": "Nouveau mot de passe",
+    "confirm_new_password": "Confirmer mot de passe",
+    "reset_password": "Réinitialiser mot de passe"
+  },
+  "profile_form": {
+    "username": "Pseudo",
+    "firstname": "Prénom",
+    "lastname": "Nom",
+    "gender": "Genre",
+    "preferred_gender": "Genre préféré",
+    "region": "Région",
+    "birthday": "Anniversaire",
+    "visibility": "Visibilité",
+    "visibility_message": "Je veux que mon profil soit visible aux autres utilisateurs",
+    "validate-button": "Valider",
+    "last_updated": "Dernière mise à jour",
+    "invalid_user": "Utilisateur invalide!"
+  },
   "admin_page_disclaimer": "Cette page n'est accessible qu'aux profils admin.",
+  "delete_account_page": {
+    "title": "Supprimer votre compte",
+    "are_your_sure": {
+      "part1": "Êtes-vous sûr ?",
+      "part2": "Cette action ne peut pas être annulée"
+    },
+    "button": "Confirmer suppression",
+    "cancel": "Annuler"
+  },
   "welcome_home": {
     "part1": "Bienvenue à ",
     "part2": "Heureux de vous retrouver !"
@@ -28,6 +61,13 @@
     "signup": "Inscription"
   },
   "empty_page": "Désolé, il n'y a rien ici !",
+  "profile_page": {
+    "goto_admin": "Aller au menu Admin",
+    "title": "Profil",
+    "reset_title": "Réinitialiser mot de passe",
+    "danger_zone": "Zone de Danger",
+    "delete_account": "Supprimer votre compte"
+  },
   "reset_page": {
     "email_sent": "Nous vous avons envoyé une email avec un lien pour réinitialiser votre mot de passe !",
     "title": "Réinitialiser votre mot de passe",

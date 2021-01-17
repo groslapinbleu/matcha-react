@@ -9,16 +9,16 @@ test('genders size is 3', () => {
 describe('string tests', () => {
   // string
   test('genders first item is other', () => {
-    expect(genders[0]).toContain('other');
+    expect(genders[0]).toContain('autre');
   });
   test('genders second item includes female', () => {
-    expect(genders[1]).toMatch(/female/);
+    expect(genders[1]).toMatch(/femme/);
   });
 });
 
 const testArray = [
-  'other', // index 0 is the default value
-  'male',
+  'autre', // index 0 is the default value
+  'homme',
 ];
 
 // array

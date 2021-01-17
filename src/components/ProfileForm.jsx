@@ -10,6 +10,7 @@ import Avatar from './Avatar';
 import DatePicker from './DatePicker';
 import MultiChoiceSelector from 'components/MultiChoiceSelector';
 import formatDateTime from 'helpers/formatDateTime';
+import { withTranslation } from 'react-i18next';
 
 class ProfileForm extends Component {
   constructor(props) {
@@ -122,6 +123,8 @@ class ProfileForm extends Component {
   }
 
   render() {
+    const { t } = this.props;
+
     const { userData } = this.state;
     console.group(`ProfileForm render : userData = ${userData}`);
     const isInvalid =
@@ -130,6 +133,18 @@ class ProfileForm extends Component {
       !isValidEmail(userData.email) ||
       userData.birthday === null ||
       userData.birthday === undefined;
+
+    const username = t('profile_form.username', 'Username');
+    const firstname = t('profile_form.firstname', 'Firstname');
+    const lastname = t('profile_form.lastname', 'Lastname');
+    const gender = t('profile_form.gender', 'Gender');
+    const preferredGender = t(
+      'profile_form.preferred_gender',
+      'Preferred gender'
+    );
+    const region = t('profile_form.region', 'Region');
+    const birthday = t('profile_form.birthday', 'Birthday');
+    const visibility = t('profile_form.visibility', 'Visibility');
 
     return (
       <div>
@@ -151,11 +166,11 @@ class ProfileForm extends Component {
                   </td>
                 </tr>
                 <tr className='border-b-2 border-solid'>
-                  <th>Username</th>
+                  <th>{username}</th>
                   <td>
                     <input
                       name='username'
-                      placeholder='Username'
+                      placeholder={username}
                       value={userData.username}
                       type='text'
                       onChange={this.handleChange}
@@ -164,11 +179,11 @@ class ProfileForm extends Component {
                   </td>
                 </tr>
                 <tr className='border-b-2 border-solid'>
-                  <th>Firstname</th>
+                  <th>{firstname}</th>
                   <td>
                     <input
                       name='firstname'
-                      placeholder='Firstname'
+                      placeholder={firstname}
                       value={userData.firstname}
                       type='text'
                       onChange={this.handleChange}
@@ -177,11 +192,11 @@ class ProfileForm extends Component {
                   </td>
                 </tr>
                 <tr className='border-b-2 border-solid'>
-                  <th>Lastname</th>
+                  <th>{lastname}</th>
                   <td>
                     <input
                       name='lastname'
-                      placeholder='Lastname'
+                      placeholder={lastname}
                       value={userData.lastname}
                       type='text'
                       onChange={this.handleChange}
@@ -202,7 +217,7 @@ class ProfileForm extends Component {
                   </td>
                 </tr>
                 <tr className='border-b-2 border-solid'>
-                  <th>Gender</th>
+                  <th>{gender}</th>
                   <td>
                     <RadioButtons
                       selectedElement={this.state.userData.gender}
@@ -214,7 +229,7 @@ class ProfileForm extends Component {
                   </td>
                 </tr>
                 <tr className='border-b-2 border-solid'>
-                  <th>Preferred gender</th>
+                  <th>{preferredGender}</th>
                   <td>
                     <RadioButtons
                       selectedElement={this.state.userData.preferredGender}
@@ -226,7 +241,7 @@ class ProfileForm extends Component {
                   </td>
                 </tr>
                 <tr className='border-b-2 border-solid'>
-                  <th>Region</th>
+                  <th>{region}</th>
                   <td>
                     <Dropdown
                       selectedElement={this.state.userData.region}
@@ -238,7 +253,7 @@ class ProfileForm extends Component {
                   </td>
                 </tr>
                 <tr className='border-b-2 border-solid'>
-                  <th>Birthday</th>
+                  <th>{birthday}</th>
                   <td>
                     <DatePicker
                       onDayChange={this.handleDayChange}
@@ -259,7 +274,7 @@ class ProfileForm extends Component {
                   </td>
                 </tr>
                 <tr className='border-b-2 border-solid'>
-                  <th>Visibility</th>
+                  <th>{visibility}</th>
                   <td>
                     <label>
                       <input
@@ -269,19 +284,29 @@ class ProfileForm extends Component {
                         checked={userData.visible}
                         onChange={this.handleChangeCheckbox}
                       />
-                      I want my profile to be visible to others
+                      {t(
+                        'profile_form.visibility_message',
+                        'I want my profile to be visible to others'
+                      )}
                     </label>
                   </td>
                 </tr>
               </tbody>
             </table>
-            <MatchaButton text='Validate' type='submit' disabled={isInvalid} />
+            <MatchaButton
+              text={t('profile_form.validate-button', 'Validate')}
+              type='submit'
+              disabled={isInvalid}
+            />
             <div className='text-center text-xs'>
-              Last updated {formatDateTime(userData.updated)}
+              {t('profile_form.last_updated', 'Last updated ')}{' '}
+              {formatDateTime(userData.updated)}
             </div>
           </form>
         ) : (
-          <Alert color='red'>Invalid user!</Alert>
+          <Alert color='red'>
+            {t('profile_form.invalid_user', 'Invalid user!')}
+          </Alert>
         )}
       </div>
     );
@@ -292,4 +317,4 @@ ProfileForm.propTypes = {
   user: PropTypes.object,
   onSubmit: PropTypes.func,
 };
-export default ProfileForm;
+export default withTranslation()(ProfileForm);

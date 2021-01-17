@@ -8,6 +8,7 @@ import ProfileForm from 'components/ProfileForm';
 import ImageList from 'components/ImageList';
 import PasswordChangeForm from 'components/PasswordChangeForm';
 import Spinner from 'react-loader-spinner';
+import { withTranslation } from 'react-i18next';
 
 class Profile extends Component {
   constructor(props) {
@@ -63,7 +64,7 @@ class Profile extends Component {
   // this allows to validate the field when pressing the Enter key
   handleKeyUp = (e) => {
     if (e.keyCode === 13) {
-      // alternativement on peut tester e.key === 'Enter'
+      // alternatively we could use e.key === 'Enter'
 
       console.log('Enter key has been pressed');
       this.handleDisplayNameInput();
@@ -86,6 +87,8 @@ class Profile extends Component {
   }
 
   render() {
+    const { t } = this.props;
+
     const { userData } = this.state;
     console.log('Profile render : userData = ' + userData);
     return (
@@ -100,14 +103,14 @@ class Profile extends Component {
           <section className='p-5 shadow'>
             <MatchaBox title='Admin'>
               <Link className='hover:underline' to='/admin'>
-                Go to admin menu
+                {t('profile_page.goto_admin', 'Go to admin menu')}
               </Link>
             </MatchaBox>
           </section>
         ) : null}
         <section className='p-5 shadow'>
           {userData ? (
-            <MatchaBox title='Profile'>
+            <MatchaBox title={t('profile_page.title', 'Profile')}>
               <ProfileForm
                 key={
                   userData.updated
@@ -128,14 +131,17 @@ class Profile extends Component {
           </MatchaBox>
         </section>
         <section className='p-5 shadow'>
-          <MatchaBox title='Reset password'>
+          <MatchaBox title={t('profile_page.reset_title', 'Reset password')}>
             <PasswordChangeForm />
           </MatchaBox>
         </section>
         <section className='p-5 shadow'>
-          <MatchaBox title='Danger Zone' color='red'>
+          <MatchaBox
+            title={t('profile_page.danger_zone', 'Danger Zone')}
+            color='red'
+          >
             <Link className='hover:underline' to='/deleteaccount'>
-              Delete your account{' '}
+              {t('profile_page.delete_account', 'Delete your account')}{' '}
             </Link>
           </MatchaBox>
         </section>
@@ -145,4 +151,4 @@ class Profile extends Component {
   }
 }
 
-export default withFirebase(Profile);
+export default withTranslation()(withFirebase(Profile));

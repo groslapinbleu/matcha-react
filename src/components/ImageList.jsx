@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import MatchaButton from 'components/MatchaButton';
 import FileInput from 'components/FileInput';
 import { withFirebase } from 'services/Firebase';
+import { withTranslation } from 'react-i18next';
 
 class ImageList extends Component {
   constructor(props) {
@@ -124,6 +125,8 @@ class ImageList extends Component {
   }
 
   render() {
+    const { t } = this.props;
+
     console.log('ImageList render');
     return (
       <div>
@@ -139,7 +142,10 @@ class ImageList extends Component {
                       onClick={(e) => this.handleDelete(e, index)}
                     />
                     <MatchaButton
-                      text='Select for profile'
+                      text={t(
+                        'image_list.select_for_profile',
+                        'Select for profile'
+                      )}
                       onClick={(e) => this.handleSelectForProfile(e, index)}
                     />
                   </>
@@ -164,9 +170,15 @@ class ImageList extends Component {
         </div>
         <br />
         {this.state.editList ? (
-          <MatchaButton text='Done' onClick={this.handleEdit} />
+          <MatchaButton
+            text={t('image_list.done', 'Done')}
+            onClick={this.handleEdit}
+          />
         ) : (
-          <MatchaButton text='Edit Images' onClick={this.handleEdit} />
+          <MatchaButton
+            text={t('image_list.edit_images', 'Edit images')}
+            onClick={this.handleEdit}
+          />
         )}
       </div>
     );
@@ -176,4 +188,4 @@ class ImageList extends Component {
 ImageList.propTypes = {
   onImageListChange: PropTypes.func,
 };
-export default withFirebase(ImageList);
+export default withTranslation()(withFirebase(ImageList));

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withSnackbar } from 'react-simple-snackbar';
-
+import { withTranslation } from 'react-i18next';
 import { withFirebase } from 'services/Firebase';
 import MatchaButton from 'components/MatchaButton';
 
@@ -40,6 +40,7 @@ class PasswordChangeForm extends Component {
 
   render() {
     const { passwordOne, passwordTwo, error } = this.state;
+    const { t } = this.props;
 
     const isInvalid = passwordOne !== passwordTwo || passwordOne === '';
 
@@ -51,17 +52,20 @@ class PasswordChangeForm extends Component {
             value={passwordOne}
             onChange={this.onChange}
             type='password'
-            placeholder='New Password'
+            placeholder={t('password_change_form.new_password', 'New Password')}
           />
           <input
             name='passwordTwo'
             value={passwordTwo}
             onChange={this.onChange}
             type='password'
-            placeholder='Confirm New Password'
+            placeholder={t(
+              'password_change_form.confirm_new_password',
+              'Confirm New Password'
+            )}
           />
           <MatchaButton
-            text='Reset my password'
+            text={t('password_change_form.reset_password', 'Reset my password')}
             disabled={isInvalid}
             type='submit'
           ></MatchaButton>
@@ -72,4 +76,6 @@ class PasswordChangeForm extends Component {
   }
 }
 
-export default withFirebase(withSnackbar(PasswordChangeForm));
+export default withTranslation()(
+  withFirebase(withSnackbar(PasswordChangeForm))
+);

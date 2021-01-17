@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import Header from "../components/Header";
-// import { signin } from "../helpers/auth";
 import Footer from '../components/Footer';
 import MatchaBox from '../components/MatchaBox';
 import { withFirebase } from '../services/Firebase';
@@ -116,5 +114,6 @@ class Login extends Component {
 }
 
 // Login is wrapped within the Firebase context
-// so that the Firebase instance is available as a prop
+// so that the Firebase instance is available as a prop,
+// and in the i18next translation context for internationalization
 export default withTranslation()(withFirebase(Login));

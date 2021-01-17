@@ -3,13 +3,46 @@
     "part1": "2021. Disclaimer: this application is a React learning project, not a commmercial application.",
     "part2": "It comes with no level of support, and the data can be deleted anytime."
   },
+  "image_list": {
+    "select_for_profile": "Select for profile",
+    "done": "Done",
+    "edit_images": "Edit images"
+  },
   "welcome": "Welcome ",
   "profile": "Profile ",
   "search": "Search",
   "logout": "Logout",
   "signin": "Sign In",
   "signup": "Sign Up",
+  "password_change_form": {
+    "new_password": "New Password",
+    "confirm_new_password": "Confirm New Password",
+    "reset_password": "Reset my password"
+  },
+  "profile_form": {
+    "username": "Username",
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "gender": "Gender",
+    "preferred_gender": "Preferred gender",
+    "region": "Region",
+    "birthday": "Birthday",
+    "visibility": "Visibility",
+    "visibility_message": "I want my profile to be visible to others",
+    "validate-button": "Validate",
+    "last_updated": "Last updated ",
+    "invalid_user": "Invalid user!"
+  },
   "admin_page_disclaimer": "This page is only accessible to admin profiles.",
+  "delete_account_page": {
+    "title": "Delete Account",
+    "are_your_sure": {
+      "part1": "Are you sure?",
+      "part2": "This action cannot be undone"
+    },
+    "button": "Confirm deletion",
+    "cancel": "Cancel"
+  },
   "welcome_home": {
     "part1": "Welcome to ",
     "part2": "Nice to see you back!"
@@ -28,6 +61,13 @@
     "signup": "Sign Up"
   },
   "empty_page": "Sorry, there is nothing here!",
+  "profile_page": {
+    "goto_admin": "Go to admin menu",
+    "title": "Profile",
+    "reset_title": "Reset password",
+    "danger_zone": "Danger Zone",
+    "delete_account": "Delete your account"
+  },
   "reset_page": {
     "email_sent": "We have sent you a mail with a link to reset your password!",
     "title": "Reset your password",

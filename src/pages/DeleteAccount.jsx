@@ -5,6 +5,7 @@ import { withFirebase } from '../services/Firebase';
 import Footer from '../components/Footer';
 import { withSnackbar } from 'react-simple-snackbar';
 import MatchaButton from 'components/MatchaButton';
+import { withTranslation } from 'react-i18next';
 
 class DeleteAccount extends Component {
   handleDelete = async () => {
@@ -39,23 +40,34 @@ class DeleteAccount extends Component {
 
   render() {
     const { auth, authUser } = this.props.firebase;
+    const { t } = this.props;
 
     return (
       <div className='p-5'>
-        <MatchaBox title='Delete Account' color='red'>
+        <MatchaBox
+          title={t('delete_account_page.title', 'Delete Account')}
+          color='red'
+        >
           <p>
             {auth.currentUser.email}/{authUser.username}
           </p>
-          <p className='text-3xl'>Are you sure?</p>
-          <p className='text-xl'>This action cannot be undone</p>
+          <p className='text-3xl'>
+            {t('delete_account_page.are_your_sure.part1', 'Are you sure?')}
+          </p>
+          <p className='text-xl'>
+            {t(
+              'delete_account_page.are_your_sure.part2',
+              'This action cannot be undone'
+            )}
+          </p>
           <MatchaButton
-            text='Confirm deletion'
+            text={t('delete_account_page.button', 'Confirm deletion')}
             type='button'
             onClick={this.handleDelete}
             color='red'
           ></MatchaButton>
           <Link className='hover:underline' to='/profile'>
-            Cancel
+            {t('delete_account_page.cancel', 'Cancel')}
           </Link>
         </MatchaBox>
         <Footer></Footer>
@@ -64,4 +76,4 @@ class DeleteAccount extends Component {
   }
 }
 
-export default withFirebase(withSnackbar(DeleteAccount));
+export default withTranslation()(withFirebase(withSnackbar(DeleteAccount)));

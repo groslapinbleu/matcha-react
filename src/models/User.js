@@ -16,13 +16,13 @@ export const defaultUserData = {
 };
 
 export const genders = [
-  'other', // index 0 is the default value
-  'female',
-  'male',
+  'autre', // index 0 is the default value
+  'femme',
+  'homme',
 ];
 
 export const regions = [
-  'other', // index 0 is the default value
+  'autre', // index 0 is the default value
   'Auvergne-Rhônes-Alpes',
   'Bourgogne-Franche-Comté',
   'Bretagne',
@@ -45,16 +45,16 @@ export const regions = [
 
 export const tags = [
   // there is no default value
-  'sex',
-  'love',
+  'sexe',
+  'amour',
   'bondage',
   'romance',
-  'movies',
-  'literature',
-  'theater',
-  'cooking',
-  'kids',
-  'money',
+  'cinéma',
+  'littérature',
+  'théâtre',
+  'cuisine',
+  'enfants',
+  'argent',
 ];
 
 export function isBFriendOfA(userA, userB) {
