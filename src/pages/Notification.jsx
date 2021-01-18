@@ -9,6 +9,7 @@ import MatchaTable from 'components/MatchaTable';
 import { tags } from 'models/User';
 import { withTranslation } from 'react-i18next';
 import navigatorLanguage from 'helpers/navigatorLanguage';
+import ChangeLanguage from 'components/ChangeLanguage';
 
 class Notification extends Component {
   constructor(props) {
@@ -57,8 +58,11 @@ class Notification extends Component {
           <MatchaBox title='Languages'>
             <div>Navigator language = {navigatorLanguage()}</div>
             <div>i18next language = {i18n.language}</div>
+            <div>i18next languages = {i18n.languages}</div>
+            <ChangeLanguage />
           </MatchaBox>
         </section>
+
         <Footer></Footer>
       </div>
     );

@@ -5,6 +5,7 @@ import * as MISC from 'constants/miscConsts';
 import MenuIcon from 'Icons/MenuIcon';
 import MatchaButton from './MatchaButton';
 import { useTranslation } from 'react-i18next';
+import ChangeLanguage from './ChangeLanguage';
 
 // inspired from https://www.creative-tim.com/learning-lab/tailwind-starter-kit/documentation/react/navbars
 function Navbar({ firebase }) {
@@ -95,6 +96,9 @@ function Navbar({ firebase }) {
                       text={t('navbar.logout', 'Logout')}
                       onClick={() => firebase.auth.signOut()}
                     />
+                  </li>
+                  <li>
+                    <ChangeLanguage className='text-xs font-bold' />
                   </li>
                 </>
               ) : (
