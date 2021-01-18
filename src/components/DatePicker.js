@@ -5,16 +5,20 @@ import MomentLocaleUtils, {
   formatDate,
   parseDate,
 } from 'react-day-picker/moment';
-import 'moment/locale/fr';
-import getNavigatorLanguage from 'helpers/navigatorLanguage';
+import 'moment/locale/fr'; // if we add a language to the app, we will need to import the locale here
+// import getNavigatorLanguage from 'helpers/navigatorLanguage';
+import { useTranslation } from 'react-i18next';
 
 import PropTypes from 'prop-types';
 
 // this is an implementation of a DatePicker that uses the locale
 // to display the correct date format
-export default function DatePicker({ onDayChange, value }) {
-  const navigatorLanguage = getNavigatorLanguage();
-  // console.log('navigatorLanguage = ' + navigatorLanguage);
+function DatePicker({ onDayChange, value }) {
+  // const navigatorLanguage = getNavigatorLanguage();
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
+  // console.log('i18n.language = ' + lang);
+
   return (
     <div>
       <DayPickerInput
@@ -23,9 +27,9 @@ export default function DatePicker({ onDayChange, value }) {
         formatDate={formatDate}
         parseDate={parseDate}
         format='L'
-        placeholder={`${formatDate(new Date(), 'L ', navigatorLanguage)}`}
+        placeholder={`${formatDate(new Date(), 'L ', lang)}`}
         dayPickerProps={{
-          locale: navigatorLanguage,
+          locale: lang,
           localeUtils: MomentLocaleUtils,
         }}
       />
@@ -36,3 +40,5 @@ DatePicker.propTypes = {
   onDayChange: PropTypes.func.isRequired,
   value: PropTypes.instanceOf(Date),
 };
+
+export default DatePicker;

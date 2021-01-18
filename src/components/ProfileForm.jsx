@@ -217,6 +217,15 @@ class ProfileForm extends Component {
                   </td>
                 </tr>
                 <tr className='border-b-2 border-solid'>
+                  <th>{birthday}</th>
+                  <td>
+                    <DatePicker
+                      onDayChange={this.handleDayChange}
+                      value={new Date(this.state.userData.birthday)}
+                    />
+                  </td>
+                </tr>
+                <tr className='border-b-2 border-solid'>
                   <th>{gender}</th>
                   <td>
                     <RadioButtons
@@ -249,15 +258,6 @@ class ProfileForm extends Component {
                       name='region'
                       className='mr-5'
                       onSelect={this.handleChangeRadioButton}
-                    />
-                  </td>
-                </tr>
-                <tr className='border-b-2 border-solid'>
-                  <th>{birthday}</th>
-                  <td>
-                    <DatePicker
-                      onDayChange={this.handleDayChange}
-                      value={new Date(this.state.userData.birthday)}
                     />
                   </td>
                 </tr>
