@@ -73,6 +73,10 @@
     "no_account": "Vous n'avez pas de compte ?",
     "signup": "Inscription"
   },
+  "message_page": {
+    "get_more_messages_button": "Charger plus de messages",
+    "forum_page": "Forum : tout le monde peut parler avec tout le monde"
+  },
   "empty_page": "Désolé, il n'y a rien ici !",
   "profile_page": {
     "goto_admin": "Aller au menu Admin",

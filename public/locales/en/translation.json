@@ -73,6 +73,10 @@
     "no_account": "Do not have an account?",
     "signup": "Sign Up"
   },
+  "message_page": {
+    "get_more_messages_button": "Get more messages",
+    "forum_page": "Forum Page: everyone can talk to everyone"
+  },
   "empty_page": "Sorry, there is nothing here!",
   "profile_page": {
     "goto_admin": "Go to admin menu",

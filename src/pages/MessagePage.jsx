@@ -8,7 +8,7 @@ import { isEmptyString } from '../helpers/validation';
 import { withFirebase } from '../services/Firebase';
 import MatchaButton from 'components/MatchaButton';
 import Check from 'Icons/Check';
-import MatchaBox from 'components/MatchaBox';
+import { withTranslation } from 'react-i18next';
 
 class MessagePage extends Component {
   constructor(props) {
@@ -103,18 +103,28 @@ class MessagePage extends Component {
   };
 
   render() {
+    const { t } = this.props;
+
     return (
       <div className=''>
         <Header />
         <div className='m-2 p-2'>
           <MatchaButton
-            text='Get more messages'
+            text={t(
+              'message_page.get_more_messages_button',
+              'Get more messages'
+            )}
             type='button'
             onClick={this.onNextPage}
           />
         </div>
         <div className='flex items-center justify-center'>
-          <strong>Forum Page: everyone can talk to everyone</strong>
+          <strong>
+            {t(
+              'message_page.forum_page',
+              'Forum Page: everyone can talk to everyone'
+            )}
+          </strong>
         </div>
         <div
           className='mt-8 p-6 mx-1 max-h-96 overflow-y-scroll bg-indigo-50'
@@ -158,4 +168,4 @@ class MessagePage extends Component {
   }
 }
 
-export default withFirebase(MessagePage);
+export default withTranslation()(withFirebase(MessagePage));
