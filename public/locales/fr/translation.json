@@ -8,12 +8,14 @@
     "done": "Terminé",
     "edit_images": "Editer les images"
   },
-  "welcome": "Bienvenue ",
-  "profile": "Profil ",
-  "search": "Rechercher",
-  "logout": "Déconnexion",
-  "signin": "Connexion",
-  "signup": "Inscription",
+  "navbar": {
+    "welcome": "Salut ",
+    "profile": "Profil ",
+    "search": "Rechercher",
+    "logout": "Déconnexion",
+    "signin": "Connexion",
+    "signup": "Inscription"
+  },
   "password_change_form": {
     "new_password": "Nouveau mot de passe",
     "confirm_new_password": "Confirmer mot de passe",
@@ -52,12 +54,14 @@
     "button": "Confirmer suppression",
     "cancel": "Annuler"
   },
-  "welcome_home": {
-    "part1": "Bienvenue à ",
-    "part2": "Heureux de vous retrouver !"
+  "home": {
+    "welcome_home": {
+      "part1": "Bienvenue à ",
+      "part2": "Heureux de vous retrouver !"
+    },
+    "login_to_account": "Connectez-vous à votre compte",
+    "create_account": "Créez un nouveau compte"
   },
-  "create_account": "Créer un nouveau compte",
-  "login_to_account": "Connectez-vous à votre compte",
   "login_page": {
     "login_to": "Connexion à",
     "fill_in_message": "Veuillez remplir le formulaire ci-dessous pour vous connecter à votre compte.",

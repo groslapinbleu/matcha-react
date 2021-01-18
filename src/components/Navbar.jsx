@@ -51,12 +51,13 @@ function Navbar({ firebase }) {
                 <>
                   <li className='nav-item'>
                     <span className='px-3 py-2 flex items-center text-xs font-bold leading-snug text-gray-200'>
-                      {t('welcome', 'Hello ')} {firebase.auth.currentUser.email}
+                      {t('navbar.welcome', 'Hello ')}{' '}
+                      {firebase.auth.currentUser.email}
                     </span>
                   </li>
                   <li className='nav-item'>
                     <Link className={decorateLink('/profile')} to='/profile'>
-                      {t('profile', 'Profile ')}
+                      {t('navbar.profile', 'Profile ')}
                     </Link>
                   </li>
                   <li className='nav-item'>
@@ -66,7 +67,7 @@ function Navbar({ firebase }) {
                   </li>
                   <li className='nav-item'>
                     <Link className={decorateLink('/search')} to='/search'>
-                      {t('search', 'Search')}
+                      {t('navbar.search', 'Search')}
                     </Link>
                   </li>
                   <li className='nav-item'>
@@ -91,7 +92,7 @@ function Navbar({ firebase }) {
                   )}
                   <li className='nav-item'>
                     <MatchaButton
-                      text={t('logout', 'Logout')}
+                      text={t('navbar.logout', 'Logout')}
                       onClick={() => firebase.auth.signOut()}
                     />
                   </li>
@@ -100,12 +101,12 @@ function Navbar({ firebase }) {
                 <>
                   <li className='nav-item'>
                     <Link className={decorateLink('/login')} to='/login'>
-                      {t('signin', 'Sign In')}
+                      {t('navbar.signin', 'Sign In')}
                     </Link>
                   </li>
                   <li className='nav-item'>
                     <Link className={decorateLink('/signup')} to='/signup'>
-                      {t('signup', 'Sign Up')}
+                      {t('navbar.signup', 'Sign Up')}
                     </Link>
                   </li>
                 </>

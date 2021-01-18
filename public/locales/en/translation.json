@@ -8,12 +8,14 @@
     "done": "Done",
     "edit_images": "Edit images"
   },
-  "welcome": "Welcome ",
-  "profile": "Profile ",
-  "search": "Search",
-  "logout": "Logout",
-  "signin": "Sign In",
-  "signup": "Sign Up",
+  "navbar": {
+    "welcome": "Hello ",
+    "profile": "Profile ",
+    "search": "Search",
+    "logout": "Logout",
+    "signin": "Sign In",
+    "signup": "Sign Up"
+  },
   "password_change_form": {
     "new_password": "New Password",
     "confirm_new_password": "Confirm New Password",
@@ -52,12 +54,14 @@
     "button": "Confirm deletion",
     "cancel": "Cancel"
   },
-  "welcome_home": {
-    "part1": "Welcome to ",
-    "part2": "Nice to see you back!"
+  "home": {
+    "welcome_home": {
+      "part1": "Welcome to ",
+      "part2": "Meet me here!"
+    },
+    "login_to_account": "Login to Your Account",
+    "create_account": "Create New Account"
   },
-  "create_account": "Create New Account",
-  "login_to_account": "Login to Your Account",
   "login_page": {
     "login_to": "Login to",
     "fill_in_message": "Fill in the form below to login to your account.",

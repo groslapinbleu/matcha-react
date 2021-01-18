@@ -1,5 +1,13 @@
 {
   "signup_page": {
     "submit": "Submit"
-  }
+  },
+  "create_account": "Create New Account",
+  "login_to_account": "Login to Your Account",
+  "welcome": "Welcome ",
+  "profile": "Profile ",
+  "search": "Search",
+  "logout": "Logout",
+  "signin": "Sign In",
+  "signup": "Sign Up"
 }

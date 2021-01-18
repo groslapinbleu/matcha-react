@@ -50,62 +50,64 @@ class Login extends Component {
     return (
       <div className='profile pt-20'>
         <MatchaBox title={title}>
-          <form className='' autoComplete='off' onSubmit={this.handleSubmit}>
-            <p>
-              {t(
-                'login_page.fill_in_message',
-                'Fill in the form below to login to your account.'
-              )}
-            </p>
-            <hr />
-            <div>
-              <input
-                placeholder={t('login_page.email', 'Email')}
-                name='email'
-                type='email'
-                onChange={this.handleChange}
-                value={this.state.email}
-              />
-            </div>
-            <div>
-              <input
-                placeholder={t('login_page.password', 'Password')}
-                name='password'
-                onChange={this.handleChange}
-                value={this.state.password}
-                type='password'
-              />
-            </div>
-            <div>
-              {this.state.error ? <p>{this.state.error}</p> : null}
-              <MatchaButton
-                text={t('login_page.login_button', 'Login')}
-                type='submit'
-                disabled={isInvalid}
-              ></MatchaButton>
-            </div>
-            <hr />
-            <p>
-              {t('login_page.forgot_password', 'Forgot your password?')}{' '}
-              <Link
-                className='hover:underline'
-                to={{
-                  pathname: '/resetpassword',
-                  state: {
-                    email: this.state.email,
-                  },
-                }}
-              >
-                {t('login_page.reset_password', 'Reset Password')}
-              </Link>
-            </p>
-            <p>
-              {t('login_page.no_account', 'Do not have an account?')}{' '}
-              <Link className='hover:underline' to='/signup'>
-                {t('login_page.signup', 'Sign Up')}
-              </Link>
-            </p>
-          </form>
+          <div className=''>
+            <form className='' autoComplete='off' onSubmit={this.handleSubmit}>
+              <p>
+                {t(
+                  'login_page.fill_in_message',
+                  'Fill in the form below to login to your account.'
+                )}
+              </p>
+              <hr />
+              <div>
+                <input
+                  placeholder={t('login_page.email', 'Email')}
+                  name='email'
+                  type='email'
+                  onChange={this.handleChange}
+                  value={this.state.email}
+                />
+              </div>
+              <div>
+                <input
+                  placeholder={t('login_page.password', 'Password')}
+                  name='password'
+                  onChange={this.handleChange}
+                  value={this.state.password}
+                  type='password'
+                />
+              </div>
+              <div>
+                {this.state.error ? <p>{this.state.error}</p> : null}
+                <MatchaButton
+                  text={t('login_page.login_button', 'Login')}
+                  type='submit'
+                  disabled={isInvalid}
+                ></MatchaButton>
+              </div>
+              <hr />
+              <p>
+                {t('login_page.forgot_password', 'Forgot your password?')}{' '}
+                <Link
+                  className='hover:underline'
+                  to={{
+                    pathname: '/resetpassword',
+                    state: {
+                      email: this.state.email,
+                    },
+                  }}
+                >
+                  {t('login_page.reset_password', 'Reset Password')}
+                </Link>
+              </p>
+              <p>
+                {t('login_page.no_account', 'Do not have an account?')}{' '}
+                <Link className='hover:underline' to='/signup'>
+                  {t('login_page.signup', 'Sign Up')}
+                </Link>
+              </p>
+            </form>
+          </div>
         </MatchaBox>
         <Footer></Footer>
       </div>

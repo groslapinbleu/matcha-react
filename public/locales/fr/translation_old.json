@@ -1,5 +1,13 @@
 {
   "signup_page": {
     "submit": "Submit"
-  }
+  },
+  "create_account": "Créer un nouveau compte",
+  "login_to_account": "Connectez-vous à votre compte",
+  "welcome": "Bienvenue ",
+  "profile": "Profil ",
+  "search": "Rechercher",
+  "logout": "Déconnexion",
+  "signin": "Connexion",
+  "signup": "Inscription"
 }
