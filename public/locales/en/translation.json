@@ -1,4 +1,8 @@
 {
+  "fileinput": {
+    "error_message": "Sorry, files should not be bigger than 2Mb",
+    "select_image": "Select image file (jpeg, png or gif) with a max size of 2 Mb"
+  },
   "disclaimer": {
     "part1": "2021. Disclaimer: this application is a React learning project, not a commmercial application.",
     "part2": "It comes with no level of support, and the data can be deleted anytime."

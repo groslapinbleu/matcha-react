@@ -1,4 +1,8 @@
 {
+  "fileinput": {
+    "error_message": "Désolé, les fichiers ne doivent pas dépasser 2Mo",
+    "select_image": "Sélectionner un fichier image (jpeg, png ou gif) d'une taille max de 2 Mo"
+  },
   "disclaimer": {
     "part1": "2021. Avertissement : cette application est un projet d'apprentissage de React, et non une application commmerciale.",
     "part2": "Il n'y a pas de support fourni, et des données peuvent être supprimées à tout instant."
