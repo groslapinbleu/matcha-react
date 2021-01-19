@@ -58,7 +58,6 @@ class Notification extends Component {
           <MatchaBox title='Languages'>
             <div>Navigator language = {navigatorLanguage()}</div>
             <div>i18next language = {i18n.language}</div>
-            <div>i18next locale = {i18n.locale}</div>
           </MatchaBox>
         </section>
 

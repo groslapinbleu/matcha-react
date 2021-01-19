@@ -81,6 +81,7 @@ class MessagePage extends Component {
           createdAt: Date.now(),
           userId: this.state.user.uid,
           username: this.state.user.username,
+          photoURL: this.state.user.photoURL,
         });
         this.setState({ text: '' });
         chatArea.scrollBy(0, chatArea.scrollHeight);
@@ -143,7 +144,7 @@ class MessagePage extends Component {
               <Message
                 key={chat.createdAt}
                 user={this.state.user}
-                otherUser={{ username: chat.username }}
+                otherUser={{ username: chat.username, photoURL: chat.photoURL }}
                 chat={chat}
                 onRemoveMessage={this.onRemoveMessage}
               ></Message>

@@ -7,9 +7,10 @@ import UserItem from 'components/UserItem';
 import UserList from 'components/UserList';
 import { useTranslation } from 'react-i18next';
 import { Switch, Route } from 'react-router-dom';
+import navigatorLanguage from 'helpers/navigatorLanguage';
 
 function Admin({ firebase }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <div>
@@ -22,6 +23,10 @@ function Admin({ firebase }) {
               'This page is only accessible to admin profiles.'
             )}
           </p>
+          <div>
+            <div>Navigator language = {navigatorLanguage()}</div>
+            <div>i18next language = {i18n.language}</div>
+          </div>
         </MatchaBox>
       </section>
       <section className='p-5 shadow'>
