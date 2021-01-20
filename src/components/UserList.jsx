@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import MatchaBox from "components/MatchaBox"
+import MatchaBox from 'components/MatchaBox';
 import { withFirebase } from 'services/Firebase';
 // import * as ROUTES from '../../constants/routes';
 
@@ -11,29 +11,29 @@ class UserList extends Component {
     this.state = {
       loading: false,
       users: [],
-      error: null
+      error: null,
     };
   }
 
   componentDidMount() {
     this.setState({ loading: true });
     try {
-      this.ref = this.props.firebase.users().on('value', snapshot => {
+      this.ref = this.props.firebase.users().on('value', (snapshot) => {
         const usersObject = snapshot.val();
-        const usersList = Object.keys(usersObject).map(key => ({
+        const usersList = Object.keys(usersObject).map((key) => ({
           ...usersObject[key],
           uid: key,
-        }))
+        }));
 
         this.setState({
           users: usersList,
           loading: false,
-          error: null
-        })
-      })
+          error: null,
+        });
+      });
     } catch (error) {
-      console.log(error.message)
-      this.setState({ error })
+      console.log(error.message);
+      this.setState({ error });
     }
   }
 
@@ -45,33 +45,35 @@ class UserList extends Component {
     const { users, loading } = this.state;
 
     return (
-      <MatchaBox title="Users">
+      <MatchaBox title='Users'>
         {loading && <div>Loading ...</div>}
-        <table className="table-auto ">
+        <table className='divide-y divide-gray-200-auto '>
           <thead>
             <tr>
-              <th className="border border-indigo-800">Email</th>
-              <th className="border border-indigo-800">Username</th>
-              <th className="border border-indigo-800">Firstname</th>
-              <th className="border border-indigo-800">Lastname</th>
+              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                Email
+              </th>
+              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                Username
+              </th>
+              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                Firstname
+              </th>
+              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                Lastname
+              </th>
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
+            {users.map((user) => (
               <tr key={user.uid}>
-                <td className="border border-indigo-800">
-                  {user.email}
-                </td>
-                <td className="border border-indigo-800">
-                  {user.username}
-                </td>
-                <td className="border border-indigo-800">
+                <td className='px-6 py-4 whitespace-nowrap'>{user.email}</td>
+                <td className='px-6 py-4 whitespace-nowrap'>{user.username}</td>
+                <td className='px-6 py-4 whitespace-nowrap'>
                   {user.firstname}
                 </td>
-                <td className="border border-indigo-800">
-                  {user.lastname}
-                </td>
-                <td className="p-2 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white">
+                <td className='px-6 py-4 whitespace-nowrap'>{user.lastname}</td>
+                <td className='px-6 py-4 rounded-md bg-indigo-200 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white'>
                   <Link
                     to={{
                       pathname: `/admin/${user.uid}`,
@@ -79,14 +81,15 @@ class UserList extends Component {
                     }}
                   >
                     Details
-                </Link>
+                  </Link>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
         {this.state.error && <li>{this.state.error.message}</li>}
-      </MatchaBox>);
+      </MatchaBox>
+    );
   }
 }
 

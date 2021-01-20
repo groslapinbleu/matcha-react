@@ -1,4 +1,10 @@
 {
+  "email_change_form": {
+    "email_successfully_changed": "Email successfully changed",
+    "current_email": "Current email",
+    "new_email": "New Email",
+    "reset_password": "Change email"
+  },
   "fileinput": {
     "error_message": "Sorry, files should not be bigger than 2Mb",
     "select_image": "Select image file (jpeg, png or gif) with a max size of 2 Mb"
@@ -21,6 +27,7 @@
     "signup": "Sign Up"
   },
   "password_change_form": {
+    "password_successfully_changed": "Password successfully changed",
     "new_password": "New Password",
     "confirm_new_password": "Confirm New Password",
     "reset_password": "Reset my password"
@@ -85,6 +92,7 @@
   "profile_page": {
     "goto_admin": "Go to admin menu",
     "title": "Profile",
+    "change_email_title": "Change Email",
     "reset_title": "Reset password",
     "danger_zone": "Danger Zone",
     "delete_account": "Delete your account"

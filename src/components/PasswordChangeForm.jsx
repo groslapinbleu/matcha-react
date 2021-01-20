@@ -24,7 +24,12 @@ class PasswordChangeForm extends Component {
     this.props.firebase
       .doPasswordUpdate(passwordOne)
       .then(() => {
-        openSnackbar('Password successfully changed');
+        openSnackbar(
+          t(
+            'password_change_form.password_successfully_changed',
+            'Password successfully changed'
+          )
+        );
         this.setState({ ...INITIAL_STATE });
       })
       .catch((error) => {

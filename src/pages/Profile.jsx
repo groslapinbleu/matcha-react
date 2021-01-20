@@ -7,6 +7,7 @@ import MatchaBox from '../components/MatchaBox';
 import ProfileForm from 'components/ProfileForm';
 import ImageList from 'components/ImageList';
 import PasswordChangeForm from 'components/PasswordChangeForm';
+import EmailChangeForm from 'components/EmailChangeForm';
 import Spinner from 'react-loader-spinner';
 import { withTranslation } from 'react-i18next';
 
@@ -129,6 +130,19 @@ class Profile extends Component {
           <MatchaBox title='Images'>
             <ImageList />
           </MatchaBox>
+        </section>
+        <section className='p-5 shadow'>
+          {userData ? (
+            <MatchaBox
+              title={t('profile_page.change_email_title', 'Change Email')}
+            >
+              <EmailChangeForm currentEmail={userData.email} />
+            </MatchaBox>
+          ) : (
+            <div className='flex items-center justify-center'>
+              <Spinner type='Puff' color='#038E9F' height={50} width={50} />
+            </div>
+          )}
         </section>
         <section className='p-5 shadow'>
           <MatchaBox title={t('profile_page.reset_title', 'Reset password')}>

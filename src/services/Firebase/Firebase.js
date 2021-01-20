@@ -77,6 +77,8 @@ class Firebase {
 
   doDelete = () => this.auth.currentUser.delete();
 
+  doUpdateEmail = (email) => this.auth.currentUser.updateEmail(email);
+
   doUseDeviceLanguage = () => this.auth.useDeviceLanguage();
 
   // *** Merge Auth and DB User API *** //
