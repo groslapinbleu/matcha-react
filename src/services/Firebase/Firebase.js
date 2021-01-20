@@ -75,9 +75,9 @@ class Firebase {
     });
   };
 
-  doDelete = () => this.auth.currentUser.delete();
+  doDelete = async () => this.auth.currentUser.delete();
 
-  doUpdateEmail = (email) => this.auth.currentUser.updateEmail(email);
+  doUpdateEmail = async (email) => this.auth.currentUser.updateEmail(email);
 
   doUseDeviceLanguage = () => this.auth.useDeviceLanguage();
 

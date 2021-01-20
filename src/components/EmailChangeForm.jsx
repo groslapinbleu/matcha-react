@@ -18,21 +18,29 @@ class EmailChangeForm extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  onSubmit = (event) => {
+  onSubmit = async (event) => {
     const { newEmail } = this.state;
     const { openSnackbar } = this.props;
     const { t } = this.props;
     const { user, auth } = this.props.firebase;
     event.preventDefault();
 
-    this.props.firebase
-      .doUpdateEmail(newEmail)
-      .then(
-        user(auth.currentUser.uid).update({
-          email: newEmail,
-          updated: Date.now(),
-        })
-      )
+    try {
+      //1. update email
+      await this.props.firebase.doUpdateEmail(newEmail);
+    } catch (error) {
+      // uh uh, it failed ! display an error and exit
+      openSnackbar(error.message);
+      this.setState({ error });
+      return;
+    }
+
+    // 2. all, good, proceed and change RealtimeDB as well
+    user(auth.currentUser.uid)
+      .update({
+        email: newEmail,
+        updated: Date.now(),
+      })
       .then(() => {
         openSnackbar(
           t(
