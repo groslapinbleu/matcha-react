@@ -17,6 +17,7 @@ class PasswordChangeForm extends Component {
     const { passwordOne } = this.state;
     const { openSnackbar } = this.props;
 
+    this.props.firebase.doUseDeviceLanguage();
     this.props.firebase
       .doPasswordUpdate(passwordOne)
       .then(() => {

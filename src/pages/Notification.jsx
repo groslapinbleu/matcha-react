@@ -11,7 +11,7 @@ import { withTranslation } from 'react-i18next';
 import navigatorLanguage from 'helpers/navigatorLanguage';
 import ChangeLanguage from 'components/ChangeLanguage';
 import Alert from 'components/Alert';
-import SearchAndSort from 'components/SearchAndSort';
+import SearchAndOrder from 'components/SearchAndOrder';
 class Notification extends Component {
   constructor(props) {
     console.log('Notification constructor');
@@ -52,8 +52,8 @@ class Notification extends Component {
         </section>
         <section className='p-5 shadow'>
           <MatchaBox title='Search'>
-            <SearchAndSort
-              sortOder='asc'
+            <SearchAndOrder
+              sortOrder='asc'
               changeString={(newString) => console.log(newString)}
               changeOrder={(name, value) => console.log(name + ' ' + value)}
             />

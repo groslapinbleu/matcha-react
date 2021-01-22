@@ -22,6 +22,8 @@ class EmailChangeForm extends Component {
     event.preventDefault();
 
     try {
+      await this.props.firebase.doUseDeviceLanguage();
+
       //1. update email
       await this.props.firebase.doUpdateEmail(newEmail);
     } catch (error) {

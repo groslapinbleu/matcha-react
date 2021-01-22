@@ -9,23 +9,19 @@ import Star from 'Icons/Star';
 import age from 'helpers/age';
 import Spinner from 'react-loader-spinner';
 import { withTranslation } from 'react-i18next';
-import SearchAndSort from './SearchAndSort';
+import SearchAndOrder from './SearchAndOrder';
 
 // import * as ROUTES from '../../constants/routes';
 
 class UserSearchList extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loading: false,
-      users: [],
-      error: null,
-      limit: 5,
-      searchString: '',
-      sortOrder: 'asc',
-    };
-  }
+  state = {
+    loading: false,
+    users: [],
+    error: null,
+    limit: 5,
+    searchString: '',
+    sortOrder: 'asc',
+  };
 
   componentDidMount() {
     this.onListenForUsers();
@@ -218,7 +214,7 @@ class UserSearchList extends Component {
           </div>
         )}
 
-        <SearchAndSort
+        <SearchAndOrder
           sortOrder={this.state.sortOrder}
           changeString={this.handleChangeString}
           changeOrder={this.handleChangeOrder}

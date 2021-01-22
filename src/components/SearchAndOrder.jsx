@@ -3,7 +3,7 @@ import { withTranslation } from 'react-i18next';
 import Dropdown from './Dropdown';
 import PropTypes from 'prop-types';
 
-class SearchAndSort extends Component {
+class SearchAndOrder extends Component {
   state = {
     searchstring: this.props.searchString,
     sortOrder: this.props.sortOrder === 'asc' ? 0 : 1, // pass 'asc' for ascending, anything else for descending
@@ -62,15 +62,16 @@ class SearchAndSort extends Component {
   }
 }
 
-SearchAndSort.propTypes = {
+SearchAndOrder.propTypes = {
   sortOrder: PropTypes.string,
   searchString: PropTypes.string,
   changeOrder: PropTypes.func.isRequired,
   changeString: PropTypes.func.isRequired,
 };
 
-SearchAndSort.defaultProps = {
+SearchAndOrder.defaultProps = {
   sortOrder: 'asc',
+  searchString: '',
 };
 
-export default withTranslation()(SearchAndSort);
+export default withTranslation()(SearchAndOrder);
