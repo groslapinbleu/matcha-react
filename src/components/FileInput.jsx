@@ -6,15 +6,11 @@ import { withTranslation } from 'react-i18next';
  * to the calling component via prop onClick
  */
 class FileInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      errorMessage: null,
-    };
-    this.uploadFile = this.uploadFile.bind(this);
-  }
+  state = {
+    errorMessage: null,
+  };
 
-  uploadFile(event) {
+  uploadFile = (event) => {
     const { t } = this.props;
 
     let file = event.target.files[0];
@@ -35,7 +31,7 @@ class FileInput extends React.Component {
         this.props.onClick(file);
       }
     }
-  }
+  };
 
   render() {
     const { t } = this.props;

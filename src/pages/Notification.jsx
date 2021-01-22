@@ -10,7 +10,8 @@ import { tags } from 'models/User';
 import { withTranslation } from 'react-i18next';
 import navigatorLanguage from 'helpers/navigatorLanguage';
 import ChangeLanguage from 'components/ChangeLanguage';
-
+import Alert from 'components/Alert';
+import SearchAndSort from 'components/SearchAndSort';
 class Notification extends Component {
   constructor(props) {
     console.log('Notification constructor');
@@ -50,8 +51,12 @@ class Notification extends Component {
           </MatchaBox>
         </section>
         <section className='p-5 shadow'>
-          <MatchaBox title='Table'>
-            <MatchaTable />
+          <MatchaBox title='Search'>
+            <SearchAndSort
+              sortOder='asc'
+              changeString={(newString) => console.log(newString)}
+              changeOrder={(name, value) => console.log(name + ' ' + value)}
+            />
           </MatchaBox>
         </section>
         <section className='p-5 shadow'>
@@ -60,6 +65,7 @@ class Notification extends Component {
             <div>i18next language = {i18n.language}</div>
           </MatchaBox>
         </section>
+        <Alert color='red'>This is a red alert </Alert>
 
         <Footer></Footer>
       </div>

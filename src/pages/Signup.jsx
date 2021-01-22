@@ -10,6 +10,7 @@ import { isValidEmail } from 'helpers/validation';
 import MatchaButton from 'components/MatchaButton';
 import { defaultUserData } from 'models/User';
 import { withTranslation } from 'react-i18next';
+import Alert from 'components/Alert';
 
 class SignUp extends Component {
   constructor(props) {
@@ -167,9 +168,7 @@ class SignUp extends Component {
               ></input>
             </div>
             <div>
-              {this.state.error ? (
-                <p className='text-red-500'>{this.state.error}</p>
-              ) : null}
+              {this.state.error ? <Alert>{this.state.error}</Alert> : null}
               <MatchaButton
                 text={t('signup_page.signup_button', 'Sign Up')}
                 type='submit'

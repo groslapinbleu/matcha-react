@@ -87,14 +87,11 @@ function PublicRoute({ component: Component, authenticated, ...rest }) {
 }
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      authenticated: false,
-      admin: false,
-      loading: true,
-    };
-  }
+  state = {
+    authenticated: false,
+    admin: false,
+    loading: true,
+  };
 
   componentDidMount() {
     // firebase is expected to be provided as a prop

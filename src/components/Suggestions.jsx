@@ -21,33 +21,24 @@ class Suggestions extends Component {
       limit: 5,
       searchString: '',
     };
-    this.extractFilteredUsers = this.extractFilteredUsers.bind(this);
-    this.askConnection = this.askConnection.bind(this);
-    this.cancelRequestForConnection = this.cancelRequestForConnection.bind(
-      this
-    );
-    this.acceptConnection = this.acceptConnection.bind(this);
-    this.rejectConnection = this.rejectConnection.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentDidMount() {
     this.onListenForUsers();
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
-  }
+  };
 
-  onSubmit(event) {
+  onSubmit = (event) => {
     event.preventDefault();
     // TODO: implement search
-  }
+  };
 
-  askConnection(toUser) {
+  askConnection = (toUser) => {
     console.log('askConnection');
     const { authUser, user } = this.props.firebase;
 
@@ -68,9 +59,9 @@ class Suggestions extends Component {
       friends[toUser.uid] = false;
       user(authUser.uid).child('friends').update(friends);
     }
-  }
+  };
 
-  cancelRequestForConnection(toUser) {
+  cancelRequestForConnection = (toUser) => {
     console.log('cancelConnection');
     const { authUser, user } = this.props.firebase;
     const isFriend = isBFriendOfA(authUser, toUser);
@@ -82,9 +73,9 @@ class Suggestions extends Component {
       friends[toUser.uid] = null;
       user(authUser.uid).child('friends').update(friends);
     }
-  }
+  };
 
-  acceptConnection(fromUser) {
+  acceptConnection = (fromUser) => {
     console.log('acceptConnection');
     const { authUser, user } = this.props.firebase;
 
@@ -105,13 +96,13 @@ class Suggestions extends Component {
       friends[authUser.uid] = true;
       user(fromUser.uid).child('friends').update(friends);
     }
-  }
+  };
 
-  rejectConnection(fromUser) {
+  rejectConnection = (fromUser) => {
     console.log('rejectConnection');
-  }
+  };
 
-  extractFilteredUsers(snapshot, uid) {
+  extractFilteredUsers = (snapshot, uid) => {
     console.log('extractFilteredUsers');
     const usersObject = snapshot.val();
     if (usersObject) {
@@ -132,7 +123,7 @@ class Suggestions extends Component {
       loading: false,
       error: null,
     });
-  }
+  };
 
   // returns true if the authenticated user and another user
   // have compatible gender preferrences

@@ -7,6 +7,7 @@ import * as MISC from '../constants/miscConsts';
 import MatchaButton from 'components/MatchaButton';
 import { isValidEmail } from 'helpers/validation';
 import { withTranslation } from 'react-i18next';
+import Alert from 'components/Alert';
 
 class Login extends Component {
   constructor(props) {
@@ -78,7 +79,11 @@ class Login extends Component {
                 />
               </div>
               <div>
-                {this.state.error ? <p>{this.state.error}</p> : null}
+                {this.state.error ? (
+                  <Alert>
+                    <p>{this.state.error}</p>
+                  </Alert>
+                ) : null}
                 <MatchaButton
                   text={t('login_page.login_button', 'Login')}
                   type='submit'

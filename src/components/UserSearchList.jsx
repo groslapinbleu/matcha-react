@@ -9,6 +9,7 @@ import Star from 'Icons/Star';
 import age from 'helpers/age';
 import Spinner from 'react-loader-spinner';
 import { withTranslation } from 'react-i18next';
+import SearchAndSort from './SearchAndSort';
 
 // import * as ROUTES from '../../constants/routes';
 
@@ -22,34 +23,37 @@ class UserSearchList extends Component {
       error: null,
       limit: 5,
       searchString: '',
+      sortOrder: 'asc',
     };
-    this.extractFilteredUsers = this.extractFilteredUsers.bind(this);
-    this.askConnection = this.askConnection.bind(this);
-    this.cancelRequestForConnection = this.cancelRequestForConnection.bind(
-      this
-    );
-    this.acceptConnection = this.acceptConnection.bind(this);
-    this.rejectConnection = this.rejectConnection.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentDidMount() {
     this.onListenForUsers();
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
-  }
+  };
+  handleChangeString = (newString) => {
+    this.setState({
+      searchString: newString,
+    });
+  };
 
-  onSubmit(event) {
+  handleChangeOrder = (value) => {
+    this.setState({
+      sortOrder: value,
+    });
+  };
+
+  onSubmit = (event) => {
     event.preventDefault();
     // TODO: implement search
-  }
+  };
 
-  askConnection(toUser) {
+  askConnection = (toUser) => {
     console.log('askConnection');
     const { authUser, user } = this.props.firebase;
 
@@ -70,9 +74,9 @@ class UserSearchList extends Component {
       friends[toUser.uid] = false;
       user(authUser.uid).child('friends').update(friends);
     }
-  }
+  };
 
-  cancelRequestForConnection(toUser) {
+  cancelRequestForConnection = (toUser) => {
     console.log('cancelConnection');
     const { authUser, user } = this.props.firebase;
     const isFriend = isBFriendOfA(authUser, toUser);
@@ -84,9 +88,9 @@ class UserSearchList extends Component {
       friends[toUser.uid] = null;
       user(authUser.uid).child('friends').update(friends);
     }
-  }
+  };
 
-  acceptConnection(fromUser) {
+  acceptConnection = (fromUser) => {
     console.log('acceptConnection');
     const { authUser, user } = this.props.firebase;
 
@@ -107,14 +111,14 @@ class UserSearchList extends Component {
       friends[authUser.uid] = true;
       user(fromUser.uid).child('friends').update(friends);
     }
-  }
+  };
 
-  rejectConnection(fromUser) {
+  rejectConnection = (fromUser) => {
     console.log('rejectConnection');
-  }
+  };
 
-  extractFilteredUsers(snapshot, uid) {
-    console.log('extractFilteredUsers');
+  extractFilteredUsersFromDB = (snapshot, uid) => {
+    console.log('extractFilteredUsersFromDB');
     const usersObject = snapshot.val();
     if (usersObject) {
       const usersList = Object.keys(usersObject).map((key) => ({
@@ -134,7 +138,7 @@ class UserSearchList extends Component {
       loading: false,
       error: null,
     });
-  }
+  };
 
   // returns true if the authenticated user and another user
   // have compatible gender preferrences
@@ -161,14 +165,16 @@ class UserSearchList extends Component {
             .users()
             .orderByChild('gender')
             .limitToLast(this.state.limit)
-            .on('value', (snapshot) => this.extractFilteredUsers(snapshot, uid))
+            .on('value', (snapshot) =>
+              this.extractFilteredUsersFromDB(snapshot, uid)
+            )
         : this.props.firebase
             .users()
             .orderByChild('gender')
             .limitToLast(this.state.limit)
             .equalTo(preferredGender)
             .on('value', (snapshot) =>
-              this.extractFilteredUsers(snapshot, uid)
+              this.extractFilteredUsersFromDB(snapshot, uid)
             );
     } catch (error) {
       console.log(error.message);
@@ -193,7 +199,15 @@ class UserSearchList extends Component {
   render() {
     console.log('UserSearchList render');
     const { users, loading } = this.state;
+    const order = this.state.sortOrder === 'asc' ? 1 : -1;
     const filteredUsers = users.filter(this.selectUser);
+    filteredUsers.sort((a, b) => {
+      if (a.username.toUpperCase() < b.username.toUpperCase()) {
+        return -1 * order;
+      } else {
+        return 1 * order;
+      }
+    });
     const { t } = this.props;
     const { authUser } = this.props.firebase;
     return (
@@ -203,18 +217,13 @@ class UserSearchList extends Component {
             <Spinner type='Puff' color='#038E9F' height={50} width={50} />
           </div>
         )}
-        <form onSubmit={this.onSubmit}>
-          <input
-            type='text'
-            name='searchString'
-            placeholder={t(
-              'user_search_list.enter_string',
-              'Enter search string'
-            )}
-            value={this.state.searchstring}
-            onChange={this.handleChange}
-          ></input>
-        </form>
+
+        <SearchAndSort
+          sortOrder={this.state.sortOrder}
+          changeString={this.handleChangeString}
+          changeOrder={this.handleChangeOrder}
+        />
+
         <div>
           <div className='shadow  border-b border-gray-200 rounded-lg'>
             <table className='divide-y divide-gray-200'>

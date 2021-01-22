@@ -16,7 +16,6 @@ class ProfileForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: null,
       modified: false,
       userData: {
         ...defaultUserData,
@@ -24,14 +23,6 @@ class ProfileForm extends Component {
         birthday: this.props.user.birthday,
       },
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChangeRadioButton = this.handleChangeRadioButton.bind(this);
-    this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this);
-    this.handleChangeMultiChoiceSelector = this.handleChangeMultiChoiceSelector.bind(
-      this
-    );
-    this.handleDayChange = this.handleDayChange.bind(this);
   }
 
   updateStateFromProps() {
@@ -48,7 +39,7 @@ class ProfileForm extends Component {
     this.updateStateFromProps();
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     const userData = {
       ...this.state.userData,
       [event.target.name]: event.target.value,
@@ -57,9 +48,9 @@ class ProfileForm extends Component {
       userData,
       modified: true,
     });
-  }
+  };
 
-  handleChangeRadioButton(name, value) {
+  handleChangeRadioButton = (name, value) => {
     const userData = {
       ...this.state.userData,
       [name]: parseInt(value, 10),
@@ -68,9 +59,9 @@ class ProfileForm extends Component {
       userData,
       modified: true,
     });
-  }
+  };
 
-  handleChangeCheckbox(event) {
+  handleChangeCheckbox = (event) => {
     console.log('handleChangeCheckbox');
     const userData = {
       ...this.state.userData,
@@ -80,9 +71,9 @@ class ProfileForm extends Component {
       userData,
       modified: true,
     });
-  }
+  };
 
-  handleChangeMultiChoiceSelector(name, value) {
+  handleChangeMultiChoiceSelector = (name, value) => {
     console.log('handleChangeMultiChoiceSelector');
 
     const userData = {
@@ -93,9 +84,9 @@ class ProfileForm extends Component {
       userData,
       modified: true,
     });
-  }
+  };
 
-  handleDayChange(day) {
+  handleDayChange = (day) => {
     if (day) {
       const userData = {
         ...this.state.userData,
@@ -106,7 +97,7 @@ class ProfileForm extends Component {
         modified: true,
       });
     }
-  }
+  };
 
   readUserDataFromState() {
     const userData = {
@@ -115,12 +106,12 @@ class ProfileForm extends Component {
     return userData;
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
     const userData = this.readUserDataFromState();
     this.props.onSubmit(userData);
     this.setState({ modified: false });
-  }
+  };
 
   render() {
     const { t } = this.props;

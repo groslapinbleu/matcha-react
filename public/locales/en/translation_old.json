@@ -9,5 +9,8 @@
   "search": "Search",
   "logout": "Logout",
   "signin": "Sign In",
-  "signup": "Sign Up"
+  "signup": "Sign Up",
+  "profile_page": {
+    "reset_title": "Reset password"
+  }
 }

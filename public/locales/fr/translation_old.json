@@ -9,5 +9,8 @@
   "search": "Rechercher",
   "logout": "Déconnexion",
   "signin": "Connexion",
-  "signup": "Inscription"
+  "signup": "Inscription",
+  "profile_page": {
+    "reset_title": "Réinitialiser mot de passe"
+  }
 }

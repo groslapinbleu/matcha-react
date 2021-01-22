@@ -14,7 +14,7 @@
     "part2": "Il n'y a pas de support fourni, et des données peuvent être supprimées à tout instant."
   },
   "image_list": {
-    "select_for_profile": "Selectionner pour le profil",
+    "select_for_profile": "Sélectionner pour le profil",
     "done": "Terminé",
     "edit_images": "Editer les images"
   },
@@ -45,6 +45,11 @@
     "validate-button": "Valider",
     "last_updated": "Dernière mise à jour",
     "invalid_user": "Utilisateur invalide!"
+  },
+  "search_and_sort": {
+    "ascending": "ascendant",
+    "descending": "descendant",
+    "enter_string": "Rechercher"
   },
   "user_search_list": {
     "enter_string": "Pseudos à rechercher",
@@ -93,7 +98,7 @@
     "goto_admin": "Aller au menu Admin",
     "title": "Profil",
     "change_email_title": "Changer Email",
-    "reset_title": "Réinitialiser mot de passe",
+    "change_password_title": "Changer mot de passe",
     "danger_zone": "Zone de Danger",
     "delete_account": "Supprimer votre compte"
   },

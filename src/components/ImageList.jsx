@@ -7,19 +7,11 @@ import { withFirebase } from 'services/Firebase';
 import { withTranslation } from 'react-i18next';
 
 class ImageList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      editList: false,
-      addingFile: false,
-      items: [],
-    };
-    this.handleEdit = this.handleEdit.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleAddImage = this.handleAddImage.bind(this);
-    this.handleNewImage = this.handleNewImage.bind(this);
-    this.handleSelectForProfile = this.handleSelectForProfile.bind(this);
-  }
+  state = {
+    editList: false,
+    addingFile: false,
+    items: [],
+  };
 
   componentDidMount() {
     console.log('ImageList componentDidMount');
@@ -42,12 +34,12 @@ class ImageList extends Component {
       .catch((error) => console.log('error: ' + error.message));
   }
 
-  handleEdit(event) {
+  handleEdit = (event) => {
     console.log('ImageList handleEdit');
     this.setState({ editList: !this.state.editList, addingFile: false });
-  }
+  };
 
-  handleDelete(event, index) {
+  handleDelete = (event, index) => {
     console.log('handleDelete with index ' + index);
     const items = [...this.state.items];
     const item = items[index];
@@ -68,9 +60,9 @@ class ImageList extends Component {
         this.setState({ items });
       })
       .catch((error) => console.log(error.message));
-  }
+  };
 
-  handleSelectForProfile(event, index) {
+  handleSelectForProfile = (event, index) => {
     console.log('handleSelectForProfile with index ' + index);
     // TODO: must write url of selected photo into authenticated User photoURL atribute
     const { user, auth } = this.props.firebase;
@@ -88,13 +80,13 @@ class ImageList extends Component {
         });
       })
       .catch((error) => console.log(error.message));
-  }
+  };
 
-  handleAddImage(event) {
+  handleAddImage = (event) => {
     this.setState({ addingFile: true });
-  }
+  };
 
-  handleNewImage(file) {
+  handleNewImage = (file) => {
     const items = [...this.state.items];
     const { image } = this.props.firebase;
     const { uid } = this.props.firebase.authUser;
@@ -122,7 +114,7 @@ class ImageList extends Component {
         this.setState({ addingFile: false });
       })
       .catch((error) => console.log(error.message));
-  }
+  };
 
   render() {
     const { t } = this.props;

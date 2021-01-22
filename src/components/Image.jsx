@@ -3,13 +3,11 @@ import Spinner from 'react-loader-spinner';
 import PropTypes from 'prop-types';
 
 class Image extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      url: null,
-    };
-  }
+  state = {
+    loading: true,
+    url: null,
+  };
+
   componentDidMount() {
     this.props.item
       .getDownloadURL()

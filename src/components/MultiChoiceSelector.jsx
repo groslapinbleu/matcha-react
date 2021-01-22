@@ -2,18 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class MultiChoiceSelector extends Component {
-  constructor(props) {
-    // console.log("DropdownMultiChoices constructor")
-    super(props);
+  state = {
+    selectedElements: this.props.selectedElements,
+    errorMessage: null,
+  };
 
-    this.state = {
-      selectedElements: this.props.selectedElements,
-      errorMessage: null,
-    };
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(event) {
+  handleChange = (event) => {
     console.log('DropdownMultiChoices handleChange');
     console.log('selected value : ' + event.target.value);
     const index = this.state.selectedElements.indexOf(event.target.value);
@@ -33,7 +27,7 @@ class MultiChoiceSelector extends Component {
       this.setState({ selectedElements: se, errorMessage: null });
       this.props.onSelect(event.target.name, se);
     }
-  }
+  };
 
   render() {
     return (

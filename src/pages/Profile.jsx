@@ -145,7 +145,9 @@ class Profile extends Component {
           )}
         </section>
         <section className='p-5 shadow'>
-          <MatchaBox title={t('profile_page.reset_title', 'Reset password')}>
+          <MatchaBox
+            title={t('profile_page.change_password_title', 'Change password')}
+          >
             <PasswordChangeForm />
           </MatchaBox>
         </section>

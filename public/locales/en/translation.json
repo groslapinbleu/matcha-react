@@ -46,6 +46,11 @@
     "last_updated": "Last updated ",
     "invalid_user": "Invalid user!"
   },
+  "search_and_sort": {
+    "ascending": "ascending",
+    "descending": "descending",
+    "enter_string": "Enter search string"
+  },
   "user_search_list": {
     "enter_string": "Enter search string",
     "username": "Username",
@@ -93,7 +98,7 @@
     "goto_admin": "Go to admin menu",
     "title": "Profile",
     "change_email_title": "Change Email",
-    "reset_title": "Reset password",
+    "change_password_title": "Change password",
     "danger_zone": "Danger Zone",
     "delete_account": "Delete your account"
   },

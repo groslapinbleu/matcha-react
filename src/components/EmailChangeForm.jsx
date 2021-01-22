@@ -12,11 +12,7 @@ const INITIAL_STATE = {
 };
 
 class EmailChangeForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { ...INITIAL_STATE };
-  }
+  state = { ...INITIAL_STATE };
 
   onSubmit = async (event) => {
     const { newEmail } = this.state;
