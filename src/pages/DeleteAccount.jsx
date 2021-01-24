@@ -9,7 +9,7 @@ import { withTranslation } from 'react-i18next';
 
 class DeleteAccount extends Component {
   handleDelete = async () => {
-    const { auth, doDelete, user, deleteFiles } = this.props.firebase;
+    const { auth, doDelete, user, deleteImages } = this.props.firebase;
     console.log('Ready to delete account of user ' + auth.currentUser);
     const { openSnackbar } = this.props;
 
@@ -17,7 +17,7 @@ class DeleteAccount extends Component {
       .remove() // 1. remove user data in Realtime DB
       .then(console.log('Account database information deleted!'))
       // 2. TODO: delete images as well !
-      .then(deleteFiles(auth.currentUser.uid))
+      .then(deleteImages(auth.currentUser.uid))
       .then(async () => {
         try {
           await doDelete(); // 3. delete authentication information

@@ -9,7 +9,7 @@ class Image extends Component {
   };
 
   componentDidMount() {
-    this.props.item
+    this.props.imageRef
       .getDownloadURL()
       .then((url) => this.setState({ url, loading: false }))
       .catch((error) => console.log(error.message));
@@ -38,6 +38,6 @@ class Image extends Component {
 
 Image.propTypes = {
   username: PropTypes.string,
-  item: PropTypes.object,
+  imageRef: PropTypes.object,
 };
 export default Image;

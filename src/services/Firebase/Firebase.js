@@ -18,15 +18,12 @@ class Firebase {
   constructor() {
     app.initializeApp(config);
 
-    /* Helper */
-
-    this.serverValue = app.database.ServerValue;
-    this.emailAuthProvider = app.auth.EmailAuthProvider;
-
     /* Firebase APIs */
 
     this.auth = app.auth();
+
     this.db = app.database();
+
     this.storage = app.storage();
     this.storageRef = this.storage.ref();
     this.imagesRef = this.storageRef.child('images');
@@ -34,8 +31,6 @@ class Firebase {
     /* Social Sign In Method Provider */
 
     this.googleProvider = new app.auth.GoogleAuthProvider();
-    this.facebookProvider = new app.auth.FacebookAuthProvider();
-    this.twitterProvider = new app.auth.TwitterAuthProvider();
     this.githubProvider = new app.auth.GithubAuthProvider();
   }
 
@@ -48,10 +43,6 @@ class Firebase {
     this.auth.signInWithEmailAndPassword(email, password);
 
   doSignInWithGoogle = () => this.auth.signInWithPopup(this.googleProvider);
-
-  doSignInWithFacebook = () => this.auth.signInWithPopup(this.facebookProvider);
-
-  doSignInWithTwitter = () => this.auth.signInWithPopup(this.twitterProvider);
 
   doSignInWithGithub = () => this.auth.signInWithPopup(this.githubProvider);
 
@@ -68,7 +59,7 @@ class Firebase {
     this.auth.currentUser.updatePassword(password);
 
   doUserProfileUpdate = (displayName) => {
-    console.log('doUserProfileUpdate avec ' + displayName);
+    // console.log('doUserProfileUpdate avec ' + displayName);
     return this.auth.currentUser.updateProfile({
       displayName: displayName,
       // photoURL: "https://example.com/jane-q-user/profile.jpg"
@@ -171,6 +162,18 @@ class Firebase {
 
   users = () => this.db.ref('users');
 
+  createUser = (uid, data) => {};
+  updateUser = async (uid, data) => {
+    const updatedData = { ...data, updated: Date.now() };
+    this.user(uid)
+      .update(updatedData)
+      .catch((error) => {
+        console.log(error.message);
+        throw new Error('updateUser: Error when updating user ' + uid);
+      });
+  };
+  deleteUser = (uid) => {};
+
   // *** Message API ***
 
   message = (uid) => this.db.ref(`messages/${uid}`);
@@ -188,26 +191,65 @@ class Firebase {
   images = (uid) => this.imagesRef.child(uid);
   image = (uid, filename) => this.imagesRef.child(`${uid}/${filename}`);
 
+  // create image
+  // FIXME: instead of returning newItemRef from db, I should return newItemRef.fullPath
+  createImage = async (uid, file) => {
+    const newItemRef = this.image(uid, file.name);
+    try {
+      await newItemRef.put(file);
+      return newItemRef.fullPath;
+    } catch (error) {
+      console.log('createImage: ' + error.message);
+      throw new Error('Error when creating image in storage');
+    }
+  };
+  // get all images corresponding to a uid
+  // FIXME: instead of returning an item from db, I should return item.fullPath
+  getImages = async (uid) => {
+    const databaseItems = [];
+    const listRef = this.images(uid);
+    try {
+      await listRef.listAll().then((res) => {
+        // res.prefixes.forEach(function (folderRef) {
+        //   console.log('folderRef: ' + folderRef);
+        // });
+        res.items.forEach((item) => {
+          // console.log('item: ' + item);
+          // console.log('item.fullPath: ' + item.fullPath);
+          databaseItems.push(item.fullPath);
+        });
+      });
+      return databaseItems;
+    } catch (error) {
+      console.log('getImages: ' + error.message);
+      throw new Error('Error listing images');
+    }
+  };
+
+  getRefFromFilePath = (fullPath) => {
+    return this.storage.ref(fullPath);
+  };
+
   // delete a single file
-  deleteFile = async (filePath) => {
-    const ref = this.storage.ref(filePath);
+  deleteImage = async (fullPath) => {
+    const ref = this.getRefFromFilePath(fullPath);
     return await ref.delete();
   };
 
   // delete all files within directory uid
-  deleteFiles = async (uid) => {
+  deleteImages = async (uid) => {
     const ref = this.images(uid);
     const list = await ref.listAll();
     let filesDeleted = 0;
 
     for await (const fileRef of list.items) {
-      await this.deleteFile(fileRef.fullPath);
+      await this.deleteImage(fileRef.fullPath);
       filesDeleted++;
     }
     for await (const folderRef of list.prefixes) {
       filesDeleted += await deleteFolderRecursive(folderRef.fullPath);
     }
-    console.log('deleteFiles: number of files deleted = ' + filesDeleted);
+    console.log('deleteImages: number of files deleted = ' + filesDeleted);
     return filesDeleted;
   };
 }

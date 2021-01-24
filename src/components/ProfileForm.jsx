@@ -133,6 +133,7 @@ class ProfileForm extends Component {
       'profile_form.preferred_gender',
       'Preferred gender'
     );
+    const rating = t('profile_form.rating', 'Rating');
     const region = t('profile_form.region', 'Region');
     const birthday = t('profile_form.birthday', 'Birthday');
     const visibility = t('profile_form.visibility', 'Visibility');
@@ -146,6 +147,10 @@ class ProfileForm extends Component {
                 <tr className='border-b-2 border-solid'>
                   <th>Email</th>
                   <td>{this.state.userData.email}</td>
+                </tr>
+                <tr className='border-b-2 border-solid'>
+                  <th>{rating}</th>
+                  <td>{this.state.userData.rating}</td>
                 </tr>
                 <tr className='border-b-2 border-solid'>
                   <th>Photo</th>

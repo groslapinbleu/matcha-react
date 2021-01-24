@@ -10,6 +10,7 @@ import age from 'helpers/age';
 import Spinner from 'react-loader-spinner';
 import { withTranslation } from 'react-i18next';
 import SearchAndOrder from './SearchAndOrder';
+import { regions } from 'models/User';
 
 // import * as ROUTES from '../../constants/routes';
 
@@ -241,6 +242,18 @@ class UserSearchList extends Component {
                     scope='col'
                     className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
+                    {t('user_search_list.region', 'Region')}
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    {t('user_search_list.rating', 'Rating')}
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
                     Connected on my side
                   </th>
                   <th
@@ -277,6 +290,12 @@ class UserSearchList extends Component {
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
                           {age(new Date(user.birthday))}
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap'>
+                          {regions[user.region]}
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap'>
+                          {user.rating}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
                           {isListedUserMyFriend === null ? (

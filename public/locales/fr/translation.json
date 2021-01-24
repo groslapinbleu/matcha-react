@@ -38,6 +38,7 @@
     "lastname": "Nom",
     "gender": "Genre",
     "preferred_gender": "Genre préféré",
+    "rating": "Popularité",
     "region": "Région",
     "birthday": "Anniversaire",
     "visibility": "Visibilité",
@@ -54,7 +55,9 @@
   "user_search_list": {
     "enter_string": "Pseudos à rechercher",
     "username": "Pseudo",
-    "age": "Âge"
+    "age": "Âge",
+    "region": "Région",
+    "rating": "Popularité"
   },
   "admin_page_disclaimer": "Cette page n'est accessible qu'aux profils admin.",
   "chat": {

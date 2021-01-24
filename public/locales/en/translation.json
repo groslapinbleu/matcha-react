@@ -38,6 +38,7 @@
     "lastname": "Lastname",
     "gender": "Gender",
     "preferred_gender": "Preferred gender",
+    "rating": "Rating",
     "region": "Region",
     "birthday": "Birthday",
     "visibility": "Visibility",
@@ -54,7 +55,9 @@
   "user_search_list": {
     "enter_string": "Enter search string",
     "username": "Username",
-    "age": "Age"
+    "age": "Age",
+    "region": "Region",
+    "rating": "Rating"
   },
   "admin_page_disclaimer": "This page is only accessible to admin profiles.",
   "chat": {
