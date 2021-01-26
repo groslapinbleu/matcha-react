@@ -18,7 +18,7 @@ class EmailChangeForm extends Component {
     const { newEmail } = this.state;
     const { openSnackbar } = this.props;
     const { t } = this.props;
-    const { user, auth } = this.props.firebase;
+    const { updateUser, auth } = this.props.firebase;
     event.preventDefault();
 
     try {
@@ -34,11 +34,9 @@ class EmailChangeForm extends Component {
     }
 
     // 2. all, good, proceed and change RealtimeDB as well
-    user(auth.currentUser.uid)
-      .update({
-        email: newEmail,
-        updated: Date.now(),
-      })
+    updateUser(auth.currentUser.uid, {
+      email: newEmail,
+    })
       .then(() => {
         openSnackbar(
           t(

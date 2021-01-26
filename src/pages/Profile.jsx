@@ -73,18 +73,12 @@ class Profile extends Component {
   };
 
   async handleFormSubmit(userData) {
-    const { user, auth } = this.props.firebase;
-    const userDataWithDate = {
-      ...userData,
-      updated: Date.now(),
-    };
-    await user(auth.currentUser.uid)
-      .update(userDataWithDate)
-      .catch((error) => this.setState({ error: error.message }));
-
-    this.setState({
-      userData: userDataWithDate,
-    });
+    const { updateUser, auth } = this.props.firebase;
+    await updateUser(auth.currentUser.uid, userData).catch((error) =>
+      this.setState({ error: error.message })
+    );
+    // don't do a setState here with userData: because we write to db via updateUser, we'll receive
+    // an update
   }
 
   render() {

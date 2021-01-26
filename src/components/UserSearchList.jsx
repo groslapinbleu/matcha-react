@@ -52,7 +52,7 @@ class UserSearchList extends Component {
 
   askConnection = (toUser) => {
     console.log('askConnection');
-    const { authUser, user } = this.props.firebase;
+    const { authUser, updateFriends } = this.props.firebase;
 
     const isFriend = isBFriendOfA(authUser, toUser);
 
@@ -69,13 +69,13 @@ class UserSearchList extends Component {
         ...authUser.friends,
       };
       friends[toUser.uid] = false;
-      user(authUser.uid).child('friends').update(friends);
+      updateFriends(authUser.uid, friends);
     }
   };
 
   cancelRequestForConnection = (toUser) => {
     console.log('cancelConnection');
-    const { authUser, user } = this.props.firebase;
+    const { authUser, updateFriends } = this.props.firebase;
     const isFriend = isBFriendOfA(authUser, toUser);
 
     if (isFriend === false) {
@@ -83,13 +83,13 @@ class UserSearchList extends Component {
         ...authUser.friends,
       };
       friends[toUser.uid] = null;
-      user(authUser.uid).child('friends').update(friends);
+      updateFriends(authUser.uid, friends);
     }
   };
 
   acceptConnection = (fromUser) => {
     console.log('acceptConnection');
-    const { authUser, user } = this.props.firebase;
+    const { authUser, updateFriends } = this.props.firebase;
 
     const isFriend = isBFriendOfA(fromUser, authUser);
 
@@ -106,7 +106,7 @@ class UserSearchList extends Component {
         ...fromUser.friends,
       };
       friends[authUser.uid] = true;
-      user(fromUser.uid).child('friends').update(friends);
+      updateFriends(fromUser.uid, friends);
     }
   };
 
@@ -180,7 +180,7 @@ class UserSearchList extends Component {
   };
 
   componentWillUnmount() {
-    this.props.firebase.users().off();
+    this.props.firebase.unsubscribeFromUsers();
   }
 
   // this function is used to select users that will be displayed at render time

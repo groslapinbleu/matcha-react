@@ -157,11 +157,12 @@ class Firebase {
   };
 
   // *** User API ***
-
+  // private api, do not use outside this file
   user = (uid) => this.db.ref(`users/${uid}`);
-
   users = () => this.db.ref('users');
+  friends = (uid) => this.db.ref(`users/${uid}/friends`);
 
+  // public api
   createUser = (uid, data) => {};
   updateUser = async (uid, data) => {
     const updatedData = { ...data, updated: Date.now() };
@@ -173,6 +174,56 @@ class Firebase {
       });
   };
   deleteUser = (uid) => {};
+
+  updateFriends = async (uid, data) => {
+    this.friends(uid)
+      .update(data)
+      .catch((error) => {
+        console.log(error.message);
+        throw new Error(
+          'updateFriends: Error when updating the friends of user ' + uid
+        );
+      });
+  };
+
+  subscribeToUsers = (limit) => {
+    this.users()
+      .orderByChild('gender')
+      .limitToLast(limit)
+      .on('value', (snapshot) => {
+        console.log('subscribeToUsers : received snapshot');
+        const usersObject = snapshot.val();
+        if (usersObject) {
+          const usersList = Object.keys(usersObject).map((key) => ({
+            ...usersObject[key],
+            uid: key,
+          }));
+          return usersList;
+        }
+      });
+  };
+
+  subscribeToUsersWithPreferredGender = (limit, preferredGender) => {
+    this.users()
+      .orderByChild('gender')
+      .limitToLast(limit)
+      .equalTo(preferredGender)
+      .on('value', (snapshot) => {
+        console.log('subscribeToUsers : received snapshot');
+        const usersObject = snapshot.val();
+        if (usersObject) {
+          const usersList = Object.keys(usersObject).map((key) => ({
+            ...usersObject[key],
+            uid: key,
+          }));
+          return usersList;
+        }
+      });
+  };
+
+  unsubscribeFromUsers = () => {
+    this.users().off();
+  };
 
   // *** Message API ***
 
