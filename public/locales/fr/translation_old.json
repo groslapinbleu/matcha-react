@@ -12,5 +12,8 @@
   "signup": "Inscription",
   "profile_page": {
     "reset_title": "Réinitialiser mot de passe"
+  },
+  "user_search_list": {
+    "get_more_messages_button": "Charger plus d'utilisateurs"
   }
 }

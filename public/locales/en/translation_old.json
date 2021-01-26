@@ -12,5 +12,8 @@
   "signup": "Sign Up",
   "profile_page": {
     "reset_title": "Reset password"
+  },
+  "user_search_list": {
+    "get_more_messages_button": "Get more users"
   }
 }

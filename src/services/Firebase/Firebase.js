@@ -186,7 +186,7 @@ class Firebase {
       });
   };
 
-  subscribeToUsers = (limit) => {
+  subscribeToUsers = (limit, processUsersList) => {
     this.users()
       .orderByChild('gender')
       .limitToLast(limit)
@@ -198,12 +198,16 @@ class Firebase {
             ...usersObject[key],
             uid: key,
           }));
-          return usersList;
+          processUsersList(usersList);
         }
       });
   };
 
-  subscribeToUsersWithPreferredGender = (limit, preferredGender) => {
+  subscribeToUsersWithPreferredGender = (
+    limit,
+    preferredGender,
+    processUsersList
+  ) => {
     this.users()
       .orderByChild('gender')
       .limitToLast(limit)
@@ -216,7 +220,7 @@ class Firebase {
             ...usersObject[key],
             uid: key,
           }));
-          return usersList;
+          processUsersList(usersList);
         }
       });
   };

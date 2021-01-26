@@ -56,8 +56,12 @@
     "enter_string": "Pseudos à rechercher",
     "username": "Pseudo",
     "age": "Âge",
+    "get_more_users_button": "Afficher plus d'utilisateurs",
     "region": "Région",
     "rating": "Popularité"
+  },
+  "user_list": {
+    "get_more_users_button": "Afficher plus d'utilisateurs"
   },
   "admin_page_disclaimer": "Cette page n'est accessible qu'aux profils admin.",
   "chat": {

@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import MatchaBox from 'components/MatchaBox';
 import { withFirebase } from 'services/Firebase';
+import MatchaButton from './MatchaButton';
+import { withTranslation } from 'react-i18next';
+
 // import * as ROUTES from '../../constants/routes';
 
 class UserList extends Component {
@@ -12,19 +15,23 @@ class UserList extends Component {
       loading: false,
       users: [],
       error: null,
+      limit: 10,
     };
   }
 
   componentDidMount() {
+    this.onListenForUsers();
+  }
+
+  componentWillUnmount() {
+    this.props.firebase.unsubscribeFromUsers();
+  }
+
+  onListenForUsers = () => {
+    console.log('UserList onListenForUsers');
     this.setState({ loading: true });
     try {
-      this.ref = this.props.firebase.users().on('value', (snapshot) => {
-        const usersObject = snapshot.val();
-        const usersList = Object.keys(usersObject).map((key) => ({
-          ...usersObject[key],
-          uid: key,
-        }));
-
+      this.props.firebase.subscribeToUsers(this.state.limit, (usersList) => {
         this.setState({
           users: usersList,
           loading: false,
@@ -35,7 +42,14 @@ class UserList extends Component {
       console.log(error.message);
       this.setState({ error });
     }
-  }
+  };
+
+  onNextPage = () => {
+    this.setState(
+      (state) => ({ limit: state.limit + 5 }),
+      this.onListenForUsers
+    );
+  };
 
   componentWillUnmount() {
     this.props.firebase.users().off('value', this.ref);
@@ -43,10 +57,18 @@ class UserList extends Component {
 
   render() {
     const { users, loading } = this.state;
+    const { t } = this.props;
 
     return (
       <MatchaBox title='Users'>
         {loading && <div>Loading ...</div>}
+        <div className='m-2 p-2'>
+          <MatchaButton
+            text={t('user_list.get_more_users_button', 'Get more users')}
+            type='button'
+            onClick={this.onNextPage}
+          />
+        </div>
         <table className='divide-y divide-gray-200-auto '>
           <thead>
             <tr>
@@ -93,4 +115,4 @@ class UserList extends Component {
   }
 }
 
-export default withFirebase(UserList);
+export default withTranslation()(withFirebase(UserList));

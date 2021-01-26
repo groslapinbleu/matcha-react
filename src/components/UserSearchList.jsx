@@ -28,6 +28,10 @@ class UserSearchList extends Component {
     this.onListenForUsers();
   }
 
+  componentWillUnmount() {
+    this.props.firebase.unsubscribeFromUsers();
+  }
+
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
@@ -43,6 +47,13 @@ class UserSearchList extends Component {
     this.setState({
       sortOrder: value,
     });
+  };
+
+  onNextPage = () => {
+    this.setState(
+      (state) => ({ limit: state.limit + 5 }),
+      this.onListenForUsers
+    );
   };
 
   onSubmit = (event) => {
@@ -114,15 +125,10 @@ class UserSearchList extends Component {
     console.log('rejectConnection');
   };
 
-  extractFilteredUsersFromDB = (snapshot, uid) => {
-    console.log('extractFilteredUsersFromDB');
-    const usersObject = snapshot.val();
-    if (usersObject) {
-      const usersList = Object.keys(usersObject).map((key) => ({
-        ...usersObject[key],
-        uid: key,
-      }));
-
+  extractFilteredUsers = (usersList) => {
+    const { uid } = this.props.firebase.authUser;
+    console.log('extractFilteredUsers');
+    if (usersList) {
       // remove self and invisible users from user list
       const filteredUserList = usersList.filter(
         (user) => user.uid !== uid && user.visible === true
@@ -152,36 +158,26 @@ class UserSearchList extends Component {
   }
 
   onListenForUsers = () => {
-    const { preferredGender, uid } = this.props.firebase.authUser;
+    const { preferredGender } = this.props.firebase.authUser;
 
     console.log('preferredGender = ' + preferredGender);
     this.setState({ loading: true });
     try {
       preferredGender === 0
-        ? this.props.firebase
-            .users()
-            .orderByChild('gender')
-            .limitToLast(this.state.limit)
-            .on('value', (snapshot) =>
-              this.extractFilteredUsersFromDB(snapshot, uid)
-            )
-        : this.props.firebase
-            .users()
-            .orderByChild('gender')
-            .limitToLast(this.state.limit)
-            .equalTo(preferredGender)
-            .on('value', (snapshot) =>
-              this.extractFilteredUsersFromDB(snapshot, uid)
-            );
+        ? this.props.firebase.subscribeToUsers(
+            this.state.limit,
+            this.extractFilteredUsers
+          )
+        : this.props.firebase.subscribeToUsersWithPreferredGender(
+            this.state.limit,
+            preferredGender,
+            this.extractFilteredUsers
+          );
     } catch (error) {
       console.log(error.message);
       this.setState({ error, loading: false });
     }
   };
-
-  componentWillUnmount() {
-    this.props.firebase.unsubscribeFromUsers();
-  }
 
   // this function is used to select users that will be displayed at render time
   selectUser = (user) => {
@@ -214,7 +210,13 @@ class UserSearchList extends Component {
             <Spinner type='Puff' color='#038E9F' height={50} width={50} />
           </div>
         )}
-
+        <div className='m-2 p-2'>
+          <MatchaButton
+            text={t('user_search_list.get_more_users_button', 'Get more users')}
+            type='button'
+            onClick={this.onNextPage}
+          />
+        </div>
         <SearchAndOrder
           sortOrder={this.state.sortOrder}
           changeString={this.handleChangeString}

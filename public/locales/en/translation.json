@@ -56,8 +56,12 @@
     "enter_string": "Enter search string",
     "username": "Username",
     "age": "Age",
+    "get_more_users_button": "Get more users",
     "region": "Region",
     "rating": "Rating"
+  },
+  "user_list": {
+    "get_more_users_button": "Get more users"
   },
   "admin_page_disclaimer": "This page is only accessible to admin profiles.",
   "chat": {
