@@ -51,10 +51,6 @@ class UserList extends Component {
     );
   };
 
-  componentWillUnmount() {
-    this.props.firebase.users().off('value', this.ref);
-  }
-
   render() {
     const { users, loading } = this.state;
     const { t } = this.props;

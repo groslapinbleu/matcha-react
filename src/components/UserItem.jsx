@@ -28,21 +28,23 @@ class UserItem extends Component {
 
     this.setState({ loading: true });
 
-    this.ref = this.props.firebase
-      .user(this.props.match.params.id)
-      .on('value', (snapshot) => {
+    this.ref = this.props.firebase.subscribeToUser(
+      this.props.match.params.id,
+      (user) => {
         this.setState({
-          user: snapshot.val(),
+          user,
           loading: false,
         });
-      });
+      }
+    );
   }
 
   componentWillUnmount() {
-    if (this.ref)
-      this.props.firebase
-        .user(this.props.match.params.id)
-        .off('value', this.ref);
+    console.log('UserItem componentWillUnmount');
+    this.props.firebase.unsubscribeFromUser(
+      this.props.match.params.id,
+      this.ref
+    );
   }
 
   onSendPasswordResetEmail() {

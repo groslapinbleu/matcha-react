@@ -164,6 +164,19 @@ class Firebase {
 
   // public api
   createUser = (uid, data) => {};
+
+  subscribeToUser = (uid, processUser) => {
+    return this.user(uid).on('value', (snapshot) => {
+      processUser(snapshot.val());
+    });
+  };
+
+  unsubscribeFromUser = (uid, ref) => {
+    if (ref) {
+      this.user(uid).off('value', ref);
+    }
+  };
+
   updateUser = async (uid, data) => {
     const updatedData = { ...data, updated: Date.now() };
     this.user(uid)
