@@ -121,6 +121,7 @@
   },
   "search_users": "Rechercher des utilisateurs",
   "signup_page": {
+    "username_error": "Le pseudo doit être saisi",
     "signup": "Inscription",
     "fill_in_message": "Veuillez remplir le formulaire ci-dessous pour créer un compte.",
     "email": "Email",

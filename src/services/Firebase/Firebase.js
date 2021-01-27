@@ -91,11 +91,8 @@ class Firebase {
               // since we didn't find data in db, we will need
               // to write initial data
               mustWriteInDB = true;
-              const now = Date.now();
               dbUser = {
                 ...defaultUserData,
-                created: now,
-                updated: now,
               };
             }
 
@@ -130,7 +127,7 @@ class Firebase {
             if (mustWriteInDB) {
               console.log('writing user to db');
               try {
-                this.user(authUser.uid).set(authUser);
+                this.createUser(authUser.uid, authUser);
               } catch (error) {
                 // an exception is thrown when the user has been deliberatly deleted : log it and ignore it
                 console.log('oups, error when writing in db:' + error.message);
@@ -163,7 +160,16 @@ class Firebase {
   friends = (uid) => this.db.ref(`users/${uid}/friends`);
 
   // public api
-  createUser = (uid, data) => {};
+  createUser = (uid, data) => {
+    const now = Date.now();
+    const dbUser = {
+      ...data,
+      created: now,
+      updated: now,
+    };
+    console.log('create user ' + dbUser);
+    return this.user(uid).set(dbUser);
+  };
 
   subscribeToUser = (uid, processUser) => {
     return this.user(uid).on('value', (snapshot) => {

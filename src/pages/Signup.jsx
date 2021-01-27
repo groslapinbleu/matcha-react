@@ -45,26 +45,30 @@ class SignUp extends Component {
   async handleSubmit(event) {
     event.preventDefault();
 
-    const { doCreateUserWithEmailAndPassword, user } = this.props.firebase;
+    const {
+      doCreateUserWithEmailAndPassword,
+      createUser,
+    } = this.props.firebase;
+    const { t } = this.props;
+
     if (isEmptyString(this.state.username))
-      this.setState({ error: 'Display Name cannot be empty' });
+      this.setState({
+        error: t('signup_page.username_error', 'Username cannot be empty'),
+      });
     else {
       this.setState({ error: '' });
 
       doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then((authUser) => {
+        .then(async (authUser) => {
           if (authUser) {
-            const now = Date.now();
             let dbUser = {
               ...defaultUserData,
               username: this.state.username,
               email: this.state.email,
               firstname: this.state.firstname,
               lastname: this.state.lastname,
-              created: now,
-              updated: now,
             };
-            return user(authUser.user.uid).set(dbUser);
+            return await createUser(authUser.user.uid, dbUser);
           }
         })
         .catch((error) => {

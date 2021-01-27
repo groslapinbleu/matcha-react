@@ -121,6 +121,7 @@
   },
   "search_users": "Search other users",
   "signup_page": {
+    "username_error": "Username cannot be empty",
     "signup": "Sign Up",
     "fill_in_message": "Fill in the form below to create an account.",
     "email": "Email",
