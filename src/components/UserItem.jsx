@@ -5,6 +5,7 @@ import MatchaButton from 'components/MatchaButton';
 import MatchaBox from 'components/MatchaBox';
 import { withSnackbar } from 'react-simple-snackbar';
 import formatDateTime from 'helpers/formatDateTime';
+import { withTranslation } from 'react-i18next';
 
 class UserItem extends Component {
   constructor(props) {
@@ -49,12 +50,17 @@ class UserItem extends Component {
 
   onSendPasswordResetEmail() {
     const { openSnackbar } = this.props;
-
+    const { t } = this.props;
     const { user } = this.state;
     try {
       this.props.firebase.doUseDeviceLanguage();
       this.props.firebase.doPasswordReset(user.email);
-      openSnackbar('Password reset message sent');
+      openSnackbar(
+        t(
+          'user_item.password_reset_message_sent',
+          'Password reset message sent'
+        )
+      );
     } catch (error) {
       openSnackbar(error.message);
     }
@@ -63,9 +69,9 @@ class UserItem extends Component {
   setAdmin(val) {
     const { openSnackbar } = this.props;
     const uid = this.state.user.uid;
-    const { user } = this.props.firebase;
+    const { updateRoles } = this.props.firebase;
     try {
-      user(uid).child('roles').set({ ADMIN: val });
+      updateRoles(uid, { ADMIN: val });
       this.props.history.push('/admin');
     } catch (error) {
       openSnackbar(error.message);
@@ -83,6 +89,7 @@ class UserItem extends Component {
   render() {
     const { user, loading } = this.state;
     const isAdmin = user.roles && user.roles.ADMIN && user.roles.ADMIN === true;
+    const { t } = this.props;
 
     return (
       <MatchaBox title='User'>
@@ -125,17 +132,23 @@ class UserItem extends Component {
             </p>
             <p>
               <MatchaButton
-                text='Send Password Reset'
+                text={t('user_item.send_password_reset', 'Send Password Reset')}
                 onClick={this.onSendPasswordResetEmail}
               />
               {isAdmin ? (
                 <MatchaButton
-                  text='Downgrade to normal profile'
+                  text={t(
+                    'user_item.downgrade_profile',
+                    'Downgrade to normal profile'
+                  )}
                   onClick={this.downGradeToNormal}
                 />
               ) : (
                 <MatchaButton
-                  text='Upgrade to admin profile'
+                  text={t(
+                    'user_item.upgrade_profile',
+                    'Upgrade to normal profile'
+                  )}
                   onClick={this.upgradeToAdmin}
                 />
               )}
@@ -147,4 +160,4 @@ class UserItem extends Component {
   }
 }
 
-export default withFirebase(withSnackbar(UserItem));
+export default withTranslation()(withFirebase(withSnackbar(UserItem)));

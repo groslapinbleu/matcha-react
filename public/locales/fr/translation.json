@@ -60,6 +60,12 @@
     "region": "Région",
     "rating": "Popularité"
   },
+  "user_item": {
+    "password_reset_message_sent": "Message de réinitialisation du mot de passe envoyé",
+    "send_password_reset": "Réinitiaiser mot de passe",
+    "downgrade_profile": "Enlever droit admin",
+    "upgrade_profile": "Ajouter droit admin"
+  },
   "user_list": {
     "get_more_users_button": "Afficher plus d'utilisateurs"
   },

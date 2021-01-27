@@ -158,6 +158,7 @@ class Firebase {
   user = (uid) => this.db.ref(`users/${uid}`);
   users = () => this.db.ref('users');
   friends = (uid) => this.db.ref(`users/${uid}/friends`);
+  roles = (uid) => this.db.ref(`users/${uid}/roles`);
 
   // public api
   createUser = (uid, data) => {
@@ -201,6 +202,17 @@ class Firebase {
         console.log(error.message);
         throw new Error(
           'updateFriends: Error when updating the friends of user ' + uid
+        );
+      });
+  };
+
+  updateRoles = async (uid, data) => {
+    this.roles(uid)
+      .update(data)
+      .catch((error) => {
+        console.log(error.message);
+        throw new Error(
+          'updateRoles: Error when updating the roles of user ' + uid
         );
       });
   };

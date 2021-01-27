@@ -60,6 +60,12 @@
     "region": "Region",
     "rating": "Rating"
   },
+  "user_item": {
+    "password_reset_message_sent": "Password reset message sent",
+    "send_password_reset": "Send Password Reset",
+    "downgrade_profile": "Downgrade to normal profile",
+    "upgrade_profile": "Upgrade to normal profile"
+  },
   "user_list": {
     "get_more_users_button": "Get more users"
   },
