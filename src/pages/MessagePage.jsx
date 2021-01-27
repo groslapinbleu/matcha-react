@@ -38,7 +38,7 @@ class MessagePage extends Component {
     const chatArea = this.myRef.current;
     try {
       messages()
-        .orderByChild('createdAt')
+        .orderByChild('created')
         .limitToLast(this.state.limit)
         .on('value', (snapshot) => {
           const messageObject = snapshot.val();
@@ -78,7 +78,7 @@ class MessagePage extends Component {
       try {
         await messages().push({
           text: this.state.text,
-          createdAt: Date.now(),
+          created: Date.now(),
           userId: this.state.user.uid,
           username: this.state.user.username,
           photoURL: this.state.user.photoURL,
@@ -142,7 +142,7 @@ class MessagePage extends Component {
           {this.state.messages.map((chat) => {
             return (
               <Message
-                key={chat.createdAt}
+                key={chat.created}
                 user={this.state.user}
                 otherUser={{ username: chat.username, photoURL: chat.photoURL }}
                 chat={chat}

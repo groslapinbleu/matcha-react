@@ -21,7 +21,7 @@ const Message = ({ user, otherUser, chat, onRemoveMessage }) => {
           </div>
 
           <div className='text-xs float-right'>
-            {formatDateTime(chat.createdAt)}
+            {formatDateTime(chat.created)}
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@ const Message = ({ user, otherUser, chat, onRemoveMessage }) => {
           </div>
         </div>
         <div className='text-xs float-left'>
-          {otherUser.username} - {formatDateTime(chat.createdAt)}
+          {otherUser.username} - {formatDateTime(chat.created)}
         </div>
       </div>
     </div>

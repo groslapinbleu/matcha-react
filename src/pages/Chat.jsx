@@ -50,7 +50,7 @@ class Chat extends Component {
     const chatArea = this.myRef.current;
     try {
       this.firebaseRef = chats(conversationId)
-        .orderByChild('createdAt')
+        .orderByChild('created')
         .limitToLast(this.state.limit)
         .on('value', (snapshot) => {
           const messageObject = snapshot.val();
@@ -92,7 +92,7 @@ class Chat extends Component {
       try {
         await chats(conversationId).push({
           text: this.state.text,
-          createdAt: Date.now(),
+          created: Date.now(),
           userId: this.state.user.uid,
         });
         this.setState({ text: '' });
@@ -150,7 +150,7 @@ class Chat extends Component {
           {this.state.messages.map((chat) => {
             return (
               <Message
-                key={chat.createdAt}
+                key={chat.created}
                 user={this.state.user}
                 otherUser={this.props.location.state.user}
                 chat={chat}

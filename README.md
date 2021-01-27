@@ -29,7 +29,7 @@ It also uses i18next for internationalization (only English ad French for now), 
         },
         "messages": {
             ".indexOn": [
-                "createdAt"
+                "created"
             ],
             "$uid": {
                 ".write": "data.exists() ? data.child('userId').val() === auth.uid : newData.child('userId').val() === auth.uid"
