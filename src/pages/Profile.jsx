@@ -27,22 +27,21 @@ class Profile extends Component {
   // retrieve user profile data from db
   componentDidMount() {
     console.log('Profile ComponentDidMount');
-    const { auth, user } = this.props.firebase;
+    const { auth, subscribeToUser } = this.props.firebase;
     try {
-      this.ref = user(auth.currentUser.uid).on('value', (snapshot) => {
+      this.ref = subscribeToUser(auth.currentUser.uid, (user) => {
         this.setState({ loadingUser: true });
         console.log(
           'Profile ComponentDidMount callback : just read user data from db'
         );
-        const userData = snapshot.val();
-        if (userData) {
+        if (user) {
           console.log(
             'Profile ComponentDidMount :  user.description = ' +
-              userData.description
+              user.description
           );
           this.setState({
-            userData: userData,
-            roles: userData.roles,
+            userData: user,
+            roles: user.roles,
             loadingUser: false,
           });
         } else {
@@ -58,8 +57,9 @@ class Profile extends Component {
   }
 
   componentWillUnmount() {
-    const { auth, user } = this.props.firebase;
-    if (auth.currentUser) user(auth.currentUser.uid).off('value', this.ref);
+    console.log('Profile componentWillUnmount');
+    const { auth, unsubscribeFromUser } = this.props.firebase;
+    if (auth.currentUser) unsubscribeFromUser(auth.currentUser.uid, this.ref);
   }
 
   // this allows to validate the field when pressing the Enter key

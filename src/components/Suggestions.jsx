@@ -8,29 +8,50 @@ import { withFirebase } from 'services/Firebase';
 import Star from 'Icons/Star';
 import age from 'helpers/age';
 import Spinner from 'react-loader-spinner';
+import SearchAndOrder from 'components/SearchAndOrder';
+import { regions } from 'models/User';
 import { withTranslation } from 'react-i18next';
 
 class Suggestions extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loading: false,
-      users: [],
-      error: null,
-      limit: 5,
-      searchString: '',
-    };
-  }
+  state = {
+    loading: false,
+    users: [],
+    error: null,
+    limit: 5,
+    searchString: '',
+    sortOrder: 'asc',
+  };
 
   componentDidMount() {
     this.onListenForUsers();
+  }
+
+  componentWillUnmount() {
+    this.props.firebase.unsubscribeFromUsers();
   }
 
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
+  };
+  handleChangeString = (newString) => {
+    this.setState({
+      searchString: newString,
+    });
+  };
+
+  handleChangeOrder = (value) => {
+    this.setState({
+      sortOrder: value,
+    });
+  };
+
+  onNextPage = () => {
+    this.setState(
+      (state) => ({ limit: state.limit + 5 }),
+      this.onListenForUsers
+    );
   };
 
   onSubmit = (event) => {
@@ -40,7 +61,7 @@ class Suggestions extends Component {
 
   askConnection = (toUser) => {
     console.log('askConnection');
-    const { authUser, user } = this.props.firebase;
+    const { authUser, updateFriends } = this.props.firebase;
 
     const isFriend = isBFriendOfA(authUser, toUser);
 
@@ -57,13 +78,13 @@ class Suggestions extends Component {
         ...authUser.friends,
       };
       friends[toUser.uid] = false;
-      user(authUser.uid).child('friends').update(friends);
+      updateFriends(authUser.uid, friends);
     }
   };
 
   cancelRequestForConnection = (toUser) => {
     console.log('cancelConnection');
-    const { authUser, user } = this.props.firebase;
+    const { authUser, updateFriends } = this.props.firebase;
     const isFriend = isBFriendOfA(authUser, toUser);
 
     if (isFriend === false) {
@@ -71,13 +92,13 @@ class Suggestions extends Component {
         ...authUser.friends,
       };
       friends[toUser.uid] = null;
-      user(authUser.uid).child('friends').update(friends);
+      updateFriends(authUser.uid, friends);
     }
   };
 
   acceptConnection = (fromUser) => {
     console.log('acceptConnection');
-    const { authUser, user } = this.props.firebase;
+    const { authUser, updateFriends } = this.props.firebase;
 
     const isFriend = isBFriendOfA(fromUser, authUser);
 
@@ -94,7 +115,7 @@ class Suggestions extends Component {
         ...fromUser.friends,
       };
       friends[authUser.uid] = true;
-      user(fromUser.uid).child('friends').update(friends);
+      updateFriends(fromUser.uid, friends);
     }
   };
 
@@ -102,15 +123,10 @@ class Suggestions extends Component {
     console.log('rejectConnection');
   };
 
-  extractFilteredUsers = (snapshot, uid) => {
+  extractFilteredUsers = (usersList) => {
+    const { uid } = this.props.firebase.authUser;
     console.log('extractFilteredUsers');
-    const usersObject = snapshot.val();
-    if (usersObject) {
-      const usersList = Object.keys(usersObject).map((key) => ({
-        ...usersObject[key],
-        uid: key,
-      }));
-
+    if (usersList) {
       // remove self and invisible users from user list
       const filteredUserList = usersList.filter(
         (user) => user.uid !== uid && user.visible === true
@@ -140,34 +156,26 @@ class Suggestions extends Component {
   }
 
   onListenForUsers = () => {
-    const { preferredGender, uid } = this.props.firebase.authUser;
+    const { preferredGender } = this.props.firebase.authUser;
 
     console.log('preferredGender = ' + preferredGender);
     this.setState({ loading: true });
     try {
       preferredGender === 0
-        ? this.props.firebase
-            .users()
-            .orderByChild('gender')
-            .limitToLast(this.state.limit)
-            .on('value', (snapshot) => this.extractFilteredUsers(snapshot, uid))
-        : this.props.firebase
-            .users()
-            .orderByChild('gender')
-            .limitToLast(this.state.limit)
-            .equalTo(preferredGender)
-            .on('value', (snapshot) =>
-              this.extractFilteredUsers(snapshot, uid)
-            );
+        ? this.props.firebase.subscribeToUsers(
+            this.state.limit,
+            this.extractFilteredUsers
+          )
+        : this.props.firebase.subscribeToUsersWithPreferredGender(
+            this.state.limit,
+            preferredGender,
+            this.extractFilteredUsers
+          );
     } catch (error) {
       console.log(error.message);
       this.setState({ error, loading: false });
     }
   };
-
-  componentWillUnmount() {
-    this.props.firebase.users().off();
-  }
 
   // this function is used to select users that will be displayed at render time
   selectUser = (user) => {
@@ -182,7 +190,15 @@ class Suggestions extends Component {
   render() {
     console.log('UserSearchList render');
     const { users, loading } = this.state;
+    const order = this.state.sortOrder === 'asc' ? 1 : -1;
     const filteredUsers = users.filter(this.selectUser);
+    filteredUsers.sort((a, b) => {
+      if (a.username.toUpperCase() < b.username.toUpperCase()) {
+        return -1 * order;
+      } else {
+        return 1 * order;
+      }
+    });
     const { t } = this.props;
     const { authUser } = this.props.firebase;
     return (
@@ -192,18 +208,19 @@ class Suggestions extends Component {
             <Spinner type='Puff' color='#038E9F' height={50} width={50} />
           </div>
         )}
-        <form onSubmit={this.onSubmit}>
-          <input
-            type='text'
-            name='searchString'
-            placeholder={t(
-              'user_search_list.enter_string',
-              'Enter search string'
-            )}
-            value={this.state.searchstring}
-            onChange={this.handleChange}
-          ></input>
-        </form>
+        <div className='m-2 p-2'>
+          <MatchaButton
+            text={t('user_search_list.get_more_users_button', 'Get more users')}
+            type='button'
+            onClick={this.onNextPage}
+          />
+        </div>
+        <SearchAndOrder
+          sortOrder={this.state.sortOrder}
+          changeString={this.handleChangeString}
+          changeOrder={this.handleChangeOrder}
+        />
+
         <div>
           <div className='shadow  border-b border-gray-200 rounded-lg'>
             <table className='divide-y divide-gray-200'>
@@ -220,6 +237,18 @@ class Suggestions extends Component {
                     className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     {t('user_search_list.age', 'Age')}
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    {t('user_search_list.region', 'Region')}
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    {t('user_search_list.rating', 'Rating')}
                   </th>
                   <th
                     scope='col'
@@ -261,6 +290,12 @@ class Suggestions extends Component {
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
                           {age(new Date(user.birthday))}
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap'>
+                          {regions[user.region]}
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap'>
+                          {user.rating}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
                           {isListedUserMyFriend === null ? (

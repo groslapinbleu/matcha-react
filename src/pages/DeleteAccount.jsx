@@ -9,12 +9,11 @@ import { withTranslation } from 'react-i18next';
 
 class DeleteAccount extends Component {
   handleDelete = async () => {
-    const { auth, doDelete, user, deleteImages } = this.props.firebase;
+    const { auth, doDelete, deleteUser, deleteImages } = this.props.firebase;
     console.log('Ready to delete account of user ' + auth.currentUser);
     const { openSnackbar } = this.props;
 
-    user(auth.currentUser.uid)
-      .remove() // 1. remove user data in Realtime DB
+    deleteUser(auth.currentUser.uid) // 1. remove user data in Realtime DB
       .then(console.log('Account database information deleted!'))
       // 2. TODO: delete images as well !
       .then(deleteImages(auth.currentUser.uid))

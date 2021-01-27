@@ -193,9 +193,13 @@ class Firebase {
         throw new Error('updateUser: Error when updating user ' + uid);
       });
   };
-  deleteUser = (uid) => {};
+
+  deleteUser = (uid) => {
+    return this.user(uid).remove();
+  };
 
   updateFriends = async (uid, data) => {
+    // FIXME: should also update field 'updated' in user
     this.friends(uid)
       .update(data)
       .catch((error) => {
@@ -207,6 +211,7 @@ class Firebase {
   };
 
   updateRoles = async (uid, data) => {
+    // FIXME: should also update field 'updated' in user
     this.roles(uid)
       .update(data)
       .catch((error) => {
