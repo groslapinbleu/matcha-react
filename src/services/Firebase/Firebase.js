@@ -168,8 +168,8 @@ class Firebase {
       created: now,
       updated: now,
     };
-    console.log('create user ' + dbUser);
-    return this.user(uid).set(dbUser);
+    // console.log('create user ' + dbUser);
+    return this.user(uid).set(dbUser); // we use set because we have the uid. Else we'd use push
   };
 
   subscribeToUser = (uid, processUser) => {
@@ -222,27 +222,28 @@ class Firebase {
       });
   };
 
-  subscribeToUsers = (limit, processUsersList) => {
+  subscribeToUsers = (limit, processUsers) => {
     this.users()
       .orderByChild('gender')
       .limitToLast(limit)
       .on('value', (snapshot) => {
         console.log('subscribeToUsers : received snapshot');
+        let usersList = [];
         const usersObject = snapshot.val();
         if (usersObject) {
-          const usersList = Object.keys(usersObject).map((key) => ({
+          usersList = Object.keys(usersObject).map((key) => ({
             ...usersObject[key],
             uid: key,
           }));
-          processUsersList(usersList);
         }
+        processUsers(usersList);
       });
   };
 
   subscribeToUsersWithPreferredGender = (
     limit,
     preferredGender,
-    processUsersList
+    processUsers
   ) => {
     this.users()
       .orderByChild('gender')
@@ -250,14 +251,15 @@ class Firebase {
       .equalTo(preferredGender)
       .on('value', (snapshot) => {
         console.log('subscribeToUsers : received snapshot');
+        let usersList = [];
         const usersObject = snapshot.val();
         if (usersObject) {
-          const usersList = Object.keys(usersObject).map((key) => ({
+          usersList = Object.keys(usersObject).map((key) => ({
             ...usersObject[key],
             uid: key,
           }));
-          processUsersList(usersList);
         }
+        processUsers(usersList);
       });
   };
 
@@ -270,6 +272,41 @@ class Firebase {
   message = (uid) => this.db.ref(`messages/${uid}`);
 
   messages = () => this.db.ref('messages');
+
+  createMessage = (data) => {
+    const now = Date.now();
+    const dbData = {
+      ...data,
+      created: now,
+      updated: now,
+    };
+    return this.messages().push(dbData); // we use push because we don't have the uid
+  };
+
+  deleteMessage = (uid) => {
+    return this.message(uid).remove();
+  };
+
+  subscribeToMessages = (limit, processMessages) => {
+    this.messages()
+      .orderByChild('created')
+      .limitToLast(limit)
+      .on('value', (snapshot) => {
+        const messageObject = snapshot.val();
+        let messages = [];
+        if (messageObject) {
+          messages = Object.keys(messageObject).map((key) => ({
+            ...messageObject[key],
+            uid: key,
+          }));
+        }
+        processMessages(messages);
+      });
+  };
+
+  unsubscribeFromMessages = () => {
+    this.messages().off();
+  };
 
   // *** chat API ***
   // every couple of users have their own conversation based on chatId, where

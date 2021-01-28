@@ -3,7 +3,7 @@ import Dropdown from 'components/Dropdown';
 import { useTranslation } from 'react-i18next';
 
 const ChangeLanguage = ({ className }) => {
-  const languages = ['en', 'fr']; // FIXTHIS: instead of hardcoded list, should retrieve list from i18next somehow
+  const languages = ['en', 'fr']; // FIXME: instead of hardcoded list, should retrieve list from i18next somehow
   const { i18n } = useTranslation();
 
   const changeLanguage = (name, index) => {

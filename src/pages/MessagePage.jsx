@@ -31,29 +31,20 @@ class MessagePage extends Component {
   }
 
   onListenForMessages = () => {
-    const { auth, messages, authUser } = this.props.firebase;
+    const { auth, subscribeToMessages, authUser } = this.props.firebase;
     const currentUser = authUser;
     this.setState({ user: currentUser });
     this.setState({ error: null, loadingMessages: true });
     const chatArea = this.myRef.current;
     try {
-      messages()
-        .orderByChild('created')
-        .limitToLast(this.state.limit)
-        .on('value', (snapshot) => {
-          const messageObject = snapshot.val();
-
-          if (messageObject) {
-            const messages = Object.keys(messageObject).map((key) => ({
-              ...messageObject[key],
-              uid: key,
-            }));
-            this.setState({ messages, loadingMessages: false });
-            chatArea.scrollBy(0, chatArea.scrollHeight);
-          } else {
-            this.setState({ messages: [], loadingMessages: false });
-          }
-        });
+      subscribeToMessages(this.state.limit, (messages) => {
+        if (messages) {
+          this.setState({ messages, loadingMessages: false });
+          chatArea.scrollBy(0, chatArea.scrollHeight);
+        } else {
+          this.setState({ messages: [], loadingMessages: false });
+        }
+      });
     } catch (error) {
       this.setState({ error: error.message, loadingMessages: false });
     }
@@ -72,13 +63,12 @@ class MessagePage extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     if (!isEmptyString(this.state.text)) {
-      const { messages } = this.props.firebase;
+      const { createMessage } = this.props.firebase;
       this.setState({ error: null });
       const chatArea = this.myRef.current;
       try {
-        await messages().push({
+        await createMessage({
           text: this.state.text,
-          created: Date.now(),
           userId: this.state.user.uid,
           username: this.state.user.username,
           photoURL: this.state.user.photoURL,
@@ -99,8 +89,7 @@ class MessagePage extends Component {
   };
 
   onRemoveMessage = (uid) => {
-    console.log('trying to remove message with uid = ' + uid);
-    this.props.firebase.message(uid).remove();
+    this.props.firebase.deleteMessage(uid);
   };
 
   render() {
