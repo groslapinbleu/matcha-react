@@ -64,5 +64,5 @@ export function isBFriendOfA(userA, userB) {
       return true;
     } else return false;
   }
-  return null;
+  return false;
 }

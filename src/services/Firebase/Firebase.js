@@ -312,8 +312,42 @@ class Firebase {
   // every couple of users have their own conversation based on chatId, where
   // chatId = uid1+uid2 with uid1 < uid2
   chat = (chatId, uid) => this.db.ref(`chats/${chatId}/${uid}`);
-
   chats = (chatId) => this.db.ref(`chats/${chatId}`);
+
+  createChat = (chatId, data) => {
+    const now = Date.now();
+    const dbData = {
+      ...data,
+      created: now,
+      updated: now,
+    };
+    return this.chats(chatId).push(dbData); // we use push because we don't have the uid
+  };
+
+  deleteChat = (chatId, uid) => {
+    return this.chat(chatId, uid).remove();
+  };
+
+  subscribeToChats = (chatId, limit, processChats) => {
+    return this.chats(chatId)
+      .orderByChild('created')
+      .limitToLast(limit)
+      .on('value', (snapshot) => {
+        const messageObject = snapshot.val();
+        let messages = [];
+        if (messageObject) {
+          messages = Object.keys(messageObject).map((key) => ({
+            ...messageObject[key],
+            uid: key,
+          }));
+        }
+        processChats(messages);
+      });
+  };
+
+  unsubscribeFromChats = (chatId, ref) => {
+    this.chats(chatId).off('value', ref);
+  };
 
   // *** file API for images ***
   images = (uid) => this.imagesRef.child(uid);

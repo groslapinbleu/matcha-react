@@ -33,7 +33,7 @@ class Chat extends Component {
   }
 
   onListenForMessages = () => {
-    const { auth, chats, authUser } = this.props.firebase;
+    const { auth, subscribeToChats, authUser } = this.props.firebase;
     const currentUser = authUser;
     const otherUserId = this.props.match.params.id;
     const conversationId =
@@ -49,23 +49,18 @@ class Chat extends Component {
     });
     const chatArea = this.myRef.current;
     try {
-      this.firebaseRef = chats(conversationId)
-        .orderByChild('created')
-        .limitToLast(this.state.limit)
-        .on('value', (snapshot) => {
-          const messageObject = snapshot.val();
-
-          if (messageObject) {
-            const messages = Object.keys(messageObject).map((key) => ({
-              ...messageObject[key],
-              uid: key,
-            }));
+      this.firebaseRef = subscribeToChats(
+        conversationId,
+        this.state.limit,
+        (messages) => {
+          if (messages) {
             this.setState({ messages, loadingMessages: false });
             chatArea.scrollBy(0, chatArea.scrollHeight);
           } else {
             this.setState({ messages: [], loadingMessages: false });
           }
-        });
+        }
+      );
     } catch (error) {
       this.setState({ error: error.message, loadingMessages: false });
     }
@@ -73,7 +68,7 @@ class Chat extends Component {
 
   componentWillUnmount() {
     const { conversationId } = this.state.conversationId;
-    this.props.firebase.chats(conversationId).off('value', this.firebaseRef);
+    this.props.firebase.unsubscribeFromChats(conversationId, this.firebaseRef);
   }
 
   handleChange(event) {
@@ -85,14 +80,13 @@ class Chat extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     if (!isEmptyString(this.state.text)) {
-      const { chats } = this.props.firebase;
+      const { createChat } = this.props.firebase;
       const { conversationId } = this.state;
       this.setState({ error: null });
       const chatArea = this.myRef.current;
       try {
-        await chats(conversationId).push({
+        await createChat(conversationId, {
           text: this.state.text,
-          created: Date.now(),
           userId: this.state.user.uid,
         });
         this.setState({ text: '' });
@@ -113,7 +107,7 @@ class Chat extends Component {
   onRemoveMessage = (uid) => {
     const { conversationId } = this.state;
     console.log('trying to remove message with uid = ' + uid);
-    this.props.firebase.chat(conversationId, uid).remove();
+    this.props.firebase.deleteChat(conversationId, uid);
   };
 
   render() {

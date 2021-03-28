@@ -61,8 +61,8 @@ class UserSearchList extends Component {
     // TODO: implement search
   };
 
-  askConnection = (toUser) => {
-    console.log('askConnection');
+  like = (toUser) => {
+    console.log('like');
     const { authUser, updateFriends } = this.props.firebase;
 
     const isFriend = isBFriendOfA(authUser, toUser);
@@ -70,59 +70,29 @@ class UserSearchList extends Component {
     if (isFriend) {
       // already friends, don't do anything
       console.log(
-        'askConnection: user ' +
-          authUser.uid +
-          ' is already friend with ' +
-          toUser.uid
+        'like: user ' + authUser.uid + ' is already friend with ' + toUser.uid
       );
     } else {
+      const friends = {
+        ...authUser.friends,
+      };
+      friends[toUser.uid] = true;
+      updateFriends(authUser.uid, friends);
+    }
+  };
+
+  unlike = (toUser) => {
+    console.log('unlike');
+    const { authUser, updateFriends } = this.props.firebase;
+    const isFriend = isBFriendOfA(authUser, toUser);
+
+    if (isFriend) {
       const friends = {
         ...authUser.friends,
       };
       friends[toUser.uid] = false;
       updateFriends(authUser.uid, friends);
     }
-  };
-
-  cancelRequestForConnection = (toUser) => {
-    console.log('cancelConnection');
-    const { authUser, updateFriends } = this.props.firebase;
-    const isFriend = isBFriendOfA(authUser, toUser);
-
-    if (isFriend === false) {
-      const friends = {
-        ...authUser.friends,
-      };
-      friends[toUser.uid] = null;
-      updateFriends(authUser.uid, friends);
-    }
-  };
-
-  acceptConnection = (fromUser) => {
-    console.log('acceptConnection');
-    const { authUser, updateFriends } = this.props.firebase;
-
-    const isFriend = isBFriendOfA(fromUser, authUser);
-
-    if (isFriend) {
-      // already friends, don't do anything
-      console.log(
-        'acceptConnection: user ' +
-          authUser.uid +
-          ' is already friend with ' +
-          fromUser.uid
-      );
-    } else {
-      const friends = {
-        ...fromUser.friends,
-      };
-      friends[authUser.uid] = true;
-      updateFriends(fromUser.uid, friends);
-    }
-  };
-
-  rejectConnection = (fromUser) => {
-    console.log('rejectConnection');
   };
 
   extractFilteredUsers = (usersList) => {
@@ -272,8 +242,8 @@ class UserSearchList extends Component {
               </thead>
               <tbody className='bg-white divide-y divide-gray-200'>
                 {filteredUsers.map((user) => {
-                  const isListedUserMyFriend = isBFriendOfA(authUser, user);
-                  const amIFriendOfListedUser = isBFriendOfA(user, authUser);
+                  const didILikeListedUser = isBFriendOfA(authUser, user);
+                  const didListedUserLikeMe = isBFriendOfA(user, authUser);
                   const compatible = this.isCompatible(user);
                   if (compatible)
                     return (
@@ -300,68 +270,45 @@ class UserSearchList extends Component {
                           {user.rating}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
-                          {isListedUserMyFriend === null ? (
+                          {didILikeListedUser === false ? (
                             <>
-                              {' '}
-                              Not my friend yet <Star /> <br />
+                              <Star /> <br />
                               <MatchaButton
-                                text='Ask for connection'
+                                text='Like'
                                 type='button'
-                                onClick={() => this.askConnection(user)}
+                                onClick={() => this.like(user)}
                               ></MatchaButton>
                             </>
-                          ) : isListedUserMyFriend ? (
-                            <>
-                              {' '}
-                              Already my friend <Star fill='yellow' />{' '}
-                            </>
                           ) : (
                             <>
-                              {' '}
-                              Request to be friends already sent <br />
+                              <Star fill='yellow' /> <br />
                               <MatchaButton
-                                text='Cancel connection request'
+                                text='Unlike'
                                 type='button'
-                                onClick={() =>
-                                  this.cancelRequestForConnection(user)
-                                }
+                                onClick={() => this.unlike(user)}
                               />
                             </>
                           )}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
-                          {amIFriendOfListedUser === null ? (
-                            'I am not their friend yet'
-                          ) : amIFriendOfListedUser ? (
+                          {didListedUserLikeMe === null ? (
+                            'They did not like me yet'
+                          ) : didListedUserLikeMe ? (
                             <>
                               {' '}
-                              I am their friend already
+                              They liked me already
                               <br />
-                              <MatchaButton
-                                text='Reject connection request'
-                                type='button'
-                                onClick={() => this.rejectConnection(user)}
-                              />
                             </>
                           ) : (
                             <>
                               {' '}
-                              They have asked me to be friends <br />
-                              <MatchaButton
-                                text='Accept connection request'
-                                type='button'
-                                onClick={() => this.acceptConnection(user)}
-                              />
-                              <MatchaButton
-                                text='Reject connection request'
-                                type='button'
-                                onClick={() => this.rejectConnection(user)}
-                              />
+                              They liked me
+                              <br />
                             </>
                           )}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
-                          {isListedUserMyFriend && amIFriendOfListedUser ? (
+                          {didILikeListedUser && didListedUserLikeMe ? (
                             <MatchaButton>
                               <Link
                                 to={{
