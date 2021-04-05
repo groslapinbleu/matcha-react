@@ -1,76 +1,55 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import MatchaBox from '../components/MatchaBox';
 import { withFirebase } from '../services/Firebase';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import ImageList from '../components/ImageList';
-import MultiChoiceSelector from 'components/MultiChoiceSelector';
-import MatchaTable from 'components/MatchaTable';
-import { tags } from 'models/User';
-import { withTranslation } from 'react-i18next';
-import navigatorLanguage from 'helpers/navigatorLanguage';
-import ChangeLanguage from 'components/ChangeLanguage';
+import { useTranslation } from 'react-i18next';
+import { useSnackbar } from 'react-simple-snackbar';
+
 import Alert from 'components/Alert';
-import SearchAndOrder from 'components/SearchAndOrder';
-class Notification extends Component {
-  constructor(props) {
-    console.log('Notification constructor');
-    super(props);
-    this.state = {
-      selectedElements: [],
-    };
-  }
 
-  handleChangeDropdown = (name, value) => {
-    console.log('name=' + name + ' value=' + value);
-  };
+const Notification = ({ firebase }) => {
+  const { t } = useTranslation();
+  const { currentUser } = firebase.auth;
+  const [isTokenFound, setTokenFound] = useState(false);
+  const [show, setShow] = useState(false);
+  const [notification, setNotification] = useState({ title: '', body: '' });
+  const [openSnackbar, closeSnackbar] = useSnackbar();
 
-  onImageListChange = (imageList) => {
-    console.log('onImageListChange imageList=' + imageList);
-    // TODO: update the user with this list
-  };
+  firebase.getToken(setTokenFound);
 
-  render() {
-    const { authUser } = this.props.firebase;
-    const { i18n } = this.props;
+  firebase
+    .onMessageListener()
+    .then((payload) => {
+      setShow(true);
+      setNotification({
+        title: payload.notification.title,
+        body: payload.notification.body,
+      });
+      console.log(payload);
+      openSnackbar(notification.title + ' ' + notification.body);
+    })
+    .catch((err) => console.log('failed: ', err));
 
-    return (
-      <div>
-        <Header></Header>
-        <section className='p-5 shadow'>
-          <MatchaBox title='Notification Page'>
-            <p>Work In Progress</p>
-            <MultiChoiceSelector
-              selectedElements={this.state.selectedElements}
-              elementList={tags}
-              name='tags'
-              className='ml-3 mr-1'
-              onSelect={this.handleChangeDropdown}
-              multiple={false}
-            />
-          </MatchaBox>
-        </section>
-        <section className='p-5 shadow'>
-          <MatchaBox title='Search'>
-            <SearchAndOrder
-              sortOrder='asc'
-              changeString={(newString) => console.log(newString)}
-              changeOrder={(name, value) => console.log(name + ' ' + value)}
-            />
-          </MatchaBox>
-        </section>
-        <section className='p-5 shadow'>
-          <MatchaBox title='Languages'>
-            <div>Navigator language = {navigatorLanguage()}</div>
-            <div>i18next language = {i18n.language}</div>
-          </MatchaBox>
-        </section>
-        <Alert color='red'>This is a red alert </Alert>
+  return (
+    <div>
+      <Header></Header>
+      <section className='p-5 shadow'>
+        <MatchaBox title='Notification Page'>
+          <p>Work In Progress</p>
+          {isTokenFound && <h1> Notification permission enabled 👍🏻 </h1>}
+          {!isTokenFound && <h1> Need notification permission ❗️ </h1>}
+          {show ? (
+            <>{notification.title + ' ' + notification.body}</>
+          ) : (
+            'no notif'
+          )}
+        </MatchaBox>
+      </section>
 
-        <Footer></Footer>
-      </div>
-    );
-  }
-}
+      <Footer></Footer>
+    </div>
+  );
+};
 
-export default withTranslation()(withFirebase(Notification));
+export default withFirebase(Notification);

@@ -24,3 +24,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# firebase-messaging-sw.js contains my Firebase keys: ignore it!
+public/firebase-messaging-sw.js

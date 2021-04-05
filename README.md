@@ -2,17 +2,22 @@
 
 ## Objectives of the project
 
-Develop a dating app with React and Firebase.
+Develop a dating app with React and Firebase. This was a way for me to learn
+React and play with Firebase tools (Realtime database, Storage, Cloud Messaging...)
 
 ## techologies
 
-This project uses React with tailwindCSS for styling, and Firebase for user management, Firebase Realtime Database as the database, and Firebase Storage for image files.
+This project uses React with tailwindCSS for styling, and Firebase for user management, Firebase Realtime Database as the database, Firebase Storage for image files, and FirebaseCloud Messaging for notifications.
 It also uses i18next for internationalization (only English ad French for now), as per www.robinwieruch.de/react-internationalization
 The language is a mix of Javascript and TypeScript (I have added TypeScript late into the project)
 
+Note: regarding notifications, you can receive them when the app is in the backgroud by adding a service worker (file firebase-messaging-sw.js, to be put in the public directory).
+Please refer to firebase.google.com/docs/cloud-messaging/js/receive for details.
+I have added a firebase-messaging-sw.js.example file as an example.
+
 ## Firebase Realtime database rules
 
-```
+```Firebase realtime database
 {
     "rules": {
         ".read": false,
@@ -45,7 +50,7 @@ The language is a mix of Javascript and TypeScript (I have added TypeScript late
 
 ## Firebase storage rules
 
-```
+```Firebase storage
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {

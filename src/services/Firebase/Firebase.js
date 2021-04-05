@@ -2,8 +2,10 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
+import 'firebase/messaging';
 import { defaultUserData } from 'models/User';
 
+// Firebase configuration
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -11,7 +13,11 @@ const config = {
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_ID,
 };
+
+// Firebase web push certificate
+const vapidKey = process.env.REACT_APP_VAPID_KEY;
 
 // this class encapsulates all authentication and database objects and functions
 class Firebase {
@@ -27,6 +33,8 @@ class Firebase {
     this.storage = app.storage();
     this.storageRef = this.storage.ref();
     this.imagesRef = this.storageRef.child('images');
+
+    this.messaging = app.messaging();
 
     /* Social Sign In Method Provider */
 
@@ -414,6 +422,39 @@ class Firebase {
     console.log('deleteImages: number of files deleted = ' + filesDeleted);
     return filesDeleted;
   };
+
+  // *** MESSAGING API ***
+  getToken = async (setTokenFound) => {
+    return this.messaging
+      .getToken({
+        vapidKey,
+      })
+      .then((currentToken) => {
+        if (currentToken) {
+          console.log('current token for client: ', currentToken);
+          setTokenFound(true);
+          // Track the token -> client mapping, by sending to backend server
+          // show on the UI that permission is secured
+        } else {
+          console.log(
+            'No registration token available. Request permission to generate one.'
+          );
+          setTokenFound(false);
+          // shows on the UI that permission is required
+        }
+      })
+      .catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+        // catch error while creating client token
+      });
+  };
+
+  onMessageListener = async () =>
+    new Promise((resolve) => {
+      this.messaging.onMessage((payload) => {
+        resolve(payload);
+      });
+    });
 }
 
 export default Firebase;
